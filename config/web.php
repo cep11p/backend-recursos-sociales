@@ -54,6 +54,31 @@ $config = [
         
     ],
     'params' => $params,
+    
+    'modules' => [
+//        'user' => [
+//            'class' => 'dektrium\user\Module',
+//            'enableConfirmation'=>false,
+//            'admins'=>['admin']
+//        ],
+//        'rbac' => 'dektrium\rbac\RbacWebModule',
+        
+        "audit"=>[
+            "class"=>"bedezign\yii2\audit\Audit",
+            "ignoreActions" =>['audit/*', 'debug/*'],
+            'accessIps'=>null,
+            'accessUsers'=>null,
+            'accessRoles'=>null
+        ],
+        
+        'api' => [
+            'class' => 'app\modules\api\Api',
+        ],
+        
+        'backend' => [
+            'class' => 'app\modules\backend\Backend',
+        ],
+    ],
 ];
 
 if (YII_ENV_DEV) {
