@@ -62,6 +62,8 @@ $config = [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
+                
+                ##### Backend #####
                 [   #Programa
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'backend/programa', 
@@ -73,6 +75,12 @@ $config = [
                 [   #Tipo Recurso Has Programa
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'backend/programa-has-tipo-recurso', 
+                ],
+                
+                ##### APIREST #####
+                [   #Recurso Social
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/recurso', 
                 ],
             ],
         ],
