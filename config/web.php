@@ -62,6 +62,18 @@ $config = [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
+                [   #Programa
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'backend/programa', 
+                ],
+                [   #Tipo Recurso
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'backend/tipo-recurso', 
+                ],
+                [   #Tipo Recurso Has Programa
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'backend/programa-has-tipo-recurso', 
+                ],
             ],
         ],
         

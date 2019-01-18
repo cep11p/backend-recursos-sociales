@@ -3,13 +3,13 @@
 namespace app\models;
 
 use Yii;
-use \app\models\base\TipoRecursoHasPrograma as BaseTipoRecursoHasPrograma;
+use \app\models\base\ProgramaHasTipoRecurso as BaseProgramaHasTipoRecurso;
 use yii\helpers\ArrayHelper;
 
 /**
- * This is the model class for table "tipo_recurso_has_programa".
+ * This is the model class for table "programa_has_tipo_recurso".
  */
-class TipoRecursoHasPrograma extends BaseTipoRecursoHasPrograma
+class ProgramaHasTipoRecurso extends BaseProgramaHasTipoRecurso
 {
 
     public function behaviors()

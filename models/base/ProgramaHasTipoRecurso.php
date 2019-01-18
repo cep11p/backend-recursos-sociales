@@ -7,7 +7,7 @@ namespace app\models\base;
 use Yii;
 
 /**
- * This is the base-model class for table "tipo_recurso_has_programa".
+ * This is the base-model class for table "programa_has_tipo_recurso".
  *
  * @property integer $tipo_recursoid
  * @property integer $programaid
@@ -16,7 +16,7 @@ use Yii;
  * @property \app\models\TipoRecurso $tipoRecurso
  * @property string $aliasModel
  */
-abstract class TipoRecursoHasPrograma extends \yii\db\ActiveRecord
+abstract class ProgramaHasTipoRecurso extends \yii\db\ActiveRecord
 {
 
 
@@ -26,7 +26,7 @@ abstract class TipoRecursoHasPrograma extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'tipo_recurso_has_programa';
+        return 'programa_has_tipo_recurso';
     }
 
     /**
