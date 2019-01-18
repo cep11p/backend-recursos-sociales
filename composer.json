@@ -19,7 +19,8 @@
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "schmunk42/yii2-giiant": "@stable",
-        "bedezign/yii2-audit": "^1.0"
+        "bedezign/yii2-audit": "^1.0",
+        "rmrevin/yii2-fontawesome": "~3.2"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
