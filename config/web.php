@@ -82,6 +82,10 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/recurso', 
                 ],
+                [   #Programa
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/programa', 
+                ],
             ],
         ],
         
