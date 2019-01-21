@@ -16,6 +16,11 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'XyoomMOzhOl2E11giRy83AMunPVLfehc',
         ],
+        
+        'registral'=> [
+            'class' => $params['servicioRegistral'],//'app\components\ServicioRegistral'
+        ],
+        
         'i18n' => [
             'translations' => [
                 '*' => [
@@ -89,6 +94,12 @@ $config = [
                 [   #Tipo Recurso
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/tipo-recurso', 
+                ],
+                
+                ##### Interoperabilidad con Registral #####
+                [   #Persona
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/persona', 
                 ],
             ],
         ],
