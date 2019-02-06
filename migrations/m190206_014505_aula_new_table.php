@@ -19,7 +19,7 @@ class m190206_014505_aula_new_table extends Migration
             'PRIMARY KEY(recursoid, alumnoid)',
         ]);
         
-        $this->addForeignKey('fk_aula_recursoid', $table, 'recursoid', 'recurso', 'id');
+        $this->addForeignKey('fk_aula_recursoid', $table, 'recursoid', 'recurso', 'id','cascade');
 
     }
 
