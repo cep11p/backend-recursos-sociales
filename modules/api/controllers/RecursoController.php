@@ -65,10 +65,31 @@ class RecursoController extends ActiveController{
         $resultado['message']='Se guarda un recurso social';
         $param = Yii::$app->request->post();
         $transaction = Yii::$app->db->beginTransaction();
-        $arrayErrors = array();
         try {
        
-            die($resultado['message']);
+            $model = new Recurso();
+            $model->setAttributes($param);
+            $model->fecha_inicial = date('Y-m-d');   
+            
+            if(!$model->save()){
+                throw new Exception(json_encode($model->getErrors()));
+            }
+            
+            #### Guardamos coleccion de alumnos si el pregroma es "Emprender" ####
+            if(isset($param['alumno_lista'][0]['alumnoid']) && (count($param['alumno_lista'])>0) &&  $model->programa->nombre == 'Emprender'){
+                if(!is_array($param['alumno_lista'])){
+                    throw new Exception("La lista de alumnos es invalida");
+                }
+//                $param['alumno_lista'];
+                die("Guardamos coleccion de alumnos");
+            }
+            
+            $transaction->commit();
+            
+            $resultado['success']=true;
+            $resultado['data']['id']=$model->id;
+            
+            return  $resultado;
            
         }catch (Exception $exc) {
             $transaction->rollBack();

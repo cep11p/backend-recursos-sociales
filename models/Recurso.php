@@ -27,8 +27,17 @@ class Recurso extends BaseRecurso
         return ArrayHelper::merge(
             parent::rules(),
             [
-                # custom validation rules
+                ['personaid', 'existePersonaEnRegistral'],
+                ['personaid', 'compare','compareValue'=>0,'operator'=>'!=','message' => 'No se pudo registrar la persona correctamente en el Sistema Registral.']
             ]
         );
+    }
+    
+    public function existePersonaEnRegistral(){
+        $response = \Yii::$app->registral->buscarPersonaPorId($this->personaid);     
+        
+        if(isset($response['estado']) && $response['estado']!=true){
+            $this->addError('id', 'La persona con el id '.$this->personaid.' no existe!');
+        }
     }
 }
