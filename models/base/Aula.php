@@ -9,10 +9,10 @@ use Yii;
 /**
  * This is the base-model class for table "aula".
  *
- * @property integer $recurso_socialid
+ * @property integer $recursoid
  * @property integer $alumnoid
  *
- * @property \app\models\Recurso $recursoSocial
+ * @property \app\models\Recurso $recurso
  * @property string $aliasModel
  */
 abstract class Aula extends \yii\db\ActiveRecord
@@ -34,10 +34,10 @@ abstract class Aula extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['recurso_socialid', 'alumnoid'], 'required'],
-            [['recurso_socialid', 'alumnoid'], 'integer'],
-            [['recurso_socialid', 'alumnoid'], 'unique', 'targetAttribute' => ['recurso_socialid', 'alumnoid']],
-            [['recurso_socialid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Recurso::className(), 'targetAttribute' => ['recurso_socialid' => 'id']]
+            [['recursoid', 'alumnoid'], 'required'],
+            [['recursoid', 'alumnoid'], 'integer'],
+            [['recursoid', 'alumnoid'], 'unique', 'targetAttribute' => ['recursoid', 'alumnoid']],
+            [['recursoid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Recurso::className(), 'targetAttribute' => ['recursoid' => 'id']]
         ];
     }
 
@@ -47,7 +47,7 @@ abstract class Aula extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'recurso_socialid' => 'Recurso Socialid',
+            'recursoid' => 'Recursoid',
             'alumnoid' => 'Alumnoid',
         ];
     }
@@ -55,9 +55,9 @@ abstract class Aula extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getRecursoSocial()
+    public function getRecurso()
     {
-        return $this->hasOne(\app\models\Recurso::className(), ['id' => 'recurso_socialid']);
+        return $this->hasOne(\app\models\Recurso::className(), ['id' => 'recursoid']);
     }
 
 

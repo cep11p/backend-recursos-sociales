@@ -14,12 +14,12 @@ class m190206_014505_aula_new_table extends Migration
     {
         $table = "aula";
         $this->createTable($table, [
-            'recurso_socialid'=> $this->integer()->notNull(),
+            'recursoid'=> $this->integer()->notNull(),
             'alumnoid'=> $this->integer()->notNull(),
-            'PRIMARY KEY(recurso_socialid, alumnoid)',
+            'PRIMARY KEY(recursoid, alumnoid)',
         ]);
         
-        $this->addForeignKey('fk_aula_recurso_socialid', $table, 'recurso_socialid', 'recurso', 'id');
+        $this->addForeignKey('fk_aula_recursoid', $table, 'recursoid', 'recurso', 'id');
 
     }
 
