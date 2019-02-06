@@ -16,6 +16,7 @@ class m190206_014505_aula_new_table extends Migration
         $this->createTable($table, [
             'recurso_socialid'=> $this->integer()->notNull(),
             'alumnoid'=> $this->integer()->notNull(),
+            'PRIMARY KEY(recurso_socialid, alumnoid)',
         ]);
         
         $this->addForeignKey('fk_aula_recurso_socialid', $table, 'recurso_socialid', 'recurso', 'id');
