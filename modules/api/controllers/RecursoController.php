@@ -79,26 +79,7 @@ class RecursoController extends ActiveController{
             
             #### Guardamos coleccion de alumnos si el pregroma es "Emprender" ####
             if(isset($param['alumno_lista']) && (count($param['alumno_lista'])>0) &&  $model->programa->nombre == 'Emprender'){
-                if(!is_array($param['alumno_lista'])){
-                    throw new Exception("La lista de alumnos es invalida");
-                }
-                
-                foreach ($param['alumno_lista'] as $vAula) {                    
-                    if(!isset($vAula['alumnoid'])){
-                        throw new Exception("La lista de alumnos es invalida");
-                    }                   
-                
-                    $aula = new Aula();
-                    $aula->setAttributes([
-                        'recursoid'=>$model->id,
-                        'alumnoid'=>$vAula['alumnoid']
-                    ]);
-                                        
-                    if(!$aula->save()){
-                        $arrayErrors['aula'][] = $aula->getErrors();
-                        throw new Exception(json_encode($arrayErrors));
-                    }
-                }
+                $model->vincularAlumnosAEmprender($param);
             }
             
             $transaction->commit();
@@ -111,7 +92,7 @@ class RecursoController extends ActiveController{
         }catch (Exception $exc) {
             $transaction->rollBack();
             $mensaje =$exc->getMessage();
-            throw new \yii\web\HttpException(500, $mensaje);
+            throw new \yii\web\HttpException(400, $mensaje);
         }
 
     }
