@@ -24,6 +24,9 @@ $config = [
         'registral'=> [
             'class' => $params['servicioRegistral'],//'app\components\ServicioRegistral'
         ],
+        'lugar'=> [
+            'class' => $params['servicioLugar'],//'app\components\ServicioLugar'
+        ],
         
         'i18n' => [
             'translations' => [

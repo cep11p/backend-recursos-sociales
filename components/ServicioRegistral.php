@@ -72,7 +72,7 @@ class ServicioRegistral extends Component implements IServicioRegistral
             ];          
             
             
-            $response = $client->request('PUT', 'http://api.registral/api/personas/'.$data['id'], ['json' => $data,'headers' => $headers]);
+            $response = $client->request('PUT', 'http://registral/api/personas/'.$data['id'], ['json' => $data,'headers' => $headers]);
             $respuesta = json_decode($response->getBody()->getContents(), true);
             \Yii::error($respuesta);
             
@@ -99,7 +99,7 @@ class ServicioRegistral extends Component implements IServicioRegistral
                 'Content-Type'=>'application/json'
             ];          
             
-            $response = $client->request('GET', 'http://api.registral/api/personas/buscar-por-documento/'.$nro_documento, ['headers' => $headers]);
+            $response = $client->request('GET', 'http://registral/api/personas/buscar-por-documento/'.$nro_documento, ['headers' => $headers]);
             $respuesta = json_decode($response->getBody()->getContents(), true);
             \Yii::error($respuesta);
             

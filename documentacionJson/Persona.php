@@ -13,8 +13,7 @@
 @url http://registral.local/api/personas
 @method POST
 @param
-{
-    
+{    
     "nombre": "Romina",
     "apellido": "Rodríguez",
     "nro_documento": "29890098",
@@ -46,8 +45,7 @@
         "localidadid":1,
         "latitud":"-123123",
         "longitud":"321123"
-    }       
-    	
+    }    
 }
 
 /**** obtener Persona por nro_documento ***
