@@ -1,7 +1,7 @@
 <?php
 
 /**** obtener lista de Personas ***
-@url ejemplo http://registral.local/api/personas?nombre=lorena&nro_documento=36849868
+@url ejemplo http://recurso-social.local/api/personas?nombre=lorena&nro_documento=36849868
 @Method GET
 
 {
@@ -10,7 +10,7 @@
 **/
 
 /***** Para crear****
-@url http://registral.local/api/personas
+@url http://recurso-social.local/api/personas
 @method POST
 @param
 {    
@@ -49,7 +49,7 @@
 }
 
 /**** obtener Persona por nro_documento ***
-@url ejemplo http://registral.local/api/personas/buscar-por-documento/29800100
+@url ejemplo http://recurso-social.local/api/personas/buscar-por-documento/29800100
 @Method GET
 {
     "success": true,
