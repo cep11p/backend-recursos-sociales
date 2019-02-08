@@ -7,6 +7,8 @@ use yii\helpers\ArrayHelper;
 use Yii;
 use yii\base\Model;
 
+use yii\base\Exception;
+
 /**
  * This is the model class for table "persona".
  */
@@ -64,11 +66,11 @@ class PersonaForm extends Model
         }else{
             $resultado = false;
         } 
-            
-        
         
         return $resultado;
     }
+    
+    
     
     /**
      * Ademas de registrar los datos personales, se registran los datos del hogar
@@ -85,6 +87,108 @@ class PersonaForm extends Model
             $this->fecha_nacimiento = Yii::$app->formatter->asDate($param['fecha_nacimiento'], 'php:Y-m-d');
         }  
         
+    }
+    
+    public function setAttributesAndSave($param) {
+        $nucleoForm = new NucleoForm();
+        $nucleoForm->nombre = "Predeterminado";
+        $hogarForm = new HogarForm();
+        $lugarForm = new LugarForm();
+        
+        ####### Instanciamos atributos de PersonaForm #########
+        if(isset($param)){
+            $this->setAttributes($param);
+        }           
+        if(!$this->validate()){
+            $arrayErrors = ArrayHelper::merge($arrayErrors, $this->getErrors());
+        }   
+        
+        ####### Instanciamos atributos de LugarForm #########
+        if(isset($param['lugar'])){
+            $lugarForm->setAttributes($param['lugar']);
+        }                
+        
+        if(!$lugarForm->validate()){
+            $arrayErrors=ArrayHelper::merge($arrayErrors, array('lugar'=>$lugarForm->getErrors()));
+        } 
+        
+        ###### chequeamos si existen errores ###############        
+        if(count($arrayErrors)>0){
+            throw new Exception(json_encode($arrayErrors));
+        }
+        
+        #Una vez que ya existe la persona
+        /********************** Instanciamos una coleccion de Estudios *********************/
+        if(isset($param['estudios'])){
+            $coleccionEstudio = array();
+            foreach ($param['estudios'] as $estudio) {
+                $coleccionEstudio[] = $this->serializarEstudio($estudio);
+            }      
+        }
+        
+        /*************** Lugar/Hogar/Nucleo ******************/
+        //se debe hacer un buscado de nucleo mediante los datos de direccion que tiene lugar[]
+        //se busca integridad de la persona con respecto a su direccion
+        if($lugarForm->validate()){
+            $lugarEncontrado = $lugarForm->buscarLugarIdenticoEnSistemaLugar();
+            //Verificamos si existe el lugar y seteamos el hogar con el nucleo que corresponde
+            if(isset($lugarEncontrado['id'])){
+                
+                $hogarForm->lugarid = $lugarEncontrado['id'];
+                $hogarEncontrado = $hogarForm->buscarHogarEnSistemaRegistral();
+                
+                if($hogarEncontrado!=null){
+                    $hogarForm->setAttributes($hogarEncontrado);
+                    $nucleoEncontrado = $nucleoForm->buscarNucleoEnSistemaRegistral(['hogarid'=>$hogarForm->id,'nombre'=>'Predeterminado']);
+                }
+                
+                if(isset($nucleoEncontrado)){
+                    $nucleoForm->setAttributes($nucleoEncontrado);
+                    $nucleoForm->validate();
+                    //instanceamos el nucleo encontrado
+                    $this->nucleoid = $nucleoForm->id;  
+                }             
+            }
+        }
+        
+        $param_persona = $this->toArray();
+        $param_persona['estudios'] = (isset($coleccionEstudio))?$coleccionEstudio:array();
+        $param_persona['hogar'] = $hogarForm->toArray();
+        $param_persona['lugar'] = $lugarForm->toArray();
+        $param_persona['nucleo'] = $nucleoForm->toArray();
+        
+        /*************** Ejecutamos la interoperabilidad ************************/
+        //Si es una persona con id entonces ya existe en Registral
+        $personaid = 0;
+        if(isset($this->id) && !empty($this->id)){
+            $personaid = intval(\Yii::$app->registral->actualizarPersona($param_persona));
+            $this->id = $personaid;
+            
+        }else{
+            $personaid = intval(\Yii::$app->registral->crearPersona($param_persona));
+            $this->id = $personaid;
+        }
+        
+    }
+    
+    /**
+     * Se instancia un estudio y se valida y luego se serializa como 
+     * parametro con el fin de ser registrado con interoperabilidad
+     * @param array $param
+     * @return array
+     * @throws Exception si el estuio no es valido, creamos una excepcion con los errores
+     */
+    public function serializarEstudio($param){
+        
+        $estudioForm = new EstudioForm();
+        $estudioForm->setAttributes($param);
+        
+        if(!$estudioForm->validate()){
+            $arrayErrors['estudios']=$estudioForm->getErrors();
+            throw new Exception(json_encode($arrayErrors));
+        }
+        
+        return $estudioForm->toArray();
     }
     
     /**

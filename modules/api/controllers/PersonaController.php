@@ -7,6 +7,8 @@ use yii\web\Response;
 use Yii;
 use yii\base\Exception;
 
+use \app\models\PersonaForm;
+
 class PersonaController extends ActiveController{
     
     public $modelClass = 'app\models\Programa';
@@ -91,16 +93,20 @@ class PersonaController extends ActiveController{
     
     public function actionCreate()
     {
-        $resultado['message']='Se guarda un beneficiario';
+        $resultado['message']='Se registró una nueva persona';
         $param = Yii::$app->request->post();
-        $transaction = Yii::$app->db->beginTransaction();
-        $arrayErrors = array();
+//        $arrayErrors = array();
+//        $personaForm = new PersonaForm();
         try {
-       
-            die($resultado['message']);
+            $model = new PersonaForm();
+            $model->setAttributesAndSave($param);
+            
+            $resultado['success']=true;
+            $resultado['data']['id']=$model->id;
+            
+            return $resultado;
            
         }catch (Exception $exc) {
-            $transaction->rollBack();
             $mensaje =$exc->getMessage();
             throw new \yii\web\HttpException(500, $mensaje);
         }
