@@ -40,8 +40,6 @@ use yii\helpers\StringHelper;
         <p>
             
 
-<!-- attribute activo -->
-			<?= $form->field($model, 'activo')->textInput() ?>
 
 <!-- attribute nombre -->
 			<?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>

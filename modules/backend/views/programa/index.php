@@ -7,6 +7,7 @@ use yii\grid\GridView;
 /**
 * @var yii\web\View $this
 * @var yii\data\ActiveDataProvider $dataProvider
+    * @var app\models\ProgramaSearch $searchModel
 */
 
 $this->title = Yii::t('models', 'Programas');
@@ -24,7 +25,8 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
 <div class="giiant-crud programa-index">
 
     <?php
-//         ?>
+//             echo $this->render('_search', ['model' =>$searchModel]);
+        ?>
 
     
     <?php \yii\widgets\Pjax::begin(['id'=>'pjax-main', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-main ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert("yo")}']]) ?>
@@ -56,16 +58,16 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
             'encodeLabels' => false,
             'items' => [
             [
-                'url' => ['recurso/index'],
-                'label' => '<i class="glyphicon glyphicon-arrow-right"></i> ' . Yii::t('models', 'Recurso'),
-            ],
-                                [
-                'url' => ['tipo-recurso-has-programa/index'],
-                'label' => '<i class="glyphicon glyphicon-random text-muted"></i> ' . Yii::t('models', 'Tipo Recurso Has Programa'),
+                'url' => ['programa-has-tipo-recurso/index'],
+                'label' => '<i class="glyphicon glyphicon-random text-muted"></i> ' . Yii::t('models', 'Programa Has Tipo Recurso'),
             ],
                                 [
                 'url' => ['tipo-recurso/index'],
                 'label' => '<i class="glyphicon glyphicon-arrow-right"></i> ' . Yii::t('models', 'Tipo Recurso'),
+            ],
+                                [
+                'url' => ['recurso/index'],
+                'label' => '<i class="glyphicon glyphicon-arrow-right"></i> ' . Yii::t('models', 'Recurso'),
             ],
                     
 ]
@@ -89,6 +91,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
         'firstPageLabel' => 'First',
         'lastPageLabel' => 'Last',
         ],
+                    'filterModel' => $searchModel,
                 'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
         'headerRowOptions' => ['class'=>'x'],
         'columns' => [

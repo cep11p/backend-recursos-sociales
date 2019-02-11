@@ -13,9 +13,9 @@ use Yii;
  * @property string $nombre
  * @property integer $activo
  *
- * @property \app\models\Recurso[] $recursos
- * @property \app\models\TipoRecursoHasPrograma[] $tipoRecursoHasProgramas
+ * @property \app\models\ProgramaHasTipoRecurso[] $programaHasTipoRecursos
  * @property \app\models\TipoRecurso[] $tipoRecursos
+ * @property \app\models\Recurso[] $recursos
  * @property string $aliasModel
  */
 abstract class Programa extends \yii\db\ActiveRecord
@@ -57,17 +57,9 @@ abstract class Programa extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getRecursos()
+    public function getProgramaHasTipoRecursos()
     {
-        return $this->hasMany(\app\models\Recurso::className(), ['programaid' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTipoRecursoHasProgramas()
-    {
-        return $this->hasMany(\app\models\TipoRecursoHasPrograma::className(), ['programaid' => 'id']);
+        return $this->hasMany(\app\models\ProgramaHasTipoRecurso::className(), ['programaid' => 'id']);
     }
 
     /**
@@ -75,7 +67,15 @@ abstract class Programa extends \yii\db\ActiveRecord
      */
     public function getTipoRecursos()
     {
-        return $this->hasMany(\app\models\TipoRecurso::className(), ['id' => 'tipo_recursoid'])->viaTable('tipo_recurso_has_programa', ['programaid' => 'id']);
+        return $this->hasMany(\app\models\TipoRecurso::className(), ['id' => 'tipo_recursoid'])->viaTable('programa_has_tipo_recurso', ['programaid' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRecursos()
+    {
+        return $this->hasMany(\app\models\Recurso::className(), ['programaid' => 'id']);
     }
 
 

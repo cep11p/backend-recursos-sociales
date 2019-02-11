@@ -115,7 +115,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
 			    'attribute' => 'tipo_recursoid',
 			    'value' => function ($model) {
 			        if ($rel = $model->tipoRecurso) {
-			            return Html::a($rel->id, ['tipo-recurso/view', 'id' => $rel->id,], ['data-pjax' => 0]);
+			            return Html::a($rel->nombre, ['tipo-recurso/view', 'id' => $rel->id,], ['data-pjax' => 0]);
 			        } else {
 			            return '';
 			        }
@@ -128,7 +128,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
 			    'attribute' => 'programaid',
 			    'value' => function ($model) {
 			        if ($rel = $model->programa) {
-			            return Html::a($rel->id, ['programa/view', 'id' => $rel->id,], ['data-pjax' => 0]);
+			            return Html::a($rel->nombre, ['programa/view', 'id' => $rel->id,], ['data-pjax' => 0]);
 			        } else {
 			            return '';
 			        }

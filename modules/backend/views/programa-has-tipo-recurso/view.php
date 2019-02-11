@@ -15,7 +15,7 @@ $copyParams = $model->attributes;
 
 $this->title = Yii::t('models', 'Programa Has Tipo Recurso');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Programa Has Tipo Recursos'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => (string)$model->tipo_recursoid, 'url' => ['view', 'tipo_recursoid' => $model->tipo_recursoid, 'programaid' => $model->programaid]];
+$this->params['breadcrumbs'][] = ['label' => (string)$model->programa->nombre, 'url' => ['view', 'tipo_recursoid' => $model->tipo_recursoid, 'programaid' => $model->programaid]];
 $this->params['breadcrumbs'][] = 'View';
 ?>
 <div class="giiant-crud programa-has-tipo-recurso-view">
@@ -42,17 +42,17 @@ $this->params['breadcrumbs'][] = 'View';
         <!-- menu buttons -->
         <div class='pull-left'>
             <?= Html::a(
-            '<span class="glyphicon glyphicon-pencil"></span> ' . 'Edit',
+            '<span class="glyphicon glyphicon-pencil"></span> ' . 'Editar',
             [ 'update', 'tipo_recursoid' => $model->tipo_recursoid, 'programaid' => $model->programaid],
             ['class' => 'btn btn-info']) ?>
 
             <?= Html::a(
-            '<span class="glyphicon glyphicon-copy"></span> ' . 'Copy',
+            '<span class="glyphicon glyphicon-copy"></span> ' . 'Copiar',
             ['create', 'tipo_recursoid' => $model->tipo_recursoid, 'programaid' => $model->programaid, 'ProgramaHasTipoRecurso'=>$copyParams],
             ['class' => 'btn btn-success']) ?>
 
             <?= Html::a(
-            '<span class="glyphicon glyphicon-plus"></span> ' . 'New',
+            '<span class="glyphicon glyphicon-plus"></span> ' . 'Nuevo',
             ['create'],
             ['class' => 'btn btn-success']) ?>
         </div>
@@ -78,7 +78,7 @@ $this->params['breadcrumbs'][] = 'View';
     'attribute' => 'tipo_recursoid',
     'value' => ($model->tipoRecurso ? 
         Html::a('<i class="glyphicon glyphicon-list"></i>', ['tipo-recurso/index']).' '.
-        Html::a('<i class="glyphicon glyphicon-circle-arrow-right"></i> '.$model->tipoRecurso->id, ['tipo-recurso/view', 'id' => $model->tipoRecurso->id,]).' '.
+        Html::a('<i class="glyphicon glyphicon-circle-arrow-right"></i> '.$model->tipoRecurso->nombre, ['tipo-recurso/view', 'id' => $model->tipoRecurso->id,]).' '.
         Html::a('<i class="glyphicon glyphicon-paperclip"></i>', ['create', 'ProgramaHasTipoRecurso'=>['tipo_recursoid' => $model->tipo_recursoid]])
         : 
         '<span class="label label-warning">?</span>'),
@@ -89,7 +89,7 @@ $this->params['breadcrumbs'][] = 'View';
     'attribute' => 'programaid',
     'value' => ($model->programa ? 
         Html::a('<i class="glyphicon glyphicon-list"></i>', ['programa/index']).' '.
-        Html::a('<i class="glyphicon glyphicon-circle-arrow-right"></i> '.$model->programa->id, ['programa/view', 'id' => $model->programa->id,]).' '.
+        Html::a('<i class="glyphicon glyphicon-circle-arrow-right"></i> '.$model->programa->nombre, ['programa/view', 'id' => $model->programa->id,]).' '.
         Html::a('<i class="glyphicon glyphicon-paperclip"></i>', ['create', 'ProgramaHasTipoRecurso'=>['programaid' => $model->programaid]])
         : 
         '<span class="label label-warning">?</span>'),

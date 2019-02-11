@@ -7,6 +7,7 @@ use yii\grid\GridView;
 /**
 * @var yii\web\View $this
 * @var yii\data\ActiveDataProvider $dataProvider
+    * @var app\models\TipoRecursoSearch $searchModel
 */
 
 $this->title = Yii::t('models', 'Tipo Recursos');
@@ -16,7 +17,7 @@ if (isset($actionColumnTemplates)) {
 $actionColumnTemplate = implode(' ', $actionColumnTemplates);
     $actionColumnTemplateString = $actionColumnTemplate;
 } else {
-Yii::$app->view->params['pageButtons'] = Html::a('<span class="glyphicon glyphicon-plus"></span> ' . 'New', ['create'], ['class' => 'btn btn-success']);
+Yii::$app->view->params['pageButtons'] = Html::a('<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('cruds', 'New'), ['create'], ['class' => 'btn btn-success']);
     $actionColumnTemplateString = "{view} {update} {delete}";
 }
 $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTemplateString.'</div>';
@@ -24,7 +25,8 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
 <div class="giiant-crud tipo-recurso-index">
 
     <?php
-//         ?>
+//             echo $this->render('_search', ['model' =>$searchModel]);
+        ?>
 
     
     <?php \yii\widgets\Pjax::begin(['id'=>'pjax-main', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-main ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert("yo")}']]) ?>
@@ -37,7 +39,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
     </h1>
     <div class="clearfix crud-navigation">
         <div class="pull-left">
-            <?= Html::a('<span class="glyphicon glyphicon-plus"></span> ' . 'New', ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('cruds', 'New'), ['create'], ['class' => 'btn btn-success']) ?>
         </div>
 
         <div class="pull-right">
@@ -48,7 +50,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
             [
             'id' => 'giiant-relations',
             'encodeLabel' => false,
-            'label' => '<span class="glyphicon glyphicon-paperclip"></span> ' . 'Relations',
+            'label' => '<span class="glyphicon glyphicon-paperclip"></span> ' . Yii::t('cruds', 'Relations'),
             'dropdown' => [
             'options' => [
             'class' => 'dropdown-menu-right'
@@ -56,16 +58,16 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
             'encodeLabels' => false,
             'items' => [
             [
-                'url' => ['recurso/index'],
-                'label' => '<i class="glyphicon glyphicon-arrow-right"></i> ' . Yii::t('models', 'Recurso'),
-            ],
-                                [
-                'url' => ['tipo-recurso-has-programa/index'],
-                'label' => '<i class="glyphicon glyphicon-random text-muted"></i> ' . Yii::t('models', 'Tipo Recurso Has Programa'),
+                'url' => ['programa-has-tipo-recurso/index'],
+                'label' => '<i class="glyphicon glyphicon-random text-muted"></i> ' . Yii::t('models', 'Programa Has Tipo Recurso'),
             ],
                                 [
                 'url' => ['programa/index'],
                 'label' => '<i class="glyphicon glyphicon-arrow-right"></i> ' . Yii::t('models', 'Programa'),
+            ],
+                                [
+                'url' => ['recurso/index'],
+                'label' => '<i class="glyphicon glyphicon-arrow-right"></i> ' . Yii::t('models', 'Recurso'),
             ],
                     
 ]
@@ -86,9 +88,10 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
         'dataProvider' => $dataProvider,
         'pager' => [
         'class' => yii\widgets\LinkPager::className(),
-        'firstPageLabel' => 'First',
-        'lastPageLabel' => 'Last',
+        'firstPageLabel' => Yii::t('cruds', 'First'),
+        'lastPageLabel' => Yii::t('cruds', 'Last'),
         ],
+                    'filterModel' => $searchModel,
                 'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
         'headerRowOptions' => ['class'=>'x'],
         'columns' => [
