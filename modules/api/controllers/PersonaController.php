@@ -58,6 +58,7 @@ class PersonaController extends ActiveController{
         unset($actions['create']);
         unset($actions['update']);
         unset($actions['index']);
+        unset($actions['view']);
         return $actions;
     
     }
@@ -85,6 +86,20 @@ class PersonaController extends ActiveController{
             $data['pages']=$resultado['pages'];
             $data['pagesize']=$resultado['pagesize'];
             $data['resultado']=$resultado['resultado'];
+        }
+        
+        return $data;
+
+    }
+    
+    public function actionView($id)
+    {
+        $resultado = \Yii::$app->registral->viewPersona($id);
+                
+        if($resultado['estado']!=true){
+            $data = $resultado;       
+        }else{
+            $data = $resultado;  
         }
         
         return $data;
