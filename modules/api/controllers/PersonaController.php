@@ -95,8 +95,7 @@ class PersonaController extends ActiveController{
     {
         $resultado['message']='Se registró una nueva persona';
         $param = Yii::$app->request->post();
-//        $arrayErrors = array();
-//        $personaForm = new PersonaForm();
+        
         try {
             $model = new PersonaForm();
             $model->setAttributesAndSave($param);
@@ -108,25 +107,36 @@ class PersonaController extends ActiveController{
            
         }catch (Exception $exc) {
             $mensaje =$exc->getMessage();
-            throw new \yii\web\HttpException(500, $mensaje);
+            throw new \yii\web\HttpException(400, $mensaje);
         }
 
     }
     
     public function actionUpdate($id)
     {
-        $resultado['message']='Se guarda un beneficiario';
+        $resultado['message']='Se modifica una Persona';
         $param = Yii::$app->request->post();
         $transaction = Yii::$app->db->beginTransaction();
-        $arrayErrors = array();
-        try {
-       
-            die($resultado['message']);
+        try {   
+            
+            if(is_int($id)){
+                throw new Exception("El id es invalido.");
+            }
+            
+            $param = \yii\helpers\ArrayHelper::merge(['id'=>$id], $param);
+            
+            $model = new PersonaForm();
+            $model->setAttributesAndSave($param);
+            
+            $resultado['success']=true;
+            $resultado['data']['id']=$model->id;
+            
+            return $resultado;
            
         }catch (Exception $exc) {
             $transaction->rollBack();
             $mensaje =$exc->getMessage();
-            throw new \yii\web\HttpException(500, $mensaje);
+            throw new \yii\web\HttpException(400, $mensaje);
         }
 
     }
