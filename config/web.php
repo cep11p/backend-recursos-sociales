@@ -93,15 +93,9 @@ $config = [
                 [   #Recurso Social
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/recurso', 
-                ],
-                /**PersonaController**/
-                [   'class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/recurso', 
                     'extraPatterns' => [
-                        'POST emprender' => 'emprender',
-//                        'GET buscar-por-documento/{nro_documento}' => 'buscar-por-documento',
-                    ],                      
-//                    'tokens' => [ '{id}' => '<id:\\w+>', '{nro_documento}'=>'<nro_documento:\\w+>' ],
+                        'GET lista-beneficiario' => 'lista-beneficiario',
+                    ], 
                 ],
                 [   #Programa
                     'class' => 'yii\rest\UrlRule',
