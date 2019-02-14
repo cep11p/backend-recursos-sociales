@@ -70,4 +70,17 @@ class Recurso extends BaseRecurso
             }
         }
     }
+    
+    public function fields()
+    {
+        return ArrayHelper::merge(parent::fields(), [
+            'programa'=> function($model){
+                return $model->programa->nombre;
+            },
+            'tipo_recurso'=> function($model){
+                return $model->tipoRecurso->nombre;
+            },
+        ]);
+        
+    }
 }

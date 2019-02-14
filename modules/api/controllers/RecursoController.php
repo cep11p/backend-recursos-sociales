@@ -68,6 +68,15 @@ class RecursoController extends ActiveController{
         $searchModel = new \app\models\RecursoSearch();
         $params = \Yii::$app->request->queryParams;
         $resultado = $searchModel->busquedadGeneral($params);
+
+        return $resultado;
+    }  
+    
+    public function actionListaBeneficiario() 
+    {
+        $searchModel = new \app\models\RecursoSearch();
+        $params = \Yii::$app->request->queryParams;
+        $resultado = $searchModel->listaBeneficiario($params);
         
         $default_pagesize=20;
         $pagesize=(isset($params['pagesize']))?$params['pagesize']:$default_pagesize;
