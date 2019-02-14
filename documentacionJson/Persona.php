@@ -27,6 +27,7 @@
     "tipo_documentoid": 1,
     "generoid": 1,
     "email":"algo@correo.com.ar",
+    "red_social":"algodesocial",
     "cuil":"20367655678",
     "estudios": [{
         "nivel_educativoid":4,
