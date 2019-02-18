@@ -92,6 +92,33 @@ class RecursoSearch extends Recurso
             // $query->where('0=1');
             return $dataProvider;
         }
+        
+        ############ Buscamos por datos de persona ###################
+        #global search #global param
+        $personaForm = new PersonaForm();
+        if(isset($params['global_param']) && !empty($params['global_param'])){
+            $persona_params["global_param"] = $params['global_param'];
+        }
+        
+        if(isset($params['localidadid']) && !empty($params['localidadid'])){
+            $persona_params['localidadid'] = $params['localidadid'];
+        }
+        
+        if(isset($params['calle']) && !empty($params['calle'])){
+            $persona_params['calle'] = $params['calle'];    
+        }
+        
+        $coleccion_persona = array();
+        $lista_personaid = array();
+        if (isset($persona_params)) {
+            
+            $coleccion_persona = $personaForm->buscarPersonaEnRegistral($persona_params);
+            $lista_personaid = $this->obtenerListaIds($coleccion_persona);
+
+            if (count($lista_personaid) < 1) {
+                $query->where('0=1');
+            }
+        }
 
         $query->andFilterWhere([
             'id' => $this->id,
@@ -105,6 +132,11 @@ class RecursoSearch extends Recurso
 
         $query->andFilterWhere(['like', 'observacion', $this->observacion])
             ->andFilterWhere(['like', 'proposito', $this->proposito]);
+        
+        #Criterio de recurso social por lista de persona.... lista de personaid
+        if(count($lista_personaid)>0){
+            $query->andWhere(array('in', 'personaid', $lista_personaid));
+        }
         
         $coleccion_recurso = array();
         foreach ($dataProvider->getModels() as $value) {
@@ -152,6 +184,21 @@ class RecursoSearch extends Recurso
         $query->sql = $sql;
 
         return $dataProvider;
+    }
+    
+    /**
+     * De una coleccion de persona, se obtienen una lista de ids
+     * @param array $coleccion lista de personas
+     * @return array
+     */
+    private function obtenerListaIds($coleccion = array()) {
+        
+        $lista_ids = array();
+        foreach ($coleccion as $col) {
+            $lista_ids[] = $col['id'];
+        }
+        
+        return $lista_ids;    
     }
     
     /**

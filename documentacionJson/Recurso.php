@@ -2,6 +2,12 @@
 
 /**** obtener lista de Personas ***
 @url ejemplo http://recurso-social.local/api/recursos
+@url con criterio de busquedad ejemplo http://recurso-social.local/api/recursos?global_param=lopez&localidadid=2
+ * global_param : busca por nombre, apellido y nro_documento
+ * localidadid : busca por localidad
+ * calle : busca por nombre de calle
+ * programaid : busca por programa
+ * tipo_recursoid : busca por tipo de recursos
 @Method GET
 
 {
