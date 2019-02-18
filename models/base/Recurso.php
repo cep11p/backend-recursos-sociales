@@ -18,7 +18,11 @@ use Yii;
  * @property integer $programaid
  * @property integer $tipo_recursoid
  * @property integer $personaid
+ * @property string $fecha_baja
+ * @property string $fecha_acreditacion
+ * @property string $descripcion_baja
  *
+ * @property \app\models\Aula[] $aulas
  * @property \app\models\Programa $programa
  * @property \app\models\TipoRecurso $tipoRecurso
  * @property string $aliasModel
@@ -43,9 +47,9 @@ abstract class Recurso extends \yii\db\ActiveRecord
     {
         return [
             [['fecha_inicial', 'fecha_alta', 'monto', 'programaid', 'tipo_recursoid', 'personaid'], 'required'],
-            [['fecha_inicial', 'fecha_alta'], 'safe'],
+            [['fecha_inicial', 'fecha_alta', 'fecha_baja', 'fecha_acreditacion'], 'safe'],
             [['monto'], 'number'],
-            [['observacion', 'proposito'], 'string'],
+            [['observacion', 'proposito', 'descripcion_baja'], 'string'],
             [['programaid', 'tipo_recursoid', 'personaid'], 'integer'],
             [['programaid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Programa::className(), 'targetAttribute' => ['programaid' => 'id']],
             [['tipo_recursoid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\TipoRecurso::className(), 'targetAttribute' => ['tipo_recursoid' => 'id']]
@@ -67,6 +71,9 @@ abstract class Recurso extends \yii\db\ActiveRecord
             'programaid' => 'Programaid',
             'tipo_recursoid' => 'Tipo Recursoid',
             'personaid' => 'Personaid',
+            'fecha_baja' => 'Fecha Baja',
+            'fecha_acreditacion' => 'Fecha Acreditacion',
+            'descripcion_baja' => 'Descripcion Baja',
         ];
     }
 
@@ -80,6 +87,14 @@ abstract class Recurso extends \yii\db\ActiveRecord
 ',
             'personaid' => 'Este atributo hace referencia a una persona del sistema Registral',
         ]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAulas()
+    {
+        return $this->hasMany(\app\models\Aula::className(), ['recursoid' => 'id']);
     }
 
     /**
