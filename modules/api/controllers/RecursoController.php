@@ -143,7 +143,41 @@ class RecursoController extends ActiveController{
         }catch (Exception $exc) {
             $transaction->rollBack();
             $mensaje =$exc->getMessage();
-            throw new \yii\web\HttpException(500, $mensaje);
+            throw new \yii\web\HttpException(400, $mensaje);
+        }
+
+    }
+    
+    public function actionBaja($id)
+    {
+        $resultado['message']='Se da de baja un recurso';
+        $param = Yii::$app->request->post();
+        $transaction = Yii::$app->db->beginTransaction();
+        try{
+            $model = Recurso::findOne(['id'=>$id]);            
+            if($model==NULL){
+                $msj = 'El recurso con el id '.$id.' no existe!';
+                throw new Exception($msj);
+            }
+            
+            $model->setAttributes($param);
+            
+            if(!$model->save()){
+                throw new Exception(json_encode($model->getErrors()));
+            }
+            
+            $resultado['success']=true;
+            $resultado['message']=$resultado['message'];
+            $resultado['data']['id']=$model->id;
+            
+            $transaction->commit();
+            
+            return $resultado;
+           
+        }catch (Exception $exc) {
+            $transaction->rollBack();
+            $mensaje =$exc->getMessage();
+            throw new \yii\web\HttpException(400, $mensaje);
         }
 
     }

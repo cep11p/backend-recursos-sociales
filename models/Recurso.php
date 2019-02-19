@@ -29,10 +29,23 @@ class Recurso extends BaseRecurso
         return ArrayHelper::merge(
             parent::rules(),
             [
+                [['fecha_baja','fecha_acreditacion','fecha_inicial','fecha_alta'], 'date', 'format' => 'php:Y-m-d'],
+                ['fecha_baja', 'validarFechaBaja'],
                 ['personaid', 'existePersonaEnRegistral'],
                 ['personaid', 'compare','compareValue'=>0,'operator'=>'!=','message' => 'No se pudo registrar la persona correctamente en el Sistema Registral.']
             ]
         );
+    }
+    
+    public function validarFechaBaja(){          
+        
+        if(date('Y-m-d') < $this->fecha_baja){
+            $this->addError('fecha_baja', 'La fecha de baja no puede ser mayor a la de hoy '.date('Y-m-d'));
+        }
+        
+        if($this->fecha_alta > $this->fecha_baja){
+            $this->addError('fecha_baja', 'La fecha de baja no puede ser menor a la fecha de alta '.$this->fecha_alta);
+        }
     }
     
     public function existePersonaEnRegistral(){

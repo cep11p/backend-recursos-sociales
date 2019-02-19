@@ -95,6 +95,7 @@ $config = [
                     'controller' => 'api/recurso', 
                     'extraPatterns' => [
                         'GET lista-beneficiario' => 'lista-beneficiario',
+                        'PUT baja/{id}' => 'baja',
                     ], 
                 ],
                 [   #Programa
