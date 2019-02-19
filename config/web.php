@@ -113,6 +113,12 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/persona', 
                 ],
+                
+                ##### Interoperabilidad con Lugar#####
+                [   #Localidad
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/localidad', 
+                ],
             ],
         ],
         
