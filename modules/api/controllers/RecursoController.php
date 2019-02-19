@@ -167,6 +167,7 @@ class RecursoController extends ActiveController{
                 throw new Exception($msj);
             }
             
+            $model->setScenario(Recurso::SCENARIO_BAJA);
             $model->setAttributes($param);
             if(!$model->save()){
                 throw new Exception(json_encode($model->getErrors()));
