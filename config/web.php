@@ -96,6 +96,7 @@ $config = [
                     'extraPatterns' => [
                         'GET lista-beneficiario' => 'lista-beneficiario',
                         'PUT baja/{id}' => 'baja',
+                        'PUT acreditar/{id}' => 'acreditar',
                     ], 
                 ],
                 [   #Programa
