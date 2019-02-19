@@ -117,6 +117,10 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/sexo', 
                 ],
+                [   #genero
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/genero', 
+                ],
                 
                 ##### Interoperabilidad con Lugar#####
                 [   #Localidad
