@@ -121,6 +121,10 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/genero', 
                 ],
+                [   #estado-civil
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/estado-civil', 
+                ],
                 
                 ##### Interoperabilidad con Lugar#####
                 [   #Localidad
