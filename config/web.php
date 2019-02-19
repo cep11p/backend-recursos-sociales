@@ -109,9 +109,13 @@ $config = [
                 ],
                 
                 ##### Interoperabilidad con Registral #####
-                [   #Persona
+                [   #persona
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/persona', 
+                ],
+                [   #sexo
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/sexo', 
                 ],
                 
                 ##### Interoperabilidad con Lugar#####
