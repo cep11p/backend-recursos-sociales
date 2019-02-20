@@ -98,6 +98,25 @@ class Recurso extends BaseRecurso
         }
     }
     
+
+    /**
+     * Se obtiene los datos de una persona
+     * para obtener este dato se requiere hacer una interoperabilidad con el sistema Registral
+     * @return type
+     */
+    public function getPersona(){
+        $resultado = null;
+        $model = new PersonaForm();
+        $arrayPersona = $model->obtenerPersonaConLugarYEstudios($this->personaid);
+
+        if($arrayPersona){
+            $resultado = $arrayPersona;
+        }        
+        
+        return $resultado;       
+        
+    }
+    
     public function fields()
     {
         return ArrayHelper::merge(parent::fields(), [

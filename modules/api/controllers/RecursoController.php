@@ -58,6 +58,7 @@ class RecursoController extends ActiveController{
         $actions = parent::actions();
         unset($actions['create']);
         unset($actions['update']);
+        unset($actions['view']);
         $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
         return $actions;
     
@@ -139,6 +140,31 @@ class RecursoController extends ActiveController{
         try {
        
             die($resultado['message']);
+           
+        }catch (Exception $exc) {
+            $transaction->rollBack();
+            $mensaje =$exc->getMessage();
+            throw new \yii\web\HttpException(400, $mensaje);
+        }
+
+    }
+    
+    public function actionView($id)
+    {
+        $resultado['message']='Se visualiza un recurso';
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+       
+            $model = Recurso::findOne(['id'=>$id]);            
+            if($model==NULL){
+                $msj = 'El recurso con el id '.$id.' no existe!';
+                throw new Exception($msj);
+            }
+            
+            $resultado = $model->toArray();
+            $resultado['persona'] = $model->getPersona();
+            
+            return $resultado;
            
         }catch (Exception $exc) {
             $transaction->rollBack();
