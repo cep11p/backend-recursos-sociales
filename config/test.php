@@ -37,6 +37,13 @@ return [
             ],
             */
         ],
+        
+        'registral'=> [
+            'class' => $params['servicioRegistral'],//'app\components\ServicioRegistral'
+        ],
+        'lugar'=> [
+            'class' => $params['servicioLugar'],//'app\components\ServicioLugar'
+        ],
     ],
     'params' => $params,
 ];
