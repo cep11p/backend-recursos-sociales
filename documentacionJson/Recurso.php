@@ -128,7 +128,7 @@
 **/
 
 /***** Para crear una prestacion de Emprender con sus alumnos****
-@url http://recurso-social.local/api/personas
+@url http://recurso-social.local/api/recursos
 @method POST
 @param
 {
@@ -147,16 +147,81 @@
 }
  * 
  */
-/***** Para crear cualquier otra prestacion****
-@url http://recurso-social.local/api/personas
-@method POST
-@param
-{
-    "personaid": 9,
-    "programaid": 2,
-    "tipo_recursoid": 1,
-    "prosito": "un proposito",
-    "fecha_alta": "2011-02-02",
-    "monto": 1234.4,
-    "observacion": "uuuuuuunaaaaaaaaaaaaa Observacion",
-}
+
+
+/**
+ **** Para crear cualquier otra prestacion****
+ * @url http://recurso-social.local/api/recursos
+ * @method POST
+ * @param
+ * {
+        "personaid": 9,
+        "programaid": 2,
+        "tipo_recursoid": 1,
+        "prosito": "un proposito",
+        "fecha_alta": "2011-02-02",
+        "monto": 1234.4,
+        "observacion": "uuuuuuunaaaaaaaaaaaaa Observacion",
+    }
+ */
+
+/**
+ **** Para visualizar un Recurso(prestacion)****
+ * @url http://recurso-social.local/api/recursos/1
+ * @method GET
+ * @param
+ * {
+        "id": 1,
+        "fecha_inicial": "2016-01-30",
+        "fecha_alta": "2014-10-07",
+        "monto": 3212.23,
+        "observacion": "Observacion Fixture 1",
+        "proposito": "Un proposito hecho con fixtures 1",
+        "programaid": 3,
+        "tipo_recursoid": 1,
+        "personaid": 1,
+        "fecha_baja": null,
+        "fecha_acreditacion": null,
+        "descripcion_baja": null,
+        "programa": "Emprender",
+        "tipo_recurso": "Alimentación",
+        "persona": {
+            "id": 1,
+            "nombre": "Victoria Margarita",
+            "apellido": "González",
+            "nro_documento": "23851266",
+            "fecha_nacimiento": "0000-00-00",
+            "estado_civilid": null,
+            "telefono": "",
+            "celular": "2920412227",
+            "sexoid": 2,
+            "tipo_documentoid": null,
+            "nucleoid": 1,
+            "situacion_laboralid": null,
+            "generoid": null,
+            "email": "",
+            "cuil": "20238512669",
+            "red_social": "",
+            "estudios": [],
+            "sexo": "Mujer",
+            "genero": "",
+            "estado_civil": "",
+            "lugar": {
+                "id": 1,
+                "nombre": "",
+                "calle": "calle1",
+                "altura": "100",
+                "localidadid": 1,
+                "latitud": "-1234123",
+                "longitud": "21314124",
+                "barrio": "barrio1",
+                "piso": "0º",
+                "depto": "A",
+                "escalera": "",
+                "entre_calle_1": "",
+                "entre_calle_2": "",
+                "localidad": "Capital Federal"
+            }
+        }
+    }
+ */
