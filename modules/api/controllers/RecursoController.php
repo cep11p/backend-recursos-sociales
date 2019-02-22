@@ -73,28 +73,6 @@ class RecursoController extends ActiveController{
         return $resultado;
     }  
     
-    public function actionListaBeneficiario() 
-    {
-        $searchModel = new \app\models\RecursoSearch();
-        $params = \Yii::$app->request->queryParams;
-        $resultado = $searchModel->listaBeneficiario($params);
-        
-        $default_pagesize=20;
-        $pagesize=(isset($params['pagesize']))?$params['pagesize']:$default_pagesize;
-        $data = array('success'=>false);
-        if($resultado->getTotalCount()){
-            $paginas = ceil($resultado->totalCount/$pagesize);
-                    
-            $data['success']='true';            
-            $data['pagesize']=$pagesize;            
-            $data['pages']=$paginas;            
-            $data['total_filtrado']=$resultado->totalCount;
-            $data['resultado']=$resultado->models;
-        }
-
-        return $data;
-    }  
-    
     public function actionCreate()
     {
         $resultado['message']='Se guarda un recurso social';

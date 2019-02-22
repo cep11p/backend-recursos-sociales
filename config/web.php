@@ -94,10 +94,13 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/recurso', 
                     'extraPatterns' => [
-                        'GET lista-beneficiario' => 'lista-beneficiario',
                         'PUT baja/{id}' => 'baja',
                         'PUT acreditar/{id}' => 'acreditar',
                     ], 
+                ],
+                [   #beneficiario
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/beneficiario', 
                 ],
                 [   #Programa
                     'class' => 'yii\rest\UrlRule',

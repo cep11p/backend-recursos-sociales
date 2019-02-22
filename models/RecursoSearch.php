@@ -163,11 +163,11 @@ class RecursoSearch extends Recurso
     public function listaBeneficiario($params)
     {
         $query = Recurso::find();
-
+        $pagesize = (isset($params['pagesize']) && is_numeric($params['pagesize']))?$params['pagesize']:20;
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => $params['pagesize'],
+                'pageSize' => $pagesize,
                 'page' => (isset($params['page']) && is_numeric($params['page']))?$params['page']:0
             ],
         ]);
@@ -180,12 +180,71 @@ class RecursoSearch extends Recurso
             return $dataProvider;
         }
         
-        $sql = 'SELECT sum(monto) as monto, personaid FROM recurso group by personaid';
-        $query->sql = $sql;
-
+        $query->select(['sum(monto) as monto','personaid']);
+        $query->from(['recurso']);
+        $query->groupBy(['personaid']);
+//        $query->limit(10);
+        
+        $coleccion_beneficiario = array();
+        foreach ($dataProvider->getModels() as $value) {
+            $coleccion_beneficiario[] = $value->toArray();
+        }
+        
         return $dataProvider;
     }
     
+    /**
+     * Ademas de mostrar los datos de un beneficiario, se buscan todos las prestaciones de misma y se agrupan por programa
+     * @param array $param
+     * @return ActiveDataProvider|array
+     */
+    public function viewBeneficiario($param)
+    {
+        $query = Recurso::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($param,'');
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+        
+        $sql = 'SELECT * FROM recurso WHERE personaid = '.$this->personaid;
+        $query->sql = $sql;
+        
+        $personaForm = new PersonaForm();
+        $resultado = $personaForm->obtenerPersonaConLugarYEstudios($this->personaid);
+        if($dataProvider->getTotalCount()){
+            $resultado['recurso_lista'] = array();
+            foreach ($dataProvider->getModels() as $value) {
+                $resultado['recurso_lista'][] = $value->toArray();
+            }
+           
+            $programas = array();
+            foreach ($resultado['recurso_lista'] as $recurso) {
+                $programa_old = $recurso['programaid'];
+                $programa_nombre = strtolower(str_replace(" ", "_", \app\components\Help::quitar_tildes($recurso['programa'])));
+                
+                foreach ($recurso as $k => $value) {
+                    if($k == 'programaid'){
+                        if($programa_old == $value){
+                            $programas[$programa_nombre][] = $recurso;
+                        }
+                    }
+                }
+            }
+            
+            $resultado['recurso_lista'] = $programas;
+        }       
+        
+        return $resultado;
+    }
+
     /**
      * De una coleccion de persona, se obtienen una lista de ids
      * @param array $coleccion lista de personas
