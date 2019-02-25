@@ -225,3 +225,24 @@
         }
     }
  */
+
+/**
+ **** Realiza una baja de una recurso(prestacion) ****
+ * @url http://recurso-social.local/api/recursos/baja/1
+ * @method PUT
+ * @param
+    {
+        "fecha_baja":"2019-01-10",
+        "descripcion_baja":"una baja de ejemplo"
+    }
+ */
+
+/**
+ **** Realiza una baja de una recurso(prestacion) ****
+ * @url http://recurso-social.local/api/recursos/acreditar/1
+ * @method PUT
+ * @param
+    {
+        "fecha_acreditacion": "2014-10-06"
+    }
+ */
