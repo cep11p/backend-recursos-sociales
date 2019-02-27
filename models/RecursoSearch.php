@@ -131,7 +131,16 @@ class RecursoSearch extends Recurso
         ]);
 
         $query->andFilterWhere(['like', 'observacion', $this->observacion])
-            ->andFilterWhere(['like', 'proposito', $this->proposito]);
+              ->andFilterWhere(['like', 'proposito', $this->proposito]);
+        
+        if(isset($params['fecha_desde']) && isset($params['fecha_hasta'])){
+            $query->andWhere(['between', 'fecha_alta', $params['fecha_desde'], $params['fecha_hasta']]);
+        }else if(isset($params['fecha_desde'])){
+            $query->andWhere(['between', 'fecha_alta', $params['fecha_desde'], date('Y-m-d')]);
+        }else if(isset($params['fecha_hasta'])){
+            $query->andWhere(['between', 'fecha_alta', '1970-01-01', $params['fecha_hasta']]);
+        }
+        
         
         #Criterio de recurso social por lista de persona.... lista de personaid
         if(count($lista_personaid)>0){
