@@ -19,7 +19,7 @@ class RecursoSearch extends Recurso
     {
     return [
         [['id', 'programaid', 'tipo_recursoid', 'personaid'], 'integer'],
-        [['fecha_inicial', 'fecha_alta', 'observacion', 'proposito'], 'safe'],
+        [['fecha_inicial', 'fecha_alta', 'observacion', 'proposito','recurso_cantidad'], 'safe'],
         [['monto'], 'number'],
     ];
     }
@@ -160,7 +160,7 @@ class RecursoSearch extends Recurso
         return $data;
     }
     
-    public function listaBeneficiario($params)
+    public function listaRecursosAgrupadosPorPersona($params)
     {
         $query = Recurso::find();
         $pagesize = (isset($params['pagesize']) && is_numeric($params['pagesize']))?$params['pagesize']:20;
@@ -180,17 +180,75 @@ class RecursoSearch extends Recurso
             return $dataProvider;
         }
         
-        $query->select(['sum(monto) as monto','personaid']);
-        $query->from(['recurso']);
-        $query->groupBy(['personaid']);
-//        $query->limit(10);
-        
-        $coleccion_beneficiario = array();
-        foreach ($dataProvider->getModels() as $value) {
-            $coleccion_beneficiario[] = $value->toArray();
+        ############ Buscamos por datos de persona(PENDIENTE para modularizar) ###################
+        #global search #global param
+        $personaForm = new PersonaForm();
+        if(isset($params['global_param']) && !empty($params['global_param'])){
+            $persona_params["global_param"] = $params['global_param'];
         }
         
-        return $dataProvider;
+        if(isset($params['localidadid']) && !empty($params['localidadid'])){
+            $persona_params['localidadid'] = $params['localidadid'];
+        }
+        
+        if(isset($params['calle']) && !empty($params['calle'])){
+            $persona_params['calle'] = $params['calle'];    
+        }
+        
+        $coleccion_persona = array();
+        $lista_personaid = array();
+        if (isset($persona_params)) {
+            
+            $coleccion_persona = $personaForm->buscarPersonaEnRegistral($persona_params);
+            $lista_personaid = $this->obtenerListaIds($coleccion_persona);
+
+            if (count($lista_personaid) < 1) {
+                $query->where('0=1');
+            }
+        }
+        
+        #Criterio de recurso social por lista de persona.... lista de personaid
+        if(count($lista_personaid)>0){
+            $query->andWhere(array('in', 'personaid', $lista_personaid));
+        }
+        ############# FIN DEl CRITERIO DE PERSONA ############
+        
+        $query->select(['count(monto) as recurso_cantidad','sum(monto) as monto','personaid']);
+        $query->from(['recurso']);
+        $query->groupBy(['personaid']);
+        
+        #Ordenamos por recurso_cantidad(variable auxiliar)
+        if(isset($params['sort']) && $params['sort']=='-recurso_cantidad'){
+            $query->orderBy('recurso_cantidad desc');
+        }
+        if(isset($params['sort']) && $params['sort']=='recurso_cantidad'){
+            $query->orderBy('recurso_cantidad asc');
+        }
+        
+        
+        $coleccion_recurso = array();
+        foreach ($dataProvider->models as $value) {
+            $recurso = $value->toArray();
+            $recurso['recurso_cantidad'] = $value['recurso_cantidad'];
+            unset($recurso['programa']);
+            unset($recurso['tipo_recurso']);
+            $coleccion_recurso[] = $recurso;
+        }
+        
+        if(count($coleccion_recurso)>0){
+            $coleccion_persona = $this->obtenerPersonaVinculada($coleccion_recurso);
+            $coleccion_recurso = $this->vincularPersona($coleccion_recurso, $coleccion_persona);
+        } 
+        
+        $paginas = ceil($dataProvider->totalCount/$pagesize);
+                    
+        $data['success']=(count($coleccion_recurso)>0)?true:false;           
+        $data['pagesize']=$pagesize;            
+        $data['pages']=$paginas;            
+        $data['total_filtrado']=$dataProvider->totalCount;
+        $data['resultado']=$coleccion_recurso;
+        
+        return $data;
     }
     
     /**

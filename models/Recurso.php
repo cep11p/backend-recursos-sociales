@@ -15,6 +15,9 @@ class Recurso extends BaseRecurso
 {
     const SCENARIO_BAJA = 'baja';
 
+    public $recurso_cantidad;
+
+
     public function behaviors()
     {
         return ArrayHelper::merge(
