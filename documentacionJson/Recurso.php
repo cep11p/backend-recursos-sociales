@@ -8,6 +8,8 @@
  * calle : busca por nombre de calle
  * programaid : busca por programa
  * tipo_recursoid : busca por tipo de recursos
+ * fecha_hasta : busca por un rango de fecha sobre fecha_inicial
+ * fecha_desde : busca por un rango de fecha sobre fecha_inicial
 @Method GET
 
 {

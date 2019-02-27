@@ -3,6 +3,8 @@
 /**** Para mostrar listado ****/
 /**
 * @url http://recurso-social.local/api/beneficiarios
+* @url con criterio de busquedad ejemplo http://recurso-social.local/api/recursos?global_param=lopez
+* global_param : busca por nombre, apellido y nro_documento
 * @method GET
 * @return arrayJson es una lista de beneficiarios
     {
@@ -14,63 +16,117 @@
             {
                 "monto": 49036.97,
                 "personaid": 1,
-                "programa": null,
-                "tipo_recurso": null
+                "recurso_cantidad": "4",
+                "persona": {
+                    "id": 1,
+                    "nombre": "Victoria Margarita",
+                    "apellido": "González",
+                    "apodo": "",
+                    "nro_documento": "23851266",
+                    "fecha_nacimiento": "0000-00-00",
+                    "estado_civilid": null,
+                    "telefono": "",
+                    "celular": "2920412227",
+                    "sexoid": 2,
+                    "tipo_documentoid": null,
+                    "nucleoid": 1,
+                    "situacion_laboralid": null,
+                    "generoid": null,
+                    "email": "",
+                    "cuil": "20238512669",
+                    "red_social": "",
+                    "estudios": [],
+                    "sexo": "Mujer",
+                    "genero": "",
+                    "estado_civil": "",
+                    "lugar": {
+                        "id": 1,
+                        "nombre": "",
+                        "calle": "calle1",
+                        "altura": "100",
+                        "localidadid": 1,
+                        "latitud": "-1234123",
+                        "longitud": "21314124",
+                        "barrio": "barrio1",
+                        "piso": "0º",
+                        "depto": "A",
+                        "escalera": "",
+                        "entre_calle_1": "",
+                        "entre_calle_2": "",
+                        "localidad": "Capital Federal"
+                    }
+                }
+            },
+            {
+                ...Otro beficiario...
+            },
+            {
+                ...Otro beficiario...
             },
             {
                 "monto": 109234.15,
                 "personaid": 2,
-                "programa": null,
-                "tipo_recurso": null
-            },
-            {
-                "monto": 66159,
-                "personaid": 3,
-                "programa": null,
-                "tipo_recurso": null
-            },
-            {
-                "monto": 81069.24,
-                "personaid": 4,
-                "programa": null,
-                "tipo_recurso": null
-            },
-            {
-                "monto": 53915.17,
-                "personaid": 5,
-                "programa": null,
-                "tipo_recurso": null
-            },
-            {
-                "monto": 116325.06,
-                "personaid": 6,
-                "programa": null,
-                "tipo_recurso": null
-            },
-            {
-                "monto": 44035.14,
-                "personaid": 7,
-                "programa": null,
-                "tipo_recurso": null
-            },
-            {
-                "monto": 55945.22,
-                "personaid": 8,
-                "programa": null,
-                "tipo_recurso": null
-            },
-            {
-                "monto": 41125.73,
-                "personaid": 9,
-                "programa": null,
-                "tipo_recurso": null
-            },
-            {
-                "monto": 59580.18,
-                "personaid": 10,
-                "programa": null,
-                "tipo_recurso": null
+                "recurso_cantidad": "4",
+                "persona": {
+                    "id": 2,
+                    "nombre": "Isabel Sofía",
+                    "apellido": "Rodríguez",
+                    "apodo": "",
+                    "nro_documento": "32054238",
+                    "fecha_nacimiento": "0000-00-00",
+                    "estado_civilid": null,
+                    "telefono": "",
+                    "celular": "2920412228",
+                    "sexoid": 2,
+                    "tipo_documentoid": null,
+                    "nucleoid": 2,
+                    "situacion_laboralid": null,
+                    "generoid": null,
+                    "email": "",
+                    "cuil": "20320542389",
+                    "red_social": "",
+                    "estudios": [
+                        {
+                            "id": 1,
+                            "titulo": "Titulo fixture 1",
+                            "completo": 1,
+                            "en_curso": 0,
+                            "nivel_educativoid": 1,
+                            "nivel_educativo": "Pre-Escolar",
+                            "anio": "2001"
+                        },
+                        {
+                            "id": 2,
+                            "titulo": "Titulo fixture 2",
+                            "completo": 1,
+                            "en_curso": 0,
+                            "nivel_educativoid": 2,
+                            "nivel_educativo": "Primario",
+                            "anio": "2001"
+                        }
+                    ],
+                    "sexo": "Mujer",
+                    "genero": "",
+                    "estado_civil": "",
+                    "lugar": {
+                        "id": 2,
+                        "nombre": "",
+                        "calle": "calle2",
+                        "altura": "",
+                        "localidadid": 1,
+                        "latitud": "-1234122",
+                        "longitud": "21314125",
+                        "barrio": "barrio2",
+                        "piso": "1º",
+                        "depto": "B",
+                        "escalera": "",
+                        "entre_calle_1": "",
+                        "entre_calle_2": "",
+                        "localidad": "Capital Federal"
+                    }
+                }
             }
+            
         ]
     }
 */
