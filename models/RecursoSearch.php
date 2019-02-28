@@ -72,8 +72,7 @@ class RecursoSearch extends Recurso
         return $dataProvider;
     }
     
-    public function busquedadGeneral($params)
-    {
+    public function sumarMonto($params){
         $query = Recurso::find();
         
         $pagesize = (isset($params['pagesize']) && is_numeric($params['pagesize']))?$params['pagesize']:20;
@@ -84,13 +83,10 @@ class RecursoSearch extends Recurso
                 'page' => (isset($params['page']) && is_numeric($params['page']))?$params['page']:0
             ],
         ]);
-
+        
         $this->load($params,'');
         
-        $query->select([
-            '*',
-            'monto_total'=>'sum(monto)',            
-            ]);
+        $query->select(['monto_total'=>'sum(monto)']);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to any records when validation fails
@@ -98,7 +94,7 @@ class RecursoSearch extends Recurso
             return $dataProvider;
         }
         
-        ############ Buscamos por datos de persona ###################
+        ############ Buscamos por datos de persona ############
         #global search #global param
         $personaForm = new PersonaForm();
         if(isset($params['global_param']) && !empty($params['global_param'])){
@@ -124,6 +120,7 @@ class RecursoSearch extends Recurso
                 $query->where('0=1');
             }
         }
+        ############ Fin filtrado por Persona ############
 
         $query->andFilterWhere([
             'id' => $this->id,
@@ -138,6 +135,7 @@ class RecursoSearch extends Recurso
         $query->andFilterWhere(['like', 'observacion', $this->observacion])
               ->andFilterWhere(['like', 'proposito', $this->proposito]);
         
+        #### Filtro por rango de fecha ####
         if(isset($params['fecha_desde']) && isset($params['fecha_hasta'])){
             $query->andWhere(['between', 'fecha_alta', $params['fecha_desde'], $params['fecha_hasta']]);
         }else if(isset($params['fecha_desde'])){
@@ -146,6 +144,102 @@ class RecursoSearch extends Recurso
             $query->andWhere(['between', 'fecha_alta', '1970-01-01', $params['fecha_hasta']]);
         }
         
+        #### Filtro por baja ####
+//        if(isset($params['baja']) && $params['baja']==TRUE){
+//            $query->andWhere(['fecha_baja'=>'NULL']);
+//        }
+        
+        
+        #Criterio de recurso social por lista de persona.... lista de personaid
+        if(count($lista_personaid)>0){
+            $query->andWhere(array('in', 'personaid', $lista_personaid));
+        }
+        
+        $monto_total = ($query->one()->monto_total=='')?0:$query->one()->monto_total;
+        $monto_total = ($monto_total!='')?$monto_total:0;
+                
+        return $monto_total;
+        
+    }
+
+
+    public function busquedadGeneral($params)
+    {
+        $query = Recurso::find();
+        
+        $pagesize = (isset($params['pagesize']) && is_numeric($params['pagesize']))?$params['pagesize']:20;
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => $pagesize,
+                'page' => (isset($params['page']) && is_numeric($params['page']))?$params['page']:0
+            ],
+        ]);
+
+        $this->load($params,'');
+        
+        $monto_total = $this->sumarMonto($params);
+        
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+        
+        ############ Buscamos por datos de persona ############
+        #global search #global param
+        $personaForm = new PersonaForm();
+        if(isset($params['global_param']) && !empty($params['global_param'])){
+            $persona_params["global_param"] = $params['global_param'];
+        }
+        
+        if(isset($params['localidadid']) && !empty($params['localidadid'])){
+            $persona_params['localidadid'] = $params['localidadid'];
+        }
+        
+        if(isset($params['calle']) && !empty($params['calle'])){
+            $persona_params['calle'] = $params['calle'];    
+        }
+        
+        $coleccion_persona = array();
+        $lista_personaid = array();
+        if (isset($persona_params)) {
+            
+            $coleccion_persona = $personaForm->buscarPersonaEnRegistral($persona_params);
+            $lista_personaid = $this->obtenerListaIds($coleccion_persona);
+
+            if (count($lista_personaid) < 1) {
+                $query->where('0=1');
+            }
+        }
+        ############ Fin filtrado por Persona ############
+
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'fecha_inicial' => $this->fecha_inicial,
+            'fecha_alta' => $this->fecha_alta,
+            'monto' => $this->monto,
+            'programaid' => $this->programaid,
+            'tipo_recursoid' => $this->tipo_recursoid,
+            'personaid' => $this->personaid,
+        ]);
+
+        $query->andFilterWhere(['like', 'observacion', $this->observacion])
+              ->andFilterWhere(['like', 'proposito', $this->proposito]);
+        
+        #### Filtro por rango de fecha ####
+        if(isset($params['fecha_desde']) && isset($params['fecha_hasta'])){
+            $query->andWhere(['between', 'fecha_alta', $params['fecha_desde'], $params['fecha_hasta']]);
+        }else if(isset($params['fecha_desde'])){
+            $query->andWhere(['between', 'fecha_alta', $params['fecha_desde'], date('Y-m-d')]);
+        }else if(isset($params['fecha_hasta'])){
+            $query->andWhere(['between', 'fecha_alta', '1970-01-01', $params['fecha_hasta']]);
+        }
+        
+        #### Filtro por baja ####
+//        if(isset($params['baja']) && $params['baja']==TRUE){
+//            $query->andWhere(['fecha_baja'=>'NULL']);
+//        }
         
         #Criterio de recurso social por lista de persona.... lista de personaid
         if(count($lista_personaid)>0){
@@ -155,7 +249,6 @@ class RecursoSearch extends Recurso
         $coleccion_recurso = array();
         foreach ($dataProvider->getModels() as $value) {
             $coleccion_recurso[] = $value->toArray();
-            $monto_total = doubleval($value['monto_total']);
         }
         
         if(count($coleccion_recurso)>0){
@@ -165,7 +258,7 @@ class RecursoSearch extends Recurso
 
         
         $paginas = ceil($dataProvider->totalCount/$pagesize);
-                    
+        
         $data['success']=(count($coleccion_recurso)>0)?true:false;           
         $data['pagesize']=$pagesize;            
         $data['pages']=$paginas;            
