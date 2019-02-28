@@ -14,8 +14,20 @@ use yii\base\Exception;
 class Recurso extends BaseRecurso
 {
     const SCENARIO_BAJA = 'baja';
-
+    
+    /**
+     * variable auxiliar
+     * cuantifica la cantidad de recursos que tiene un beneficiario
+     * @var int 
+     */
     public $recurso_cantidad;
+    
+    /**
+     * Variable auxiliar para filtrado
+     * Es el monto total del filtrado aplicado en ese momento
+     * @var double 
+     */
+    public $monto_total;
 
 
     public function behaviors()

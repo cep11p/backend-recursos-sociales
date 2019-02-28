@@ -86,6 +86,11 @@ class RecursoSearch extends Recurso
         ]);
 
         $this->load($params,'');
+        
+        $query->select([
+            '*',
+            'monto_total'=>'sum(monto)',            
+            ]);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to any records when validation fails
@@ -150,6 +155,7 @@ class RecursoSearch extends Recurso
         $coleccion_recurso = array();
         foreach ($dataProvider->getModels() as $value) {
             $coleccion_recurso[] = $value->toArray();
+            $monto_total = doubleval($value['monto_total']);
         }
         
         if(count($coleccion_recurso)>0){
@@ -164,6 +170,7 @@ class RecursoSearch extends Recurso
         $data['pagesize']=$pagesize;            
         $data['pages']=$paginas;            
         $data['total_filtrado']=$dataProvider->totalCount;
+        $data['monto_total']=(isset($monto_total))?$monto_total:0;
         $data['resultado']=$coleccion_recurso;
         
         return $data;
