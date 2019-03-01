@@ -237,9 +237,13 @@ class RecursoSearch extends Recurso
         }
         
         #### Filtro por baja ####
-//        if(isset($params['baja']) && $params['baja']==TRUE){
-//            $query->andWhere(['fecha_baja'=>'NULL']);
-//        }
+        if(isset($params['baja']) && strtolower($params['baja'])=='true'){
+            $query->andWhere(['not', ['fecha_baja' => null]]);
+        }
+        #### Filtro por acreditacion ####
+        if(isset($params['acreditacion']) && strtolower($params['acreditacion'])=='true'){
+            $query->andWhere(['not', ['fecha_acreditacion' => null]]);
+        }
         
         #Criterio de recurso social por lista de persona.... lista de personaid
         if(count($lista_personaid)>0){
