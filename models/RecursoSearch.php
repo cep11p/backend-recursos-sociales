@@ -167,7 +167,7 @@ class RecursoSearch extends Recurso
     {
         $query = Recurso::find();
         
-        $pagesize = (isset($params['pagesize']) && is_numeric($params['pagesize']))?$params['pagesize']:20;
+        $pagesize = (!isset($params['pagesize']) || !is_numeric($params['pagesize']) || $params['pagesize']==0)?20:$params['pagesize'];
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
