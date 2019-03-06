@@ -2,6 +2,7 @@
 
 /**** obtener lista de Personas ***
 @url ejemplo http://recurso-social.local/api/recursos
+@url ejemplo http://recurso-social.local/api/recursos?acreditacion=true&baja=true
 @url con criterio de busquedad ejemplo http://recurso-social.local/api/recursos?global_param=lopez&localidadid=2
  * global_param : busca por nombre, apellido y nro_documento
  * localidadid : busca por localidad
@@ -10,6 +11,8 @@
  * tipo_recursoid : busca por tipo de recursos
  * fecha_hasta : busca por un rango de fecha sobre fecha_inicial
  * fecha_desde : busca por un rango de fecha sobre fecha_inicial
+ * acreditacion = true busca los recursos que fueron acreditados
+ * baja = true busca los recursos que fueron dados de baja
 @Method GET
 
 {
