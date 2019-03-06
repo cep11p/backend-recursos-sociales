@@ -95,7 +95,9 @@ $config = [
                     'controller' => 'api/recurso', 
                     'extraPatterns' => [
                         'PUT baja/{id}' => 'baja',
+                        'OPTIONS baja/{id}' => 'baja',
                         'PUT acreditar/{id}' => 'acreditar',
+                        'OPTIONS acreditar/{id}' => 'acreditar',
                     ], 
                 ],
                 [   #beneficiario
