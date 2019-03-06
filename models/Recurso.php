@@ -141,6 +141,21 @@ class Recurso extends BaseRecurso
             'tipo_recurso'=> function($model){
                 return $model->tipoRecurso->nombre;
             },
+                    
+            'baja'=> function($model){
+                $resultado = false;
+                if(isset($model->fecha_baja)){
+                    $resultado = true;
+                }
+                return $resultado;
+            },
+            'acreditacion'=> function($model){
+                $resultado = false;
+                if(isset($model->fecha_acreditacion)){
+                    $resultado = true;
+                }
+                return $resultado;
+            },
         ]);
         
     }
