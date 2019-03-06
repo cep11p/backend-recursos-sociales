@@ -70,12 +70,9 @@ class TipoRecursoSearch extends TipoRecurso
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => [
-                'pageSize' => $params['pagesize'],
-                'page' => (isset($params['page']) && is_numeric($params['page']))?$params['page']:0
-            ],
+            'pagination' => false,
         ]);
-
+        
         $this->load($params,'');
 
         if (!$this->validate()) {
