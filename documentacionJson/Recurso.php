@@ -135,6 +135,7 @@
 /***** Para crear una prestacion de Emprender con sus alumnos****
 @url http://recurso-social.local/api/recursos
 @method POST
+@return array {"message":"Se guarda una prestacion","success":true,"data":{"id":39}}
 @param
 {
     "personaid": 9,

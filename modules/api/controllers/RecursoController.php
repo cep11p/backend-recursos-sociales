@@ -75,7 +75,7 @@ class RecursoController extends ActiveController{
     
     public function actionCreate()
     {
-        $resultado['message']='Se guarda un recurso social';
+        $resultado['message']='Se guarda una prestacion';
         $param = Yii::$app->request->post();
         $transaction = Yii::$app->db->beginTransaction();
         $arrayErrors = array();
