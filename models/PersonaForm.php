@@ -52,20 +52,17 @@ class PersonaForm extends Model
     
     public function save(){
         
+        $resultado = false;
         if($this->validate()){
-            $resultado = null;
+            $resultado = true;
             if(isset($this->id) && !empty($this->id)){
                 $personaid = intval(\Yii::$app->registral->actualizarPersona($this->toArray()));
                 $this->id = $personaid;
-                $resultado = $this->id;
             }else{
                 $personaid = intval(\Yii::$app->registral->crearPersona($this->toArray()));
                 $this->id = $personaid;
-                $resultado = $this->id;
             }
-        }else{
-            $resultado = false;
-        } 
+        }
         
         return $resultado;
     }
@@ -85,6 +82,30 @@ class PersonaForm extends Model
         /*Fecha Nacimiento*/
         if(isset($param['fecha_nacimiento']) && !empty($param['fecha_nacimiento'])){
             $this->fecha_nacimiento = Yii::$app->formatter->asDate($param['fecha_nacimiento'], 'php:Y-m-d');
+        }  
+        
+    }
+    
+    public function setContacto($param) {
+        
+        /*email*/
+        if(isset($param['email']) && !empty($param['email'])){
+            $this->email = $param['email'];
+        }  
+        
+        /*red_social*/
+        if(isset($param['red_social']) && !empty($param['red_social'])){
+            $this->red_social = $param['red_social'];
+        }  
+        
+        /*telefono*/
+        if(isset($param['telefono']) && !empty($param['telefono'])){
+            $this->telefono = $param['telefono'];
+        }  
+        
+        /*celular*/
+        if(isset($param['celular']) && !empty($param['celular'])){
+            $this->celular = $param['celular'];
         }  
         
     }

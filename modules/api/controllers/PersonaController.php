@@ -127,11 +127,17 @@ class PersonaController extends ActiveController{
 
     }
     
+    /**
+     * Este update es necesario que por parametros vengas los datos obligatorios de persona y/o de lugar
+     * @param int $id
+     * @return array
+     * @throws \yii\web\HttpException
+     * @throws Exception
+     */
     public function actionUpdate($id)
     {
         $resultado['message']='Se modifica una Persona';
         $param = Yii::$app->request->post();
-        $transaction = Yii::$app->db->beginTransaction();
         try {   
             
             if(is_int($id)){
@@ -149,7 +155,46 @@ class PersonaController extends ActiveController{
             return $resultado;
            
         }catch (Exception $exc) {
-            $transaction->rollBack();
+            $mensaje =$exc->getMessage();
+            throw new \yii\web\HttpException(400, $mensaje);
+        }
+
+    }
+    
+    /**
+     * Solo se editan los datos de contacto: email, telefono, celular, red social
+     * @param int $id
+     * @return array 
+     * @throws \yii\web\HttpException
+     * @throws Exception
+     */
+    public function actionContacto($id)
+    {
+        $resultado['message']='Se modifica los datos de contacto de una Persona';
+        $param = Yii::$app->request->post();
+        try {   
+            
+            if(is_int($id)){
+                throw new Exception("El id es invalido.");
+            }
+            
+            #es necesario concatenar el id
+            $param = \yii\helpers\ArrayHelper::merge(['id'=>$id], $param);
+            
+            $model = new PersonaForm();
+            $model->buscarPersonaPorIdEnRegistral($id);
+            $model->setContacto($param);
+            
+            if(!$model->save()){
+                throw new Exception(json_encode($model->getErrors()));
+            }
+            
+            $resultado['success']=true;
+            $resultado['data']['id']=$model->id;
+            
+            return $resultado;
+           
+        }catch (Exception $exc) {
             $mensaje =$exc->getMessage();
             throw new \yii\web\HttpException(400, $mensaje);
         }

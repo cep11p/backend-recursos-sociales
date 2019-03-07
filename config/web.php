@@ -117,6 +117,10 @@ $config = [
                 [   #persona
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/persona', 
+                    'extraPatterns' => [
+                        'PUT contacto/{id}' => 'contacto',
+                        'OPTIONS contacto/{id}' => 'contacto',
+                    ], 
                 ],
                 [   #sexo
                     'class' => 'yii\rest\UrlRule',
