@@ -129,10 +129,9 @@ class RecursoController extends ActiveController{
     
     public function actionView($id)
     {
-        $resultado['message']='Se visualiza un recurso';
+        $resultado['message']='Se visualiza una prestacion';
         $transaction = Yii::$app->db->beginTransaction();
         try {
-       
             $model = Recurso::findOne(['id'=>$id]);            
             if($model==NULL){
                 $msj = 'El recurso con el id '.$id.' no existe!';
@@ -141,6 +140,7 @@ class RecursoController extends ActiveController{
             
             $resultado = $model->toArray();
             $resultado['persona'] = $model->getPersona();
+            $resultado['alumno_lista'] = $model->getAlumnos();
             
             return $resultado;
            

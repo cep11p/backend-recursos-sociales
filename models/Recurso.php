@@ -132,6 +132,26 @@ class Recurso extends BaseRecurso
         
     }
     
+    /**
+     * Se obtiene una lista de alumnos si es que tiene esa coleccion
+     * @return array
+     */
+    public function getAlumnos(){
+        $resultado = array();
+        $personaForm = new PersonaForm();
+        $ids='';
+
+        foreach ($this->aulas as $value) {
+            $ids .= (empty($ids))?$value->alumnoid:','.$value->alumnoid;
+        }
+
+        if(!empty($ids)){
+            $resultado = $personaForm->buscarPersonaEnRegistral(array("ids"=>$ids));
+        }
+        
+        return $resultado;
+    }
+    
     public function fields()
     {
         return ArrayHelper::merge(parent::fields(), [
