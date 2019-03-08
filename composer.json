@@ -22,7 +22,8 @@
         "bedezign/yii2-audit": "^1.0",
         "rmrevin/yii2-fontawesome": "~3.2",
         "dektrium/yii2-user": "^0.9.14",
-        "guzzlehttp/guzzle": "^6.3"
+        "guzzlehttp/guzzle": "^6.3",
+        "dektrium/yii2-rbac": "1.0.0-alpha@dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

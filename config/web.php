@@ -44,10 +44,10 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-        'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
-        ],
+//        'user' => [
+//            'identityClass' => 'app\models\User',
+//            'enableAutoLogin' => true,
+//        ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -147,12 +147,12 @@ $config = [
     'params' => $params,
     
     'modules' => [
-//        'user' => [
-//            'class' => 'dektrium\user\Module',
-//            'enableConfirmation'=>false,
-//            'admins'=>['admin']
-//        ],
-//        'rbac' => 'dektrium\rbac\RbacWebModule',
+        'user' => [
+            'class' => 'dektrium\user\Module',
+            'enableConfirmation'=>false,
+            'admins'=>['admin']
+        ],
+        'rbac' => 'dektrium\rbac\RbacWebModule',
         
         "audit"=>[
             "class"=>"bedezign\yii2\audit\Audit",

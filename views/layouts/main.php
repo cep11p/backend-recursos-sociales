@@ -38,14 +38,15 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
+            ['label' => 'Administrar Usuarios', 'url' => ['/user/admin/index']],
             ['label' => 'Programa', 'url' => ['/backend/programa']],
             ['label' => 'Tipo Recurso', 'url' => ['/backend/tipo-recurso']],
             ['label' => 'Programa con sus tipos de recursos', 'url' => ['/backend/programa-has-tipo-recurso']],
             Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
+                ['label' => 'Login', 'url' => ['/user/security/login']]
             ) : (
                 '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
+                . Html::beginForm(['/user/security/logout '], 'post')
                 . Html::submitButton(
                     'Logout (' . Yii::$app->user->identity->username . ')',
                     ['class' => 'btn btn-link logout']
