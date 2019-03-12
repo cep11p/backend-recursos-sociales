@@ -112,6 +112,10 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/tipo-recurso', 
                 ],
+                [   #Tipo Recurso
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/usuario', 
+                ],
                 
                 ##### Interoperabilidad con Registral #####
                 [   #persona
