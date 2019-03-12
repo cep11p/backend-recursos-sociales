@@ -250,6 +250,11 @@ class RecursoSearch extends Recurso
             $query->andWhere(array('in', 'personaid', $lista_personaid));
         }
         
+        #predeterminadamente vamos a ordenar por fecha_alta
+        if(!isset($params['sort']) || empty($params['sort'])){
+            $query->orderBy(['fecha_alta' => SORT_DESC]);
+        }
+        
         $coleccion_recurso = array();
         foreach ($dataProvider->getModels() as $value) {
             $coleccion_recurso[] = $value->toArray();
