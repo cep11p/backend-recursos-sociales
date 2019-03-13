@@ -58,22 +58,24 @@ class Recurso extends BaseRecurso
     public function validarFechaBaja(){          
         
         if(date('Y-m-d') < $this->fecha_baja){
-            $this->addError('fecha_baja', 'La fecha de baja no puede ser mayor a la de hoy '.date('Y-m-d'));
+            $this->addError('fecha_baja', 'La fecha de baja no puede ser mayor a la de hoy '.date('d/m/Y'));
         }
         
         if($this->fecha_alta > $this->fecha_baja){
-            $this->addError('fecha_baja', 'La fecha de baja no puede ser menor a la fecha de alta '.$this->fecha_alta);
+            $fechaAMostrar = \DateTime::createFromFormat("Y-m-d", $this->fecha_alta);
+            $this->addError('fecha_baja', 'La fecha de baja no puede ser menor a la fecha de alta '.$fechaAMostrar->format('d/m/Y'));
         }
     }
     
     public function validarFechaAcreditacion(){          
         
         if(date('Y-m-d') < $this->fecha_acreditacion){
-            $this->addError('fecha_acreditacion', 'La fecha de acreditacion no puede ser mayor a la de hoy '.date('Y-m-d'));
+            $this->addError('fecha_acreditacion', 'La fecha de acreditacion no puede ser mayor a la de hoy '.date('d/m/Y'));
         }
         
         if($this->fecha_alta > $this->fecha_acreditacion){
-            $this->addError('fecha_acreditacion', 'La fecha de acreditacion no puede ser menor a la fecha de alta '.$this->fecha_alta);
+            $fechaAMostrar = \DateTime::createFromFormat("Y-m-d", $this->fecha_acreditacion);
+            $this->addError('fecha_acreditacion', 'La fecha de acreditacion no puede ser menor a la fecha de alta '.$fechaAMostrar->format('d/m/Y'));
         }        
     }
     
