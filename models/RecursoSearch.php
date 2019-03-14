@@ -72,6 +72,11 @@ class RecursoSearch extends Recurso
         return $dataProvider;
     }
     
+    /**
+     * Sumamos el monto del filtrado general
+     * @param array $params criterio de filtrado
+     * @return ActiveDataProvider
+     */
     public function sumarMonto($params){
         $query = Recurso::find();
         
@@ -163,6 +168,11 @@ class RecursoSearch extends Recurso
     }
 
 
+    /**
+     * Se realiza un filtrado avanzado y general
+     * @param array $params
+     * @return ActiveDataProvider
+     */
     public function busquedadGeneral($params)
     {
         $query = Recurso::find();
@@ -278,7 +288,12 @@ class RecursoSearch extends Recurso
         return $data;
     }
     
-    public function listaRecursosAgrupadosPorPersona($params)
+    /**
+     * Se lista una coleccion de beneficiarios
+     * @param array $params
+     * @return ActiveDataProvider
+     */
+    public function listaBeneficiarios($params)
     {
         $query = Recurso::find();
         $pagesize = (isset($params['pagesize']) && is_numeric($params['pagesize']))?$params['pagesize']:20;

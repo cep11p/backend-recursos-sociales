@@ -68,7 +68,7 @@ class BeneficiarioController extends ActiveController{
     {
         $searchModel = new \app\models\RecursoSearch();
         $params = \Yii::$app->request->queryParams;
-        $resultado = $searchModel->listaRecursosAgrupadosPorPersona($params);
+        $resultado = $searchModel->listaBeneficiarios($params);
 
         return $resultado;
     }  
