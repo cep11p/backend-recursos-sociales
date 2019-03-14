@@ -70,18 +70,6 @@ class BeneficiarioController extends ActiveController{
         $params = \Yii::$app->request->queryParams;
         $resultado = $searchModel->listaRecursosAgrupadosPorPersona($params);
 
-//        $pagesize=(isset($params['pagesize']))?$params['pagesize']:20;
-//        $data = array('success'=>false);
-//        if($resultado->getTotalCount()){
-//            $paginas = ceil($resultado->totalCount/$pagesize);
-//                    
-//            $data['success']='true';            
-//            $data['pagesize']=$pagesize;            
-//            $data['pages']=$paginas;            
-//            $data['total_filtrado']=$resultado->totalCount;
-//            $data['resultado']=$resultado->getModels();
-//        }
-
         return $resultado;
     }  
     

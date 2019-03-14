@@ -448,6 +448,8 @@ class RecursoSearch extends Recurso
             foreach ($coleccion_personaid as $persona) {
                 if(isset($recurso['personaid']) && isset($persona['id']) && $recurso['personaid']==$persona['id']){                    
                     $recurso['persona'] = $persona;
+                    unset($recurso['baja']);
+                    unset($recurso['acreditacion']);
                     $coleccion_recurso[$i] = $recurso;
                 }
             }
