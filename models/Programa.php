@@ -11,6 +11,26 @@ use yii\helpers\ArrayHelper;
  */
 class Programa extends BasePrograma
 {
+    /**
+     * variable auxiliar
+     * cuantifica la cantidad de recursos que tiene un programa
+     * @var int 
+     */
+    public $recurso_cantidad;
+    
+    /**
+     * variable auxiliar
+     * cuantifica la cantidad de persona que tiene un programa
+     * @var int 
+     */
+    public $persona_cantidad;
+    
+    /**
+     * Variable auxiliar para filtrado
+     * Es el monto total de cada programa
+     * @var double 
+     */
+    public $monto;
 
     public function behaviors()
     {

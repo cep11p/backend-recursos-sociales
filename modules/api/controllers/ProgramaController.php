@@ -57,9 +57,21 @@ class ProgramaController extends ActiveController{
         $actions = parent::actions();
         unset($actions['create']);
         unset($actions['update']);
+        unset($actions['view']);
+        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
         return $actions;
     
     }
+    
+    public function prepareDataProvider() 
+    {
+        $searchModel = new \app\models\ProgramaSearch();
+        $params = \Yii::$app->request->queryParams;
+        $resultado = $searchModel->busquedadGeneral($params);
+
+        return $resultado;
+    }
+    
     public function actionCreate()
     {
         $resultado['message']='Se guarda un programa';
@@ -86,6 +98,25 @@ class ProgramaController extends ActiveController{
         $arrayErrors = array();
         try {
        
+            die($resultado['message']);
+           
+        }catch (Exception $exc) {
+            $transaction->rollBack();
+            $mensaje =$exc->getMessage();
+            throw new \yii\web\HttpException(500, $mensaje);
+        }
+
+    }
+    
+    public function actionView($id)
+    {
+        try {
+            $searchModel = new \app\models\RecursoSearch();
+            $resultado = $searchModel->busquedadGeneral(["personaid"=>$id]);
+            
+            if(count($resultado)==0){
+                throw new Exception('No existe ninguna persona con id '.$id);
+            }
             die($resultado['message']);
            
         }catch (Exception $exc) {
