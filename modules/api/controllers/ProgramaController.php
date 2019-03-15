@@ -57,9 +57,22 @@ class ProgramaController extends ActiveController{
         $actions = parent::actions();
         unset($actions['create']);
         unset($actions['update']);
+        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
         return $actions;
     
     }
+    
+    
+    
+    public function prepareDataProvider() 
+    {
+        $searchModel = new \app\models\ProgramaSearch();
+        $params = \Yii::$app->request->queryParams;
+        $resultado = $searchModel->busquedadGeneral($params);
+
+        return $resultado;
+    }
+    
     public function actionCreate()
     {
         $resultado['message']='Se guarda un programa';
