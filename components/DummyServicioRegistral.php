@@ -194,16 +194,31 @@ class DummyServicioRegistral extends Component implements IServicioRegistral
     
     public function buscarPersona($param)
     {
-        $data['estado']=true;
+        #injectamos el array de datos (mock)
+        $persona_data = require(\Yii::getAlias('@app').'/components/DataPersona.php');
         
+        #set page
+        $page = 0;
+        if(isset($param['page']) && is_numeric($param['page'])){
+            $page = $param['page'];
+        }
+        
+        #preparamos el resultado
         $resultado = array(
-            array("persona1"),
-            array("persona2"),
+            "estado"=>FALSE,
+            "resultado"=>array()
         );
         
-        $data['resultado']=$resultado;
+        $persona_data_paginado = array_chunk($persona_data, 20);
         
-        return $data;
+        $resultado['estado'] = true;
+        $resultado['pagesize'] = 20;
+        $resultado['total_filtrado'] = count($persona_data);
+        $resultado['pages'] = ceil($resultado['total_filtrado']/20)-1;
+        $resultado['resultado'] = $persona_data_paginado[$page];
+        return $resultado;
+        
+        
        
     }
     
