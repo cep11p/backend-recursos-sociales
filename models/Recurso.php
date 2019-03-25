@@ -94,6 +94,15 @@ class Recurso extends BaseRecurso
             $this->fecha_acreditacion = $values['fecha_acreditacion']; 
         }
     }
+    
+    public function setAttributesBaja($values) {
+        if(isset($values['fecha_baja'])){
+            $this->fecha_baja = $values['fecha_baja']; 
+        }
+        if(isset($values['descripcion_baja'])){
+            $this->descripcion_baja = $values['descripcion_baja']; 
+        }
+    }
 
         /**
      * Se vinculan los alumnos(Persona) con la capación que bringa el programa Emprender, En otras palabras

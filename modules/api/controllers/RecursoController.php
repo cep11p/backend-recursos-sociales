@@ -172,7 +172,7 @@ class RecursoController extends ActiveController{
             }
             
             $model->setScenario(Recurso::SCENARIO_BAJA);
-            $model->setAttributes($param);
+            $model->setAttributesBaja($param);
             if(!$model->save()){
                 throw new Exception(json_encode($model->getErrors()));
             }
