@@ -206,7 +206,8 @@ class RecursoController extends ActiveController{
                 throw new Exception($msj);
             }
             
-            $model->setAttributes($param);
+            $model->setScenario(Recurso::SCENARIO_ACREDITACION);
+            $model->setAttributesAcreditar($param);
             
             if(!$model->save()){
                 throw new Exception(json_encode($model->getErrors()));

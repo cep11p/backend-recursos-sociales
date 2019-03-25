@@ -14,6 +14,7 @@ use yii\base\Exception;
 class Recurso extends BaseRecurso
 {
     const SCENARIO_BAJA = 'baja';
+    const SCENARIO_ACREDITACION = 'acreditacion';
     
     /**
      * variable auxiliar
@@ -46,6 +47,7 @@ class Recurso extends BaseRecurso
             parent::rules(),
             [
                 [['descripcion_baja', 'fecha_baja'], 'required', 'on' => self::SCENARIO_BAJA],
+                [['fecha_acreditacion'], 'required', 'on' => self::SCENARIO_ACREDITACION],
                 [['fecha_baja','fecha_acreditacion','fecha_inicial','fecha_alta'], 'date', 'format' => 'php:Y-m-d'],
                 ['fecha_baja', 'validarFechaBaja'],
                 ['fecha_acreditacion', 'validarFechaAcreditacion'],
@@ -87,7 +89,13 @@ class Recurso extends BaseRecurso
         }
     }
     
-    /**
+    public function setAttributesAcreditar($values) {
+        if(isset($values['fecha_acreditacion'])){
+            $this->fecha_acreditacion = $values['fecha_acreditacion']; 
+        }
+    }
+
+        /**
      * Se vinculan los alumnos(Persona) con la capación que bringa el programa Emprender, En otras palabras
      * se vinculan alumnos con el recurso_social
      * @throws Exception
