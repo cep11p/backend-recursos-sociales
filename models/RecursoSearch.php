@@ -73,98 +73,119 @@ class RecursoSearch extends Recurso
     }
     
     /**
-     * Sumamos el monto del filtrado general
+     * Sumamos el monto acreditado general
      * @param array $params criterio de filtrado
-     * @return ActiveDataProvider
+     * @return double
      */
-    public function sumarMonto($params){
+    public function sumarMontoAcreditado(){
         $query = Recurso::find();
         
-        $pagesize = (isset($params['pagesize']) && is_numeric($params['pagesize']))?$params['pagesize']:20;
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pageSize' => $pagesize,
-                'page' => (isset($params['page']) && is_numeric($params['page']))?$params['page']:0
-            ],
-        ]);
+        $query->select([
+                'monto_acreditado'=>'sum(monto)'
+            ]);
+        $query->where([
+                'not', ['fecha_acreditacion' => null]
+            ]);
         
-        $this->load($params,'');
+        $query->andWhere(['fecha_baja' => null]);
         
-        $query->select(['monto_total'=>'sum(monto)']);
-
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
-        }
+        $command = $query->createCommand();
+        $rows = $command->queryAll();
         
-        ############ Buscamos por datos de persona ############
-        #global search #global param
-        $personaForm = new PersonaForm();
-        if(isset($params['global_param']) && !empty($params['global_param'])){
-            $persona_params["global_param"] = $params['global_param'];
-        }
-        
-        if(isset($params['localidadid']) && !empty($params['localidadid'])){
-            $persona_params['localidadid'] = $params['localidadid'];
-        }
-        
-        if(isset($params['calle']) && !empty($params['calle'])){
-            $persona_params['calle'] = $params['calle'];    
-        }
-        
-        $coleccion_persona = array();
-        $lista_personaid = array();
-        if (isset($persona_params)) {
-            
-            $coleccion_persona = $personaForm->buscarPersonaEnRegistral($persona_params);
-            $lista_personaid = $this->obtenerListaIds($coleccion_persona);
-
-            if (count($lista_personaid) < 1) {
-                $query->where('0=1');
-            }
-        }
-        ############ Fin filtrado por Persona ############
-
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'fecha_inicial' => $this->fecha_inicial,
-            'fecha_alta' => $this->fecha_alta,
-            'monto' => $this->monto,
-            'programaid' => $this->programaid,
-            'tipo_recursoid' => $this->tipo_recursoid,
-            'personaid' => $this->personaid,
-        ]);
-
-        $query->andFilterWhere(['like', 'observacion', $this->observacion])
-              ->andFilterWhere(['like', 'proposito', $this->proposito]);
-        
-        #### Filtro por rango de fecha ####
-        if(isset($params['fecha_desde']) && isset($params['fecha_hasta'])){
-            $query->andWhere(['between', 'fecha_alta', $params['fecha_desde'], $params['fecha_hasta']]);
-        }else if(isset($params['fecha_desde'])){
-            $query->andWhere(['between', 'fecha_alta', $params['fecha_desde'], date('Y-m-d')]);
-        }else if(isset($params['fecha_hasta'])){
-            $query->andWhere(['between', 'fecha_alta', '1970-01-01', $params['fecha_hasta']]);
-        }
-        
-        #### Filtro por baja ####
-//        if(isset($params['baja']) && $params['baja']==TRUE){
-//            $query->andWhere(['fecha_baja'=>'NULL']);
-//        }
-        
-        
-        #Criterio de recurso social por lista de persona.... lista de personaid
-        if(count($lista_personaid)>0){
-            $query->andWhere(array('in', 'personaid', $lista_personaid));
-        }
-        
-        $monto_total = ($query->one()->monto_total=='')?0:$query->one()->monto_total;
-        $monto_total = ($monto_total!='')?$monto_total:0;
+        $resultado = ($rows[0]['monto_acreditado']=='')?0:$rows[0]['monto_acreditado'];
                 
-        return $monto_total;
+        return doubleval($resultado);       
+    }
+    
+    /**
+     * Sumamos el monto baja general
+     * @param array $params criterio de filtrado
+     * @return double
+     */
+    public function sumarMontoBaja(){
+        $query = Recurso::find();
         
+        $query->select([
+                'monto_baja'=>'sum(monto)'
+            ]);
+        $query->where([
+                'not', ['fecha_baja' => null]
+            ]);
+        
+        $command = $query->createCommand();
+        $rows = $command->queryAll();
+        
+        $resultado = ($rows[0]['monto_baja']=='')?0:$rows[0]['monto_baja'];
+                
+        return doubleval($resultado);        
+    }
+    
+    /**
+     * Sumamos el monto general (suma de recursos que no estan acreditados ni dados de baja)
+     * @param array $params criterio de filtrado
+     * @return double
+     */
+    public function sumarMontoGeneral(){
+        $query = Recurso::find();
+        
+        $query->select([
+                'monto_general'=>'sum(monto)'
+            ]);
+        
+        $command = $query->createCommand();
+        $rows = $command->queryAll();
+        
+        $resultado = ($rows[0]['monto_general']=='')?0:$rows[0]['monto_general'];
+                
+        return doubleval($resultado);        
+    }
+    
+    /**
+     * Contamos la cantidad de recursos acreditados
+     * @param array $params criterio de filtrado
+     * @return int
+     */
+    public function contarRecursoAcreditado(){
+        $query = Recurso::find();
+        
+        $query->select([
+                'recurso_acreditado_cantidad'=>'count(id)'
+            ]);
+        $query->where([
+                'not', ['fecha_acreditacion' => null]
+            ]);
+        
+        $query->andWhere(['fecha_baja' => null]);
+        
+        $command = $query->createCommand();
+        $rows = $command->queryAll();
+        
+        $resultado = ($rows[0]['recurso_acreditado_cantidad']=='')?0:$rows[0]['recurso_acreditado_cantidad'];
+                
+        return intval($resultado);        
+    }
+    
+    /**
+     * Contamos la cantidad de recursos baja
+     * @param array $params criterio de filtrado
+     * @return int
+     */
+    public function contarRecursoBaja(){
+        $query = Recurso::find();       
+        
+        $query->select([
+                'recurso_baja_cantidad'=>'count(id)'
+            ]);
+        $query->where([
+                'not', ['fecha_baja' => null]
+            ]);
+        
+        $command = $query->createCommand();
+        $rows = $command->queryAll();
+        
+        $resultado = ($rows[0]['recurso_baja_cantidad']=='')?0:$rows[0]['recurso_baja_cantidad'];
+                
+        return intval($resultado);        
     }
 
 
@@ -188,7 +209,11 @@ class RecursoSearch extends Recurso
 
         $this->load($params,'');
         
-        $monto_total = $this->sumarMonto($params);
+        $monto_acreditado = $this->sumarMontoAcreditado();
+        $monto_baja = $this->sumarMontoBaja();
+        $monto_general = $this->sumarMontoGeneral()-$monto_baja-$monto_acreditado;
+        $recurso_acreditado_cantidad = $this->contarRecursoAcreditado();
+        $recurso_baja_cantidad = $this->contarRecursoBaja();
         
         if (!$this->validate()) {
             // uncomment the following line if you do not want to any records when validation fails
@@ -282,7 +307,11 @@ class RecursoSearch extends Recurso
         $data['pagesize']=$pagesize;            
         $data['pages']=$paginas;            
         $data['total_filtrado']=$dataProvider->totalCount;
-        $data['monto_total']=(isset($monto_total))?$monto_total:0;
+        $data['monto_acreditado']=(isset($monto_acreditado))?$monto_acreditado:0;
+        $data['monto_baja']=(isset($monto_baja))?$monto_baja:0;
+        $data['monto_general']=(isset($monto_general))?$monto_general:0;
+        $data['recurso_acreditado_cantidad']=(isset($recurso_acreditado_cantidad))?$recurso_acreditado_cantidad:0;
+        $data['recurso_baja_cantidad']=(isset($recurso_baja_cantidad))?$recurso_baja_cantidad:0;
         $data['resultado']=$coleccion_recurso;
         
         return $data;
