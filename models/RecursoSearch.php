@@ -294,6 +294,7 @@ class RecursoSearch extends Recurso
         #### Filtro por acreditacion ####
         if(isset($params['acreditacion']) && strtolower($params['acreditacion'])=='true'){
             $query->andWhere(['not', ['fecha_acreditacion' => null]]);
+            $query->andWhere(['fecha_baja' => null]);
         }
         
         
