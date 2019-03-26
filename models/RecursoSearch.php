@@ -77,17 +77,22 @@ class RecursoSearch extends Recurso
      * @param array $params criterio de filtrado
      * @return double
      */
-    public function sumarMontoAcreditado(){
+    public function sumarMontoAcreditado($params){
         $query = Recurso::find();
+        $queryBase = $this->createQuery($params);
         
         $query->select([
                 'monto_acreditado'=>'sum(monto)'
             ]);
-        $query->where([
+        $query->Where([
                 'not', ['fecha_acreditacion' => null]
             ]);
         
         $query->andWhere(['fecha_baja' => null]);
+        
+        if(count($queryBase->where)){
+            $query->andWhere($queryBase->where);
+        }
         
         $command = $query->createCommand();
         $rows = $command->queryAll();
@@ -102,8 +107,9 @@ class RecursoSearch extends Recurso
      * @param array $params criterio de filtrado
      * @return double
      */
-    public function sumarMontoBaja(){
+    public function sumarMontoBaja($params){
         $query = Recurso::find();
+        $queryBase = $this->createQuery($params);
         
         $query->select([
                 'monto_baja'=>'sum(monto)'
@@ -111,6 +117,10 @@ class RecursoSearch extends Recurso
         $query->where([
                 'not', ['fecha_baja' => null]
             ]);
+        
+        if(count($queryBase->where)){
+            $query->andWhere($queryBase->where);
+        }
         
         $command = $query->createCommand();
         $rows = $command->queryAll();
@@ -125,12 +135,16 @@ class RecursoSearch extends Recurso
      * @param array $params criterio de filtrado
      * @return double
      */
-    public function sumarMontoGeneral(){
+    public function sumarMontoSinAcreditar($params){
         $query = Recurso::find();
+        $queryBase = $this->createQuery($params);
         
         $query->select([
                 'monto_general'=>'sum(monto)'
             ]);
+        if(count($queryBase->where)){
+            $query->andWhere($queryBase->where);
+        }
         
         $command = $query->createCommand();
         $rows = $command->queryAll();
@@ -145,8 +159,9 @@ class RecursoSearch extends Recurso
      * @param array $params criterio de filtrado
      * @return int
      */
-    public function contarRecursoAcreditado(){
+    public function contarRecursoAcreditado($params){
         $query = Recurso::find();
+        $queryBase = $this->createQuery($params);
         
         $query->select([
                 'recurso_acreditado_cantidad'=>'count(id)'
@@ -156,6 +171,10 @@ class RecursoSearch extends Recurso
             ]);
         
         $query->andWhere(['fecha_baja' => null]);
+        
+        if(count($queryBase->where)){
+            $query->andWhere($queryBase->where);
+        }
         
         $command = $query->createCommand();
         $rows = $command->queryAll();
@@ -170,8 +189,9 @@ class RecursoSearch extends Recurso
      * @param array $params criterio de filtrado
      * @return int
      */
-    public function contarRecursoBaja(){
-        $query = Recurso::find();       
+    public function contarRecursoBaja($params){
+        $query = Recurso::find();
+        $queryBase = $this->createQuery($params);
         
         $query->select([
                 'recurso_baja_cantidad'=>'count(id)'
@@ -179,6 +199,9 @@ class RecursoSearch extends Recurso
         $query->where([
                 'not', ['fecha_baja' => null]
             ]);
+        if(count($queryBase->where)){
+            $query->andWhere($queryBase->where);
+        }
         
         $command = $query->createCommand();
         $rows = $command->queryAll();
@@ -187,38 +210,25 @@ class RecursoSearch extends Recurso
                 
         return intval($resultado);        
     }
-
-
-    /**
-     * Se realiza un filtrado avanzado y general
-     * @param array $params
-     * @return ActiveDataProvider
-     */
-    public function busquedadGeneral($params)
-    {
+    
+    private function createQuery($params) {
         $query = Recurso::find();
         
-        $pagesize = (!isset($params['pagesize']) || !is_numeric($params['pagesize']) || $params['pagesize']==0)?20:intval($params['pagesize']);
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pageSize' => $pagesize,
-                'page' => (isset($params['page']) && is_numeric($params['page']))?$params['page']:0
-            ],
-        ]);
+//        $pagesize = (!isset($params['pagesize']) || !is_numeric($params['pagesize']) || $params['pagesize']==0)?20:intval($params['pagesize']);
+//        $dataProvider = new ActiveDataProvider([
+//            'query' => $query,
+//            'pagination' => [
+//                'pageSize' => $pagesize,
+//                'page' => (isset($params['page']) && is_numeric($params['page']))?$params['page']:0
+//            ],
+//        ]);
 
         $this->load($params,'');
         
-        $monto_acreditado = $this->sumarMontoAcreditado();
-        $monto_baja = $this->sumarMontoBaja();
-        $monto_general = $this->sumarMontoGeneral()-$monto_baja-$monto_acreditado;
-        $recurso_acreditado_cantidad = $this->contarRecursoAcreditado();
-        $recurso_baja_cantidad = $this->contarRecursoBaja();
-        
         if (!$this->validate()) {
             // uncomment the following line if you do not want to any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
+             $query->where('0=1');
+            return $query;
         }
         
         ############ Buscamos por datos de persona ############
@@ -246,6 +256,12 @@ class RecursoSearch extends Recurso
             if (count($lista_personaid) < 1) {
                 $query->where('0=1');
             }
+        }
+        
+        
+        #Criterio de recurso social por lista de persona.... lista de personaid
+        if(count($lista_personaid)>0){
+            $query->andWhere(array('in', 'personaid', $lista_personaid));
         }
         ############ Fin filtrado por Persona ############
 
@@ -280,15 +296,41 @@ class RecursoSearch extends Recurso
             $query->andWhere(['not', ['fecha_acreditacion' => null]]);
         }
         
-        #Criterio de recurso social por lista de persona.... lista de personaid
-        if(count($lista_personaid)>0){
-            $query->andWhere(array('in', 'personaid', $lista_personaid));
-        }
         
         #predeterminadamente vamos a ordenar por fecha_alta
         if(!isset($params['sort']) || empty($params['sort'])){
             $query->orderBy(['fecha_alta' => SORT_DESC]);
         }
+        
+        
+        return $query;
+    }
+
+        /**
+     * Se realiza un filtrado avanzado y general
+     * @param array $params
+     * @return ActiveDataProvider
+     */
+    public function busquedadGeneral($params)
+    {
+//        $query = Recurso::find();
+        $query = $this->createQuery($params);
+        $pagesize = (!isset($params['pagesize']) || !is_numeric($params['pagesize']) || $params['pagesize']==0)?20:intval($params['pagesize']);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => $pagesize,
+                'page' => (isset($params['page']) && is_numeric($params['page']))?$params['page']:0
+            ],
+        ]);
+//
+        $this->load($params,'');
+        
+        $monto_acreditado = $this->sumarMontoAcreditado($params);
+        $monto_baja = $this->sumarMontoBaja($params);
+        $monto_sin_acreditar = $this->sumarMontoSinAcreditar($params)-$monto_baja-$monto_acreditado;
+        $recurso_acreditado_cantidad = $this->contarRecursoAcreditado($params);
+        $recurso_baja_cantidad = $this->contarRecursoBaja($params);
         
         $coleccion_recurso = array();
         foreach ($dataProvider->getModels() as $value) {
@@ -301,15 +343,13 @@ class RecursoSearch extends Recurso
         } 
 
         
-        $paginas = ceil($dataProvider->totalCount/$pagesize);
-        
-        $data['success']=(count($coleccion_recurso)>0)?true:false;           
+        $paginas = ceil($dataProvider->totalCount/$pagesize);           
         $data['pagesize']=$pagesize;            
         $data['pages']=$paginas;            
         $data['total_filtrado']=$dataProvider->totalCount;
         $data['monto_acreditado']=(isset($monto_acreditado))?$monto_acreditado:0;
         $data['monto_baja']=(isset($monto_baja))?$monto_baja:0;
-        $data['monto_general']=(isset($monto_general))?$monto_general:0;
+        $data['monto_sin_acreditar']=(isset($monto_sin_acreditar))?$monto_sin_acreditar:0;
         $data['recurso_acreditado_cantidad']=(isset($recurso_acreditado_cantidad))?$recurso_acreditado_cantidad:0;
         $data['recurso_baja_cantidad']=(isset($recurso_baja_cantidad))?$recurso_baja_cantidad:0;
         $data['resultado']=$coleccion_recurso;
