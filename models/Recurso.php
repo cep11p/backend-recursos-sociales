@@ -21,14 +21,37 @@ class Recurso extends BaseRecurso
      * cuantifica la cantidad de recursos que tiene un beneficiario
      * @var int 
      */
-    public $recurso_cantidad;
-    
+    public $recurso_cantidad;    
     /**
      * Variable auxiliar para filtrado
      * Es el monto total del filtrado aplicado en ese momento
      * @var double 
      */
-    public $monto_total;
+    public $monto_total;    
+    /**
+     * Variable auxiliar para filtrado
+     * Es el monto acreditado
+     * @var double 
+     */
+    public $monto_acreditado;
+    /**
+     * Variable auxiliar para filtrado
+     * Es el monto baja
+     * @var double 
+     */
+    public $monto_baja;
+    /**
+     * Variable auxiliar para filtrado
+     * Es la cantidad de recursos baja
+     * @var int
+     */
+    public $recurso_baja_cantidad;
+    /**
+     * Variable auxiliar para filtrado
+     * Es la cantidad de recursos acreditado
+     * @var int
+     */
+    public $recurso_acreditado_cantidad;
 
 
     public function behaviors()
@@ -180,7 +203,7 @@ class Recurso extends BaseRecurso
             'tipo_recurso'=> function($model){
                 return $model->tipoRecurso->nombre;
             },
-                    
+            #Flags para injectar botones 
             'baja'=> function($model){
                 $resultado = false;
                 if(isset($model->fecha_baja)){
@@ -188,6 +211,7 @@ class Recurso extends BaseRecurso
                 }
                 return $resultado;
             },
+            #Flags para injectar botones
             'acreditacion'=> function($model){
                 $resultado = false;
                 if(isset($model->fecha_acreditacion)){
