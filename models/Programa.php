@@ -16,21 +16,43 @@ class Programa extends BasePrograma
      * cuantifica la cantidad de recursos que tiene un programa
      * @var int 
      */
-    public $recurso_cantidad;
-    
+    public $recurso_cantidad;    
     /**
      * variable auxiliar
      * cuantifica la cantidad de persona que tiene un programa
      * @var int 
      */
-    public $persona_cantidad;
-    
+    public $persona_cantidad;    
     /**
      * Variable auxiliar para filtrado
      * Es el monto total de cada programa
      * @var double 
      */
     public $monto;
+    /**
+     * Variable auxiliar para filtrado
+     * Es el monto acreditado por programa
+     * @var double 
+     */
+    public $monto_acreditado;
+    /**
+     * Variable auxiliar para filtrado
+     * Es el monto baja por programa
+     * @var double 
+     */
+    public $monto_baja;
+    /**
+     * Variable auxiliar para filtrado
+     * Es la cantidad de recursos de baja por programa
+     * @var int
+     */
+    public $recurso_baja_cantidad;
+    /**
+     * Variable auxiliar para filtrado
+     * Es la cantidad de recursos de baja por programa
+     * @var int
+     */
+    public $recurso_acreditado_cantidad;
 
     public function behaviors()
     {
