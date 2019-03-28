@@ -109,11 +109,11 @@ class ProgramaSearch extends Programa
             $programa['monto_acreditado'] = ($value['monto_acreditado']!=null)? doubleval($value['monto_acreditado']):0;
             $programa['monto_baja'] = ($value['monto_baja']!=null)? doubleval($value['monto_baja']):0;            
             $programa['monto_sin_acreditar'] = $value['monto']-$programa['monto_acreditado']-$programa['monto_baja']; 
-            $programa['recurso_cantidad'] = $value['recurso_cantidad'];
+            $programa['recurso_cantidad'] = intval($value['recurso_cantidad']);
             $programa['recurso_baja_cantidad'] = intval($value['recurso_baja_cantidad']);
             $programa['recurso_acreditado_cantidad'] = intval($value['recurso_acreditado_cantidad']);
-            $programa['persona_cantidad'] = $value['persona_cantidad'];
-            $programa['monto'] = ($value['monto']!=null)?$value['monto']:0;
+            $programa['persona_cantidad'] = intval($value['persona_cantidad']);
+            $programa['monto'] = ($value['monto']!=null)?floatval($value['monto']):0;
             $coleccion_recurso[] = $programa;
         }
         
