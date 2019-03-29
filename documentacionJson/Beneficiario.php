@@ -135,7 +135,156 @@
 /****** Para visualizar*****
 * @url http://recurso-social.local/api/beneficiario/{$id} 
 * @method GET
-* @return arrayJson es una benficiario con todas sus prestaciones
- {PENDIENTE}
+* @return arrayJson es un benficiario con todas sus prestaciones ordenas por fecha_alta desc y agrupados por programa
+ {
+    "id": 1,
+    "nombre": "Victoria Margarita",
+    "apellido": "González",
+    "nro_documento": "23851266",
+    "fecha_nacimiento": "1982-12-30",
+    "estado_civilid": 1,
+    "telefono": "2920430000",
+    "celular": "2920412227",
+    "sexoid": 2,
+    "tipo_documentoid": 1,
+    "nucleoid": 1,
+    "situacion_laboralid": 1,
+    "generoid": 2,
+    "email": "email22@correo.com",
+    "cuil": "20238512669",
+    "red_social": "redsocial1",
+    "estudios": [],
+    "sexo": "Mujer",
+    "genero": "Femenino",
+    "estado_civil": "Soltero/a",
+    "lugar": {
+        "id": 1,
+        "nombre": "",
+        "calle": "calle1",
+        "altura": "100",
+        "localidadid": 2538,
+        "latitud": "-1234123",
+        "longitud": "21314124",
+        "barrio": "barrio1",
+        "piso": "0º",
+        "depto": "A",
+        "escalera": "Entrecalle1",
+        "entre_calle_1": "Entrecalle1",
+        "entre_calle_2": "Entrecalle-103",
+        "localidad": "El Bolson"
+    },
+    "recurso_lista": [
+        [
+            {
+                "programa": "Emprender",
+                "recurso_cantidad": 2,
+                "recursos": [
+                    {
+                        "id": 31,
+                        "fecha_inicial": "2043-09-09",
+                        "fecha_alta": "2016-05-08",
+                        "monto": 13245.5,
+                        "observacion": "Observacion Fixture 31",
+                        "proposito": "Un proposito hecho con fixtures 31",
+                        "programaid": 3,
+                        "tipo_recursoid": 1,
+                        "personaid": 1,
+                        "fecha_baja": null,
+                        "fecha_acreditacion": null,
+                        "descripcion_baja": null,
+                        "programa": "Emprender",
+                        "tipo_recurso": "Alimentación",
+                        "baja": false,
+                        "acreditacion": false
+                    },
+                    {
+                        "id": 1,
+                        "fecha_inicial": "2016-01-30",
+                        "fecha_alta": "2014-10-07",
+                        "monto": 3212.23,
+                        "observacion": "Observacion Fixture 1",
+                        "proposito": "Un proposito hecho con fixtures 1",
+                        "programaid": 3,
+                        "tipo_recursoid": 1,
+                        "personaid": 1,
+                        "fecha_baja": null,
+                        "fecha_acreditacion": "2019-03-02",
+                        "descripcion_baja": null,
+                        "programa": "Emprender",
+                        "tipo_recurso": "Alimentación",
+                        "baja": false,
+                        "acreditacion": true
+                    }
+                ]
+            },
+            {
+                "programa": "Río Negro Presente",
+                "recurso_cantidad": 2,
+                "recursos": [
+                    {
+                        "id": 54,
+                        "fecha_inicial": "2043-08-04",
+                        "fecha_alta": "2019-09-07",
+                        "monto": 15789.64,
+                        "observacion": "Observacion Fixture 54",
+                        "proposito": "Un proposito hecho con fixtures 54",
+                        "programaid": 2,
+                        "tipo_recursoid": 2,
+                        "personaid": 1,
+                        "fecha_baja": null,
+                        "fecha_acreditacion": null,
+                        "descripcion_baja": null,
+                        "programa": "Río Negro Presente",
+                        "tipo_recurso": "Empleo/Formación Laboral",
+                        "baja": false,
+                        "acreditacion": false
+                    },
+                    {
+                        "id": 21,
+                        "fecha_inicial": "2016-01-10",
+                        "fecha_alta": "2016-05-18",
+                        "monto": 15789.64,
+                        "observacion": "Observacion Fixture 21",
+                        "proposito": "Un proposito hecho con fixtures 21",
+                        "programaid": 2,
+                        "tipo_recursoid": 3,
+                        "personaid": 1,
+                        "fecha_baja": null,
+                        "fecha_acreditacion": null,
+                        "descripcion_baja": null,
+                        "programa": "Río Negro Presente",
+                        "tipo_recurso": "Mejora Habitacional",
+                        "baja": false,
+                        "acreditacion": false
+                    }
+                ]
+            },
+            {
+                "programa": "Subsidio",
+                "recurso_cantidad": 1,
+                "recursos": [
+                    {
+                        "id": 11,
+                        "fecha_inicial": "2016-01-20",
+                        "fecha_alta": "2016-05-28",
+                        "monto": 16789.6,
+                        "observacion": "Observacion Fixture 11",
+                        "proposito": "Un proposito hecho con fixtures 11",
+                        "programaid": 1,
+                        "tipo_recursoid": 2,
+                        "personaid": 1,
+                        "fecha_baja": null,
+                        "fecha_acreditacion": null,
+                        "descripcion_baja": null,
+                        "programa": "Subsidio",
+                        "tipo_recurso": "Empleo/Formación Laboral",
+                        "baja": false,
+                        "acreditacion": false
+                    }
+                ]
+            }
+        ]
+    ]
+}
 */
 
