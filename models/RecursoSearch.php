@@ -489,7 +489,7 @@ class RecursoSearch extends Recurso
     }
     
     /**
-     * Ademas de mostrar los datos de un beneficiario, se buscan todos las prestaciones de misma y se agrupan por programa
+     * Ademas de mostrar los datos de un beneficiario, se buscan todos las prestaciones de la misma y se ordenan por programa y fecha_alta Desc
      * @param array $param
      * @return ActiveDataProvider|array
      */
@@ -509,8 +509,12 @@ class RecursoSearch extends Recurso
             return $dataProvider;
         }
         
-        $sql = 'SELECT * FROM recurso WHERE personaid = '.$this->personaid;
-        $query->sql = $sql;
+        $query->select(['*']);
+        $query->where(['personaid'=> $this->personaid]);
+        $query->orderBy([
+            'programaid'=>SORT_DESC,
+            'fecha_alta'=>SORT_DESC
+            ]);
         
         $personaForm = new PersonaForm();
         $resultado = $personaForm->obtenerPersonaConLugarYEstudios($this->personaid);
@@ -520,21 +524,36 @@ class RecursoSearch extends Recurso
                 $resultado['recurso_lista'][] = $value->toArray();
             }
            
+            #Ser ordena la lista de recursos por programa y fecha_alta desc
             $programas = array();
-            foreach ($resultado['recurso_lista'] as $recurso) {
-                $programa_old = $recurso['programaid'];
-                $programa_nombre = strtolower(str_replace(" ", "_", \app\components\Help::quitar_tildes($recurso['programa'])));
-                
-                foreach ($recurso as $k => $value) {
-                    if($k == 'programaid'){
-                        if($programa_old == $value){
-                            $programas[$programa_nombre][] = $recurso;
-                        }
+            $coleccion_por_programa = array();
+            $recurso_lista = array();
+            for($i=0;$i<count($resultado['recurso_lista']);$i++){
+                $existe=false;
+                $programa_old = $resultado['recurso_lista'][$i]['programa'];
+                foreach ($programas as $value) {
+                    if($programa_old==$value['programa']){
+                            $existe = true;
                     }
                 }
-            }
+                if(!$existe){
+                    for($j=0;$j<count($resultado['recurso_lista']);$j++){
+                        if($programa_old == $resultado['recurso_lista'][$j]['programa']){                        
+                            $coleccion_por_programa[] = $resultado['recurso_lista'][$j];
+                        }
+                    }
+                    $programas[] = array(                        
+                        'programa'=>$programa_old,
+                        'recurso_cantidad'=>count($coleccion_por_programa),
+                        "recursos"=>$coleccion_por_programa
+                    );
+                    $coleccion_por_programa = array();
+                }
+            }            
+            $recurso_lista[] = $programas;
             
-            $resultado['recurso_lista'] = $programas;
+            #Fin del ordenado
+            $resultado['recurso_lista'] = $recurso_lista;
         }       
         
         return $resultado;
