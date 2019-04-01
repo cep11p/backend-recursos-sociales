@@ -462,6 +462,7 @@ class RecursoSearch extends Recurso
             $recurso['recurso_cantidad'] = intval($value['recurso_cantidad']);
             $recurso['recurso_baja_cantidad'] = intval($value['recurso_baja_cantidad']);
             $recurso['recurso_acreditado_cantidad'] = intval($value['recurso_acreditado_cantidad']);
+            $recurso['recurso_sin_acreditar_cantidad'] = $recurso['recurso_cantidad']-$recurso['recurso_baja_cantidad']-$recurso['recurso_acreditado_cantidad'];
             unset($recurso['programa']);
             unset($recurso['tipo_recurso']);
             $coleccion_recurso[] = $recurso;
