@@ -41,7 +41,7 @@ class ServicioRegistral extends Component implements IServicioRegistral
         try{
             \Yii::error(json_encode($data));
             $headers = [
-                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_REGISTRAL'], 
+                'Authorization' => 'Bearer ' .$this->crearToken(), 
            ];          
             
             
@@ -67,7 +67,7 @@ class ServicioRegistral extends Component implements IServicioRegistral
         try{
             \Yii::error(json_encode($data));
             $headers = [
-                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_REGISTRAL'],
+                'Authorization' => 'Bearer ' .$this->crearToken(),
             ];          
             
             
@@ -94,7 +94,7 @@ class ServicioRegistral extends Component implements IServicioRegistral
         $client =   $this->_client;
         try{
             $headers = [
-                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_REGISTRAL'],
+                'Authorization' => 'Bearer ' .$this->crearToken(),
                 'Content-Type'=>'application/json'
             ];          
             
@@ -120,7 +120,7 @@ class ServicioRegistral extends Component implements IServicioRegistral
         $client =   $this->_client;
         try{
             $headers = [
-                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_REGISTRAL'],
+                'Authorization' => 'Bearer ' .$this->crearToken(),
                 'Content-Type'=>'application/json'
             ];          
             
@@ -146,7 +146,7 @@ class ServicioRegistral extends Component implements IServicioRegistral
         $client =   $this->_client;
         try{
             $headers = [
-                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_REGISTRAL'],
+                'Authorization' => 'Bearer ' .$this->crearToken(),
                 'Content-Type'=>'application/json'
             ];          
             
@@ -180,7 +180,7 @@ class ServicioRegistral extends Component implements IServicioRegistral
         $client =   $this->_client;
         try{
             $headers = [
-                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_REGISTRAL'],
+                'Authorization' => 'Bearer ' .$this->crearToken(),
                 'Content-Type'=>'application/json'
             ];          
             
@@ -206,7 +206,7 @@ class ServicioRegistral extends Component implements IServicioRegistral
         $client =   $this->_client;
         try{
             $headers = [
-                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_REGISTRAL'],
+                'Authorization' => 'Bearer ' .$this->crearToken(),
                 'Content-Type'=>'application/json'
             ];          
             
@@ -232,7 +232,7 @@ class ServicioRegistral extends Component implements IServicioRegistral
         $client =   $this->_client;
         try{
             $headers = [
-                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_REGISTRAL'],
+                'Authorization' => 'Bearer ' .$this->crearToken(),
                 'Content-Type'=>'application/json'
             ];          
             
@@ -262,7 +262,7 @@ class ServicioRegistral extends Component implements IServicioRegistral
         $client =   $this->_client;
         try{
             $headers = [
-                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_REGISTRAL'],
+                'Authorization' => 'Bearer ' .$this->crearToken(),
                 'Content-Type'=>'application/json'
             ];          
             
@@ -289,7 +289,7 @@ class ServicioRegistral extends Component implements IServicioRegistral
         $client =   $this->_client;
         try{
             $headers = [
-                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_REGISTRAL'],
+                'Authorization' => 'Bearer ' .$this->crearToken(),
                 'Content-Type'=>'application/json'
             ];          
             
@@ -323,7 +323,7 @@ class ServicioRegistral extends Component implements IServicioRegistral
         $client =   $this->_client;
         try{
             $headers = [
-                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_REGISTRAL'],
+                'Authorization' => 'Bearer ' .$this->crearToken(),
 //                'Content-Type'=>'application/json'
             ];          
             
@@ -357,7 +357,7 @@ class ServicioRegistral extends Component implements IServicioRegistral
         $client =   $this->_client;
         try{
             $headers = [
-                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_REGISTRAL'],
+                'Authorization' => 'Bearer ' .$this->crearToken(),
 //                'Content-Type'=>'application/json'
             ];          
             
@@ -391,7 +391,7 @@ class ServicioRegistral extends Component implements IServicioRegistral
         $client =   $this->_client;
         try{
             $headers = [
-                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_REGISTRAL'],
+                'Authorization' => 'Bearer ' .$this->crearToken(),
 //                'Content-Type'=>'application/json'
             ];          
             
@@ -418,7 +418,7 @@ class ServicioRegistral extends Component implements IServicioRegistral
         $client =   $this->_client;
         try{
             $headers = [
-                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_REGISTRAL'],
+                'Authorization' => 'Bearer ' .$this->crearToken(),
 //                'Content-Type'=>'application/json'
             ];          
             
@@ -471,6 +471,19 @@ class ServicioRegistral extends Component implements IServicioRegistral
         $resultado = null;
         
         return $resultado;
+    }
+    
+    private function crearToken(){
+        $payload = [
+            'exp'=>time()+3600,
+            'usuario'=>\Yii::$app->params['USUARIO_REGISTRAL'],
+            'uid' => \Yii::$app->params['UID_REGISTRAL'],
+            'usuario_real'=>\Yii::$app->user->identity->username
+        ];
+        
+        $token = \Firebase\JWT\JWT::encode($payload, \Yii::$app->params['JWT_SECRET']);   
+            
+        return  $token;
     }
    
    

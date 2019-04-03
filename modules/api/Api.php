@@ -1,6 +1,8 @@
 <?php
 
 namespace app\modules\api;
+use yii\web\Response;
+use Yii;
 
 class Api extends \yii\base\Module
 {
@@ -11,6 +13,11 @@ class Api extends \yii\base\Module
     {
         parent::init();
 
-        // custom initialization code goes here
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        // ...  other initialization code ...
+        \Yii::$app->user->enableSession = false;
+        \Yii::$app->user->loginUrl = null;
+        \Yii::$app->user->identityClass = 'app\modules\api\models\ApiUser';
+        \Yii::$app->language='es';
     }
 }
