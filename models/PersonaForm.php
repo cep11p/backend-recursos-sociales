@@ -416,15 +416,19 @@ class PersonaForm extends Model
             $this->addError('nucleoid', 'El nucleo con el id '.$this->nucleoid.' no existe!');
         }
     }
+    
+    /**
+     * Se chequea en el sistema registral si el nro de documento está en uso
+     */
     public function existeNroDocumentoEnRegistral(){
         
         if(!isset($this->id)){
-            $response = \Yii::$app->registral->buscarPersonaPorNroDocumento($this->nro_documento);       
+            $response = \Yii::$app->registral->buscarPersonaPorNroDocumento($this->nro_documento);      
             if(isset($response['estado']) && $response['estado']==true){
                 $this->addError('nro_documento', 'El nro de documento '.$this->nro_documento.' ya está en uso!');
             }
         }else{
-            $response = \Yii::$app->registral->buscarPersonaPorNroDocumento($this->nro_documento);    
+            $response = \Yii::$app->registral->buscarPersonaPorNroDocumento($this->nro_documento);  
             if(isset($response['estado']) && $response['estado']==true && $this->id != $response['resultado'][0]['id']){
                 $this->addError('nro_documento', 'El nro de documento '.$this->nro_documento.' ya está en uso!');
             }

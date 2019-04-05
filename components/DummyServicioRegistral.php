@@ -49,8 +49,24 @@ class DummyServicioRegistral extends Component implements IServicioRegistral
     
     public function buscarPersonaPorNroDocumento($nrodocumento)
     {
-       $response['estado'] = false;
-       return $response;
+        #injectamos el array de datos (mock)
+        $data = require(\Yii::getAlias('@app').'/components/DataPersona.php');
+        
+        #preparamos el resultado
+        $resultado = array(
+            "estado"=>FALSE,
+            "resultado"=>array()
+        );
+        
+        #filtramos por la clave el array $data
+        $modelEncontrado = Help::filter_by_value($data, 'nro_documento', $nrodocumento);        
+        
+        if($modelEncontrado){
+            $resultado['estado'] = true;
+            $resultado['resultado'] = $modelEncontrado;
+        }
+        
+        return $resultado;
         
        
     }
@@ -84,30 +100,26 @@ class DummyServicioRegistral extends Component implements IServicioRegistral
      * @param string $nombre
      * @return obtenemos una respuesta de registral
      */
-    public function buscarNucleo($hogarid,$nombre = 'Predeterminado')
+    public function buscarNucleo($param)
     {
-        $criterio = $this->crearCriterioBusquedad(['hogarid'=>$hogarid,'nombre'=>$nombre]);
-        $client =   $this->_client;
-        try{
-            $headers = [
-                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_REGISTRAL'],
-                'Content-Type'=>'application/json'
-            ];          
-            
-            $response = $client->request('GET', 'http://api.registral.local/api/nucleos?'.$criterio, ['headers' => $headers]);
-            $respuesta = json_decode($response->getBody()->getContents(), true);
-            \Yii::error($respuesta);
-            
-            return $respuesta;
-        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
-                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e->getResponse()->getBody()));
-                \Yii::error('Error de integración:'.$e->getResponse()->getBody(), $category='apioj');
-                return false;
-        } catch (Exception $e) {
-                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e));
-                \Yii::error('Error inesperado: se produjo:'.$e->getMessage(), $category='apioj');
-                return false;
+        #injectamos el array de datos (mock)
+        $data = require(\Yii::getAlias('@app').'/components/DataPersona.php');
+        
+        #preparamos el resultado
+        $resultado = array(
+            "estado"=>FALSE,
+            "resultado"=>array()
+        );
+        
+        #filtramos por la clave el array $data
+        $modelEncontrado = Help::filter_by_value($data, 'id', $param['id']);        
+        
+        if($modelEncontrado){
+            $resultado['estado'] = true;
+            $resultado['resultado'] = $modelEncontrado;
         }
+        
+        return $resultado;
        
     }
     

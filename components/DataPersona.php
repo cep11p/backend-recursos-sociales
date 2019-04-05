@@ -134,31 +134,53 @@ $hogar_data = require(\Yii::getAlias('@app').'/components/DataHogar.php');
 $lugar_data = require(\Yii::getAlias('@app').'/components/DataLugar.php');
 
 $resultado = array();
-for($i=0;$i<count($persona_coleccion);$i++){
-    foreach ($nucleo_data as $nucleo){
-        foreach ($hogar_data as $hogar) {                
-            if($persona_coleccion[$i]['nucleoid']==$nucleo['id']){
-                if($nucleo['hogarid']==$hogar['id']){
-                    $persona_coleccion[$i]['hogar']=$hogar;
-                }
-            }           
-        }
 
-        if(isset($persona_coleccion[$i]['hogar'])){
-            if($persona_coleccion[$i]['hogar']['id']==$nucleo['hogarid']){
-                $persona_coleccion[$i]['hogar']['nucleos'][]=$nucleo;
+#se vincula hogar y el lugar en la coleccion de cada persona
+for($i=0;$i<count($persona_coleccion);$i++){
+    foreach ($nucleo_data as $nucleo){ //buscamos el nucleo
+        
+        #verificamos si el hogar no esta vinculado
+        if(!isset($persona_coleccion[$i]['hogar'])){
+            foreach ($hogar_data as $hogar) {   //buscamos el hogar
+
+                #verificamos si el nucleoid de la persona es igual a el nucleo encontrado
+                if($persona_coleccion[$i]['nucleoid']==$nucleo['id']){
+
+                    #vericamos si hogarid de nucleo es igual a el id del hogar encontrado
+                    if($nucleo['hogarid']==$hogar['id']){
+                        $persona_coleccion[$i]['hogar']=$hogar;//vinculo hogar encotrado a la persona
+                        break;
+                    }
+                }           
             }
+        }
+        
+        #verificamos que hogar esté vinculado con la persona y le agregamos la coleccion de nucleos
+        if((isset($persona_coleccion[$i]['hogar'])) && $persona_coleccion[$i]['hogar']['id']==$nucleo['hogarid']){
+        
+            $persona_coleccion[$i]['hogar']['nucleos'][]=$nucleo;
+            break;
+           
         }
     }
     
-    foreach ($lugar_data as $lugar){
+    #verificamos si el hogar esta vinculado a la coleccion
+    if(isset($persona_coleccion[$i]['hogar']['lugarid'])){
         
-        if($persona_coleccion[$i]['hogar']['lugarid'] == $lugar['id']){
-            $persona_coleccion[$i]['lugar'] = $lugar;
-        }
+        #vamos a buscar el lugar en la coleccion de lugares
+        foreach ($lugar_data as $lugar){
+            
+            #verificamos si el lugar encontrado es el correcto
+            if($persona_coleccion[$i]['hogar']['lugarid'] == $lugar['id']){
+                $persona_coleccion[$i]['lugar'] = $lugar;
+                break;
+            }
+        } 
     }
+    
 
     $resultado[] = $persona_coleccion[$i];                    
 }
 
+//print_r($persona_coleccion);die();
 return $persona_coleccion;
