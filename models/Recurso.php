@@ -73,6 +73,7 @@ class Recurso extends BaseRecurso
                 [['fecha_acreditacion'], 'required', 'on' => self::SCENARIO_ACREDITACION],
                 [['fecha_baja','fecha_acreditacion','fecha_inicial','fecha_alta'], 'date', 'format' => 'php:Y-m-d'],
                 ['fecha_baja', 'validarFechaBaja'],
+                ['fecha_alta', 'validarFechaAlta'],
                 ['fecha_acreditacion', 'validarFechaAcreditacion'],
                 ['personaid', 'existePersonaEnRegistral'],
                 ['personaid', 'compare','compareValue'=>0,'operator'=>'!=','message' => 'No se pudo registrar la persona correctamente en el Sistema Registral.']
@@ -83,12 +84,19 @@ class Recurso extends BaseRecurso
     public function validarFechaBaja(){          
         
         if(date('Y-m-d') < $this->fecha_baja){
-            $this->addError('fecha_baja', 'La fecha de baja no puede ser mayor a la de hoy '.date('d/m/Y'));
+            $this->addError('fecha_baja', 'La fecha de baja no puede ser mayor a la fecha de hoy '.date('d/m/Y'));
         }
         
         if($this->fecha_alta > $this->fecha_baja){
             $fechaAMostrar = \DateTime::createFromFormat("Y-m-d", $this->fecha_alta);
             $this->addError('fecha_baja', 'La fecha de baja no puede ser menor a la fecha de alta '.$fechaAMostrar->format('d/m/Y'));
+        }
+    }
+    
+    public function validarFechaAlta(){          
+        
+        if(date('Y-m-d') < $this->fecha_alta){
+            $this->addError('fecha_alta', 'La fecha de alta no puede ser mayor a la fecha de hoy '.date('d/m/Y'));
         }
     }
     
@@ -222,4 +230,4 @@ class Recurso extends BaseRecurso
         ]);
         
     }
-}
+    }
