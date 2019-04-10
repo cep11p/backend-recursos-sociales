@@ -279,12 +279,12 @@ class RecursoSearch extends Recurso
               ->andFilterWhere(['like', 'proposito', $this->proposito]);
         
         #### Filtro por rango de fecha ####
-        if(isset($params['fecha_desde']) && isset($params['fecha_hasta'])){
-            $query->andWhere(['between', 'fecha_alta', $params['fecha_desde'], $params['fecha_hasta']]);
-        }else if(isset($params['fecha_desde'])){
-            $query->andWhere(['between', 'fecha_alta', $params['fecha_desde'], date('Y-m-d')]);
-        }else if(isset($params['fecha_hasta'])){
-            $query->andWhere(['between', 'fecha_alta', '1970-01-01', $params['fecha_hasta']]);
+        if(isset($params['fecha_alta_desde']) && isset($params['fecha_alta_hasta'])){
+            $query->andWhere(['between', 'fecha_alta', $params['fecha_alta_desde'], $params['fecha_alta_hasta']]);
+        }else if(isset($params['fecha_alta_desde'])){
+            $query->andWhere(['between', 'fecha_alta', $params['fecha_alta_desde'], date('Y-m-d')]);
+        }else if(isset($params['fecha_alta_hasta'])){
+            $query->andWhere(['between', 'fecha_alta', '1970-01-01', $params['fecha_alta_hasta']]);
         }
         
         #### Filtro por baja ####
