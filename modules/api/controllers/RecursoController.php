@@ -140,7 +140,10 @@ class RecursoController extends ActiveController{
             
             $resultado = $model->toArray();
             $resultado['persona'] = $model->getPersona();
-            $resultado['alumno_lista'] = $model->getAlumnos();
+            
+            if(count($model->getAlumnos())!=0){
+                $resultado['alumno_lista'] = $model->getAlumnos();
+            }
             
             return $resultado;
            
