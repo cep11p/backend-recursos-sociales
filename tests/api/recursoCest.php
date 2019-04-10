@@ -19,7 +19,6 @@ class recursoCest
     {
         return [
             'recursos' => app\tests\fixtures\RecursoFixture::className(),
-//            'aulas' => app\tests\fixtures\AulaFixture::className(),
         ];
     }
     
@@ -192,38 +191,66 @@ class recursoCest
         ]);
         
     }
-//    public function crearUnRecursoEmprenderConAlumnos(ApiTester $I)
-//    {
-//        $I->wantTo('Se crea un recurso de tipo Emprender con Alumnos');
-//        
-//        $param = [            
-//            "personaid"=> 20,
-//            "programaid"=> 3,
-//            "tipo_recursoid"=> 3,
-//            "prosito"=> "Se desea armar un taller de apicultura",
-//            "fecha_alta"=> "2011-02-02",
-//            "monto"=> 220.300,
-//            "observacion"=> "Falta conseguir maquinas para la cosecha",
-//            "alumno_lista"=>[
-//                ["alumnoid"=>1],
-//                ["alumnoid"=>2],
-//                ["alumnoid"=>4],
-//                ["alumnoid"=>5],
-//                ["alumnoid"=>6],
-//                ["alumnoid"=>7],
-//                ["alumnoid"=>8],
-//                ["alumnoid"=>9]
-//            ]
-//        ];
-//        
-//        $I->sendPOST('/api/recursos',$param);
-//        $I->seeResponseContainsJson([
-//            "message"=>"Se guarda una prestacion",
-//            "success"=>true,
-//            "data"=>["id"=>123],
-//            'message' => '{"aula":[{"recursoid":["La co...."]}]}'
-//        ]);
-//        $I->seeResponseCodeIs(200);
-//        
-//    }
+    
+    public function crearUnRecursoEmprenderConAlumnos(ApiTester $I)
+    {
+        
+        $I->haveFixtures([
+            'aulas' => app\tests\fixtures\AulaFixture::className(),
+        ]); 
+        
+        $I->wantTo('Se crea un recurso de tipo Emprender con Alumnos');
+        
+        $param = [            
+            "personaid"=> 20,
+            "programaid"=> 3,
+            "tipo_recursoid"=> 3,
+            "prosito"=> "Se desea armar un taller de apicultura",
+            "fecha_alta"=> "2011-02-02",
+            "monto"=> 220.302,
+            "observacion"=> "Falta conseguir maquinas para la cosecha",
+            "alumno_lista"=>[
+                ["alumnoid"=>1],
+                ["alumnoid"=>2],
+                ["alumnoid"=>4],
+                ["alumnoid"=>5],
+                ["alumnoid"=>6],
+                ["alumnoid"=>7],
+                ["alumnoid"=>8],
+                ["alumnoid"=>9]
+            ]
+        ];
+        
+        $I->sendPOST('/api/recursos',$param);
+        $I->seeResponseContainsJson([
+            "message"=>"Se guarda una prestacion",
+            "success"=>true,
+            "data"=>["id"=>73],
+            'message' => 'Se guarda una prestacion'
+        ]);
+        $I->seeResponseCodeIs(200);
+        
+        $I->sendGET('/api/recursos/73');
+        $I->seeResponseContainsJson([
+            'id' => 73,
+            'fecha_inicial' => '2019-04-10',
+            'fecha_alta' => '2011-02-02',
+            'monto' => 220.302,
+            "observacion"=> "Falta conseguir maquinas para la cosecha",
+            'proposito' => null,
+            'programaid' => 3,
+            'tipo_recursoid' => 3,
+            'personaid' => 20,
+            'fecha_baja' => null,
+            'fecha_acreditacion' => null,
+            'descripcion_baja' => null,
+            'programa' => 'Emprender',
+            'tipo_recurso' => 'Mejora Habitacional',
+            'baja' => false,
+            'acreditacion' => false,
+            'persona' => Array (),
+            'alumno_lista' => Array ()
+        ]);
+        
+    }
 }

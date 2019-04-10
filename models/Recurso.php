@@ -69,6 +69,7 @@ class Recurso extends BaseRecurso
         return ArrayHelper::merge(
             parent::rules(),
             [
+                ['monto', 'double'],
                 [['descripcion_baja', 'fecha_baja'], 'required', 'on' => self::SCENARIO_BAJA],
                 [['fecha_acreditacion'], 'required', 'on' => self::SCENARIO_ACREDITACION],
                 [['fecha_baja','fecha_acreditacion','fecha_inicial','fecha_alta'], 'date', 'format' => 'php:Y-m-d'],
@@ -183,7 +184,7 @@ class Recurso extends BaseRecurso
     }
     
     /**
-     * Se obtiene una lista de alumnos si es que tiene esa coleccion
+     * Se obtiene una lista de alumnos si es que el recurso tiene esa coleccion
      * @return array
      */
     public function getAlumnos(){
@@ -194,12 +195,13 @@ class Recurso extends BaseRecurso
         foreach ($this->aulas as $value) {
             $ids .= (empty($ids))?$value->alumnoid:','.$value->alumnoid;
         }
-
+        
+        #Se van a obtener una lista de personas con la variable $ids
         if(!empty($ids)){
             $resultado = $personaForm->buscarPersonaEnRegistral(array("ids"=>$ids));
         }
         
-        return $resultado;
+        return $resultado;       
     }
     
     public function fields()
