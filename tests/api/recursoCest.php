@@ -45,7 +45,7 @@ class recursoCest
             "resultado"=> [
                 [
                     'id' => 61,
-                    'fecha_inicial' => '2043-09-01',
+                    'fecha_inicial' => '2017-11-10',
                     'fecha_alta' => '2019-03-20',
                     'monto' => 19789.799999999999,
                     'observacion' => 'Observacion Fixture 61',
@@ -58,6 +58,8 @@ class recursoCest
                     "descripcion_baja"=> null,
                     "programa"=> "Emprender",
                     "tipo_recurso"=> "Mejora Habitacional",
+                    'baja' => false,
+                    'acreditacion' => false,
                     "persona"=> [
                         'id' => 12,
                         'nombre' => 'Sandra Sofía',
@@ -93,7 +95,7 @@ class recursoCest
                 ],
                 [
                     'id' => 62,
-                    'fecha_inicial' => '2043-09-02',
+                    'fecha_inicial' => '2018-03-30',
                     'fecha_alta' => '2019-03-19',
                     'monto' => 23123.119999999999,
                     'observacion' => 'Observacion Fixture 62',
@@ -106,6 +108,8 @@ class recursoCest
                     "descripcion_baja"=> null,
                     "programa"=> "Subsidio",
                     "tipo_recurso"=> "Alimentación",
+                    'baja' => false,
+                    'acreditacion' => false,
                     "persona"=> [
                         'id' => 13,
                         'nombre' => 'Oriana Alejandra',
@@ -431,41 +435,41 @@ class recursoCest
         
     }
     
-//    public function acreditarUnRecurso(ApiTester $I)
-//    {        
-//        $I->wantTo('Se acredita un recurso');
-//        
-//        $param = [
-//            "fecha_acreditacion"=>"2016-05-20",  
-//        ];
-//        
-//        $I->sendPUT('/api/recursos/baja/23',$param);
-//        $I->seeResponseContainsJson([
-//            "message"=>"Se da de baja un recurso",
-//            "success"=>true,
-//            "data"=>["id"=>23],
-//        ]);
-//        $I->seeResponseCodeIs(200);
-//        
-//        $I->sendGET('/api/recursos/23');
-//        $I->seeResponseContainsJson([
-//            'id' => 23,
-//            'fecha_inicial' => '2016-01-09',
-//            'fecha_alta' => '2016-05-17',
-//            'monto' => 14456,
-//            'observacion' => 'Observacion Fixture 22',
-//            'proposito' => 'Un proposito hecho con fixtures 22',
-//            'programaid' => 3,
-//            'tipo_recursoid' => 1,
-//            'personaid' => 2,
-//            'fecha_baja' => '2018-03-01',
-//            'fecha_acreditacion' => null,
-//            'descripcion_baja' => 'Se da de baja por falta de fondos',
-//            'programa' => 'Emprender',
-//            'tipo_recurso' => 'Alimentación',
-//            'baja' => true,
-//            'acreditacion' => false,
-//        ]);
-//        
-//    }
+    public function acreditarUnRecurso(ApiTester $I)
+    {        
+        $I->wantTo('Se acredita un recurso');
+        
+        $param = [
+            "fecha_acreditacion"=>"2018-09-05",  
+        ];
+        
+        $I->sendPUT('/api/recursos/acreditar/60',$param);
+        $I->seeResponseContainsJson([
+            "message"=>'Se acredita la prestacion',
+            "success"=>true,
+            "data"=>["id"=>60],
+        ]);
+        $I->seeResponseCodeIs(200);
+        
+        $I->sendGET('/api/recursos/60');
+        $I->seeResponseContainsJson([
+            'id' => 60,
+            'fecha_inicial' => '2017-11-11',
+            'fecha_alta' => '2018-09-01',
+            'monto' => 14456,
+            'observacion' => 'Observacion Fixture 60',
+            'proposito' => 'Un proposito hecho con fixtures 60',
+            'programaid' => 2,
+            'tipo_recursoid' => 2,
+            'personaid' => 11,
+            'fecha_baja' => null,
+            'fecha_acreditacion' => '2018-09-05',
+            'descripcion_baja' => null,
+            'programa' => 'Río Negro Presente',
+            'tipo_recurso' => 'Empleo/Formación Laboral',
+            'baja' => false,
+            'acreditacion' => true,
+        ]);
+        
+    }
 }

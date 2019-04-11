@@ -108,7 +108,7 @@ class Recurso extends BaseRecurso
         }
         
         if($this->fecha_alta > $this->fecha_acreditacion){
-            $fechaAMostrar = \DateTime::createFromFormat("Y-m-d", $this->fecha_acreditacion);
+            $fechaAMostrar = \DateTime::createFromFormat("Y-m-d", $this->fecha_alta);
             $this->addError('fecha_acreditacion', 'La fecha de acreditacion no puede ser menor a la fecha de alta '.$fechaAMostrar->format('d/m/Y'));
         }        
     }
