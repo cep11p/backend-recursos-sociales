@@ -155,7 +155,7 @@ class recursoCest
             "personaid"=> 21,
             "programaid"=> 1,
             "tipo_recursoid"=> 3,
-            "prosito"=> "Para comprar Alimentos",
+            "proposito"=> "Para comprar Alimentos",
             "fecha_alta"=> "2018-02-02",
             "monto"=> 220.300,
             "observacion"=> "Actualmente sin trabajo"
@@ -172,11 +172,11 @@ class recursoCest
         $I->sendGET('/api/recursos/72');
         $I->seeResponseContainsJson([
             'id' => 72,
-            'fecha_inicial' => '2019-04-10',
+            'fecha_inicial' => date('Y-m-d'),
             'fecha_alta' => '2018-02-02',
             'monto' => 220.30000000000001,
             'observacion' => 'Actualmente sin trabajo',
-            'proposito' => null,
+            'proposito' => "Para comprar Alimentos",
             'programaid' => 1,
             'tipo_recursoid' => 3,
             'personaid' => 21,
@@ -185,6 +185,51 @@ class recursoCest
             'descripcion_baja' => null,
             'programa' => 'Subsidio',
             'tipo_recurso' => 'Mejora Habitacional',
+            'baja' => false,
+            'acreditacion' => false,
+            'persona' => Array (),
+        ]);
+        
+    }
+    
+    public function crearUnRecursoRioNegroPresente(ApiTester $I)
+    {
+        $I->wantTo('Se crea un recurso de tipo Río Negro Presente');
+        
+        $param = [            
+            "personaid"=> 22,
+            "programaid"=> 2,
+            "tipo_recursoid"=> 1,
+            "proposito"=> "Para comprar Alimentos",
+            "fecha_alta"=> "2018-02-02",
+            "monto"=> 220000.300,
+            "observacion"=> "Actualmente sin trabajo"
+        ];
+        
+        $I->sendPOST('/api/recursos',$param);
+        $I->seeResponseContainsJson([
+            "message"=>"Se guarda una prestacion",
+            "success"=>true,
+            "data"=>["id"=>73]
+        ]);
+        $I->seeResponseCodeIs(200);
+        
+        $I->sendGET('/api/recursos/73');
+        $I->seeResponseContainsJson([
+            'id' => 73,
+            'fecha_inicial' => date('Y-m-d'),
+            'fecha_alta' => '2018-02-02',
+            'monto' => 220000.30000000000001,
+            'observacion' => 'Actualmente sin trabajo',
+            'proposito' => "Para comprar Alimentos",
+            'programaid' => 2,
+            'tipo_recursoid' => 1,
+            'personaid' => 22,
+            'fecha_baja' => null,
+            'fecha_acreditacion' => null,
+            'descripcion_baja' => null,
+            'programa' => 'Río Negro Presente',
+            'tipo_recurso' => 'Alimentación',
             'baja' => false,
             'acreditacion' => false,
             'persona' => Array (),
@@ -205,7 +250,7 @@ class recursoCest
             "personaid"=> 20,
             "programaid"=> 3,
             "tipo_recursoid"=> 3,
-            "prosito"=> "Se desea armar un taller de apicultura",
+            "proposito"=> "Se desea armar un taller de apicultura",
             "fecha_alta"=> "2011-02-02",
             "monto"=> 220.302,
             "observacion"=> "Falta conseguir maquinas para la cosecha",
@@ -225,19 +270,19 @@ class recursoCest
         $I->seeResponseContainsJson([
             "message"=>"Se guarda una prestacion",
             "success"=>true,
-            "data"=>["id"=>73],
+            "data"=>["id"=>74],
             'message' => 'Se guarda una prestacion'
         ]);
         $I->seeResponseCodeIs(200);
         
-        $I->sendGET('/api/recursos/73');
+        $I->sendGET('/api/recursos/74');
         $I->seeResponseContainsJson([
-            'id' => 73,
-            'fecha_inicial' => '2019-04-10',
+            'id' => 74,
+            'fecha_inicial' => date('Y-m-d'),
             'fecha_alta' => '2011-02-02',
             'monto' => 220.302,
             "observacion"=> "Falta conseguir maquinas para la cosecha",
-            'proposito' => null,
+            'proposito' => "Se desea armar un taller de apicultura",
             'programaid' => 3,
             'tipo_recursoid' => 3,
             'personaid' => 20,
@@ -250,6 +295,99 @@ class recursoCest
             'acreditacion' => false,
             'persona' => Array (),
             'alumno_lista' => Array ()
+        ]);
+        
+    }
+    
+    
+    public function crearUnRecursoHabitat(ApiTester $I)
+    {        
+        $I->wantTo('Se crea un recurso de tipo Hábitat');
+        
+        $param = [            
+            "personaid"=> 16,
+            "programaid"=> 5,
+            "tipo_recursoid"=> 3,
+            "proposito"=> "Se desea mejorar la vivienda del beneficiario",
+            "fecha_alta"=> "2018-02-02",
+            "monto"=> 220123.302,
+            "observacion"=> "La casa del beneficiario fue incendiada"
+        ];
+        
+        $I->sendPOST('/api/recursos',$param);
+        $I->seeResponseContainsJson([
+            "message"=>"Se guarda una prestacion",
+            "success"=>true,
+            "data"=>["id"=>75],
+            'message' => 'Se guarda una prestacion'
+        ]);
+        $I->seeResponseCodeIs(200);
+        
+        $I->sendGET('/api/recursos/75');
+        $I->seeResponseContainsJson([
+            'id' => 75,
+            'fecha_inicial' => date('Y-m-d'),
+            'fecha_alta' => "2018-02-02",
+            'monto' => 220123.302,
+            "observacion"=> "La casa del beneficiario fue incendiada",
+            'proposito' => "Se desea mejorar la vivienda del beneficiario",
+            'programaid' => 5,
+            'tipo_recursoid' => 3,
+            'personaid' => 16,
+            'fecha_baja' => null,
+            'fecha_acreditacion' => null,
+            'descripcion_baja' => null,
+            'programa' => 'Hábitat',
+            'tipo_recurso' => 'Mejora Habitacional',
+            'baja' => false,
+            'acreditacion' => false,
+            'persona' => Array (),
+        ]);
+        
+    }
+    
+    public function crearUnRecursoMicroEmprendimiento(ApiTester $I)
+    {        
+        $I->wantTo('Se crea un recurso de tipo MicroEmprendimiento');
+        
+        $param = [            
+            "personaid"=> 25,
+            "programaid"=> 4,
+            "tipo_recursoid"=> 2,
+            "proposito"=> "Se desea emprender una produccion de miel",
+            "fecha_alta"=> "2018-02-02",
+            "monto"=> 1220123.302,
+            "observacion"=> "El apicultor/beneficiario cuenta con muy buena experiencia"
+        ];
+        
+        $I->sendPOST('/api/recursos',$param);
+        $I->seeResponseContainsJson([
+            "message"=>"Se guarda una prestacion",
+            "success"=>true,
+            "data"=>["id"=>76],
+            'message' => 'Se guarda una prestacion'
+        ]);
+        $I->seeResponseCodeIs(200);
+        
+        $I->sendGET('/api/recursos/76');
+        $I->seeResponseContainsJson([
+            'id' => 76,
+            'fecha_inicial' => date('Y-m-d'),
+            'fecha_alta' => "2018-02-02",
+            'monto' => 1220123.302,
+            "observacion"=> "El apicultor/beneficiario cuenta con muy buena experiencia",
+            'proposito' => "Se desea emprender una produccion de miel",
+            'programaid' => 4,
+            'tipo_recursoid' => 2,
+            'personaid' => 25,
+            'fecha_baja' => null,
+            'fecha_acreditacion' => null,
+            'descripcion_baja' => null,
+            'programa' => 'Micro Emprendimiento',
+            'tipo_recurso' => 'Empleo/Formación Laboral',
+            'baja' => false,
+            'acreditacion' => false,
+            'persona' => Array (),
         ]);
         
     }
