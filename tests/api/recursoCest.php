@@ -391,4 +391,81 @@ class recursoCest
         ]);
         
     }
+    
+    public function darDeBajaUnRecurso(ApiTester $I)
+    {        
+        $I->wantTo('Se da de baja un recurso');
+        
+        $param = [
+            "fecha_baja"=>"2018-03-01",
+            "descripcion_baja"=>"Se da de baja por falta de fondos"        
+        ];
+        
+        $I->sendPUT('/api/recursos/baja/22',$param);
+        $I->seeResponseContainsJson([
+            "message"=>"Se da de baja un recurso",
+            "success"=>true,
+            "data"=>["id"=>22],
+        ]);
+        $I->seeResponseCodeIs(200);
+        
+        $I->sendGET('/api/recursos/22');
+        $I->seeResponseContainsJson([
+            'id' => 22,
+            'fecha_inicial' => '2016-01-09',
+            'fecha_alta' => '2016-05-17',
+            'monto' => 14456,
+            'observacion' => 'Observacion Fixture 22',
+            'proposito' => 'Un proposito hecho con fixtures 22',
+            'programaid' => 3,
+            'tipo_recursoid' => 1,
+            'personaid' => 2,
+            'fecha_baja' => '2018-03-01',
+            'fecha_acreditacion' => null,
+            'descripcion_baja' => 'Se da de baja por falta de fondos',
+            'programa' => 'Emprender',
+            'tipo_recurso' => 'Alimentación',
+            'baja' => true,
+            'acreditacion' => false,
+        ]);
+        
+    }
+    
+//    public function acreditarUnRecurso(ApiTester $I)
+//    {        
+//        $I->wantTo('Se acredita un recurso');
+//        
+//        $param = [
+//            "fecha_acreditacion"=>"2016-05-20",  
+//        ];
+//        
+//        $I->sendPUT('/api/recursos/baja/23',$param);
+//        $I->seeResponseContainsJson([
+//            "message"=>"Se da de baja un recurso",
+//            "success"=>true,
+//            "data"=>["id"=>23],
+//        ]);
+//        $I->seeResponseCodeIs(200);
+//        
+//        $I->sendGET('/api/recursos/23');
+//        $I->seeResponseContainsJson([
+//            'id' => 23,
+//            'fecha_inicial' => '2016-01-09',
+//            'fecha_alta' => '2016-05-17',
+//            'monto' => 14456,
+//            'observacion' => 'Observacion Fixture 22',
+//            'proposito' => 'Un proposito hecho con fixtures 22',
+//            'programaid' => 3,
+//            'tipo_recursoid' => 1,
+//            'personaid' => 2,
+//            'fecha_baja' => '2018-03-01',
+//            'fecha_acreditacion' => null,
+//            'descripcion_baja' => 'Se da de baja por falta de fondos',
+//            'programa' => 'Emprender',
+//            'tipo_recurso' => 'Alimentación',
+//            'baja' => true,
+//            'acreditacion' => false,
+//        ]);
+//        
+//    }
 }
