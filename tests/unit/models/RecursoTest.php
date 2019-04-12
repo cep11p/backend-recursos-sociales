@@ -38,4 +38,23 @@ class RecursoTest extends \Codeception\Test\Unit
         $model->validate();
         $this->assertArraySubset($model->getErrors(),$errors);
     }
+    
+    public function testFallaAcreditarRecursoSiDatosVacios()
+    {
+        $this->tester->haveFixtures([
+            \app\tests\fixtures\RecursoFixture::className()
+        ]);
+        
+        $model = Recurso::findOne(['id'=>22]);  
+        $model->scenario = $model::SCENARIO_ACREDITACION;
+        
+        $errors = Array(
+            'fecha_acreditacion' => Array (
+                0 => 'Fecha Acreditacion cannot be blank.'
+            )
+
+        );
+        $model->validate();
+        $this->assertArraySubset($model->getErrors(),$errors);
+    }
 }
