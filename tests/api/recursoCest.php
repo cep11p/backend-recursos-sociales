@@ -1199,4 +1199,129 @@ class recursoCest
         $I->seeResponseCodeIs(200);     
         
     }
+    public function seVisualizaUnRecursoDeTipoEmprendiemiento(ApiTester $I)
+    {        
+        $I->wantTo('Se visualiza un recurso de tipo emprendimiento');
+        
+        $I->sendGET('/api/recursos/61');
+        $I->seeResponseContainsJson([
+            "id"=> 61,
+            "fecha_inicial"=> "2017-11-10",
+            "fecha_alta"=> "2019-03-20",
+            "monto"=> 19789.8,
+            "observacion"=> "Observacion Fixture 61",
+            "proposito"=> "Un proposito hecho con fixtures 61",
+            "programaid"=> 3,
+            "tipo_recursoid"=> 3,
+            "personaid"=> 12,
+            "fecha_baja"=> null,
+            "fecha_acreditacion"=> null,
+            "descripcion_baja"=> null,
+            "programa"=> "Emprender",
+            "tipo_recurso"=> "Mejora Habitacional",
+            "baja"=> false,
+            "acreditacion"=> false,
+            "persona"=> [
+                "id"=> 12,
+                "nombre"=> "Sandra Sofía",
+                "apellido"=> "Sosa",
+                "nro_documento"=> "24187541",
+                "cuil"=> "15241875413",
+                "fecha_nacimiento"=> "1980-10-15",
+                "celular"=> "2920412238",
+                "sexoid"=> 2,
+                "nucleoid"=> 12,
+                "estado_civilid"=> 4,
+                "telefono"=> "2920430011",
+                "tipo_documentoid"=> 3,
+                "generoid"=> 2,
+                "email"=> "email22@correo.com",
+                "red_social"=> "redsocial12",
+                "situacion_laboralid"=> 3,
+                "lugar"=> [
+                    "id"=> 12,
+                    "barrio"=> "barrio3",
+                    "calle"=> "calle12",
+                    "altura"=> "",
+                    "piso"=> "11º",
+                    "depto"=> "7",
+                    "localidadid"=> 2549,
+                    "latitud"=> "-1234112",
+                    "longitud"=> "21314135",
+                    "escalera"=> "escalera12",
+                    "entre_calle_1"=> "Entrecalle12",
+                    "entre_calle_2"=> "Entrecalle-92"
+                ]
+            ],
+            "alumno_lista"=> [
+                [
+                    "id"=> 1,
+                    "nombre"=> "Victoria Margarita",
+                    "apellido"=> "González",
+                    "nro_documento"=> "23851266",
+                    "cuil"=> "20238512669",
+                    "fecha_nacimiento"=> "1982-12-30",
+                    "celular"=> "2920412227",
+                    "sexoid"=> 2,
+                    "nucleoid"=> 1,
+                    "estado_civilid"=> 1,
+                    "telefono"=> "2920430000",
+                    "tipo_documentoid"=> 1,
+                    "generoid"=> 2,
+                    "email"=> "email22@correo.com",
+                    "red_social"=> "redsocial1",
+                    "situacion_laboralid"=> 1,
+                    "lugar"=> [
+                        "id"=> 1,
+                        "barrio"=> "barrio1",
+                        "calle"=> "calle1",
+                        "altura"=> "100",
+                        "piso"=> "0º",
+                        "depto"=> "A",
+                        "localidadid"=> 2538,
+                        "latitud"=> "-1234123",
+                        "longitud"=> "21314124",
+                        "escalera"=> "escalera1",
+                        "entre_calle_1"=> "Entrecalle1",
+                        "entre_calle_2"=> "Entrecalle-103"
+                    ]
+                ],
+                
+                [
+                    "id"=> 2,
+                    "nombre"=> "Isabel Sofía",
+                    "apellido"=> "Rodríguez",
+                    "nro_documento"=> "32054238",
+                    "cuil"=> "20320542389",
+                    "fecha_nacimiento"=> "1982-12-29",
+                    "celular"=> "2920412228",
+                    "sexoid"=> 2,
+                    "nucleoid"=> 2,
+                    "estado_civilid"=> 2,
+                    "telefono"=> "2920430001",
+                    "tipo_documentoid"=> 2,
+                    "generoid"=> 2,
+                    "email"=> "email22@correo.com",
+                    "red_social"=> "redsocial2",
+                    "situacion_laboralid"=> 2,
+                    "lugar"=> [
+                        "id"=> 2,
+                        "barrio"=> "barrio2",
+                        "calle"=> "calle2",
+                        "altura"=> "",
+                        "piso"=> "1º",
+                        "depto"=> "B",
+                        "localidadid"=> 2539,
+                        "latitud"=> "-1234122",
+                        "longitud"=> "21314125",
+                        "escalera"=> "escalera2",
+                        "entre_calle_1"=> "Entrecalle2",
+                        "entre_calle_2"=> "Entrecalle-102"
+                    ]
+                ],
+            ],
+        ]);
+        $I->seeResponseCodeIs(200);     
+        
+    }
 }
