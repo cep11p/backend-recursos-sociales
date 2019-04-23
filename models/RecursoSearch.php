@@ -551,7 +551,7 @@ class RecursoSearch extends Recurso
                     $coleccion_por_programa = array();
                 }
             }            
-            $recurso_lista[] = $programas;
+            $recurso_lista = $programas;
             
             #Fin del ordenado
             $resultado['recurso_lista'] = $recurso_lista;

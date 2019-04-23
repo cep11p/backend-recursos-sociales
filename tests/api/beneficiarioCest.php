@@ -167,113 +167,112 @@ class beneficiarioCest
             'situacion_laboralid' => 1,
             'lugar' => Array (),
             "recurso_lista"=> [
+                
                 [
-                    [
-                        "programa"=> "Emprender",
-                        "recurso_cantidad"=> 2,
-                        "recursos"=> [
-                            [
-                                "id"=> 31,
-                                "fecha_inicial"=> "2017-12-10",
-                                "fecha_alta"=> "2016-05-08",
-                                "monto"=> 13245.5,
-                                "observacion"=> "Observacion Fixture 31",
-                                "proposito"=> "Un proposito hecho con fixtures 31",
-                                "programaid"=> 3,
-                                "tipo_recursoid"=> 1,
-                                "personaid"=> 1,
-                                "fecha_baja"=> "2018-01-09",
-                                "fecha_acreditacion"=> "2016-05-09",
-                                "descripcion_baja"=> null,
-                                "programa"=> "Emprender",
-                                "tipo_recurso"=> "Alimentación",
-                                "baja"=> true,
-                                "acreditacion"=> true
-                            ],
-                            [
-                                "id"=> 1,
-                                "fecha_inicial"=> "2016-01-30",
-                                "fecha_alta"=> "2014-10-07",
-                                "monto"=> 3212.23,
-                                "observacion"=> "Observacion Fixture 1",
-                                "proposito"=> "Un proposito hecho con fixtures 1",
-                                "programaid"=> 3,
-                                "tipo_recursoid"=> 1,
-                                "personaid"=> 1,
-                                "fecha_baja"=> null,
-                                "fecha_acreditacion"=> "2014-11-07",
-                                "descripcion_baja"=> null,
-                                "programa"=> "Emprender",
-                                "tipo_recurso"=> "Alimentación",
-                                "baja"=> false,
-                                "acreditacion"=> true
-                            ]
+                    "programa"=> "Emprender",
+                    "recurso_cantidad"=> 2,
+                    "recursos"=> [
+                        [
+                            "id"=> 31,
+                            "fecha_inicial"=> "2017-12-10",
+                            "fecha_alta"=> "2016-05-08",
+                            "monto"=> 13245.5,
+                            "observacion"=> "Observacion Fixture 31",
+                            "proposito"=> "Un proposito hecho con fixtures 31",
+                            "programaid"=> 3,
+                            "tipo_recursoid"=> 1,
+                            "personaid"=> 1,
+                            "fecha_baja"=> "2018-01-09",
+                            "fecha_acreditacion"=> "2016-05-09",
+                            "descripcion_baja"=> null,
+                            "programa"=> "Emprender",
+                            "tipo_recurso"=> "Alimentación",
+                            "baja"=> true,
+                            "acreditacion"=> true
+                        ],
+                        [
+                            "id"=> 1,
+                            "fecha_inicial"=> "2016-01-30",
+                            "fecha_alta"=> "2014-10-07",
+                            "monto"=> 3212.23,
+                            "observacion"=> "Observacion Fixture 1",
+                            "proposito"=> "Un proposito hecho con fixtures 1",
+                            "programaid"=> 3,
+                            "tipo_recursoid"=> 1,
+                            "personaid"=> 1,
+                            "fecha_baja"=> null,
+                            "fecha_acreditacion"=> "2014-11-07",
+                            "descripcion_baja"=> null,
+                            "programa"=> "Emprender",
+                            "tipo_recurso"=> "Alimentación",
+                            "baja"=> false,
+                            "acreditacion"=> true
                         ]
-                    ],
-                    [
-                        "programa"=> "Río Negro Presente",
-                        "recurso_cantidad"=> 2,
-                        "recursos"=> [
-                            [
-                                "id"=> 54,
-                                "fecha_inicial"=> "2017-11-17",
-                                "fecha_alta"=> "2018-09-07",
-                                "monto"=> 15789.64,
-                                "observacion"=> "Observacion Fixture 54",
-                                "proposito"=> "Un proposito hecho con fixtures 54",
-                                "programaid"=> 2,
-                                "tipo_recursoid"=> 2,
-                                "personaid"=> 1,
-                                "fecha_baja"=> null,
-                                "fecha_acreditacion"=> "2018-09-12",
-                                "descripcion_baja"=> null,
-                                "programa"=> "Río Negro Presente",
-                                "tipo_recurso"=> "Empleo/Formación Laboral",
-                                "baja"=> false,
-                                "acreditacion"=> true
-                            ],
-                            [
-                                "id"=> 21,
-                                "fecha_inicial"=> "2016-01-10",
-                                "fecha_alta"=> "2016-05-18",
-                                "monto"=> 15789.64,
-                                "observacion"=> "Observacion Fixture 21",
-                                "proposito"=> "Un proposito hecho con fixtures 21",
-                                "programaid"=> 2,
-                                "tipo_recursoid"=> 3,
-                                "personaid"=> 1,
-                                "fecha_baja"=> "2016-06-18",
-                                "fecha_acreditacion"=> null,
-                                "descripcion_baja"=> null,
-                                "programa"=> "Río Negro Presente",
-                                "tipo_recurso"=> "Mejora Habitacional",
-                                "baja"=> true,
-                                "acreditacion"=> false
-                            ]
+                    ]
+                ],
+                [
+                    "programa"=> "Río Negro Presente",
+                    "recurso_cantidad"=> 2,
+                    "recursos"=> [
+                        [
+                            "id"=> 54,
+                            "fecha_inicial"=> "2017-11-17",
+                            "fecha_alta"=> "2018-09-07",
+                            "monto"=> 15789.64,
+                            "observacion"=> "Observacion Fixture 54",
+                            "proposito"=> "Un proposito hecho con fixtures 54",
+                            "programaid"=> 2,
+                            "tipo_recursoid"=> 2,
+                            "personaid"=> 1,
+                            "fecha_baja"=> null,
+                            "fecha_acreditacion"=> "2018-09-12",
+                            "descripcion_baja"=> null,
+                            "programa"=> "Río Negro Presente",
+                            "tipo_recurso"=> "Empleo/Formación Laboral",
+                            "baja"=> false,
+                            "acreditacion"=> true
+                        ],
+                        [
+                            "id"=> 21,
+                            "fecha_inicial"=> "2016-01-10",
+                            "fecha_alta"=> "2016-05-18",
+                            "monto"=> 15789.64,
+                            "observacion"=> "Observacion Fixture 21",
+                            "proposito"=> "Un proposito hecho con fixtures 21",
+                            "programaid"=> 2,
+                            "tipo_recursoid"=> 3,
+                            "personaid"=> 1,
+                            "fecha_baja"=> "2016-06-18",
+                            "fecha_acreditacion"=> null,
+                            "descripcion_baja"=> null,
+                            "programa"=> "Río Negro Presente",
+                            "tipo_recurso"=> "Mejora Habitacional",
+                            "baja"=> true,
+                            "acreditacion"=> false
                         ]
-                    ],
-                    [
-                        "programa"=> "Subsidio",
-                        "recurso_cantidad"=> 1,
-                        "recursos"=> [
-                            [
-                                "id"=> 11,
-                                "fecha_inicial"=> "2016-01-20",
-                                "fecha_alta"=> "2016-05-28",
-                                "monto"=> 16789.6,
-                                "observacion"=> "Observacion Fixture 11",
-                                "proposito"=> "Un proposito hecho con fixtures 11",
-                                "programaid"=> 1,
-                                "tipo_recursoid"=> 2,
-                                "personaid"=> 1,
-                                "fecha_baja"=> null,
-                                "fecha_acreditacion"=> "2016-06-28",
-                                "descripcion_baja"=> null,
-                                "programa"=> "Subsidio",
-                                "tipo_recurso"=> "Empleo/Formación Laboral",
-                                "baja"=> false,
-                                "acreditacion"=> true
-                            ]
+                    ]
+                ],
+                [
+                    "programa"=> "Subsidio",
+                    "recurso_cantidad"=> 1,
+                    "recursos"=> [
+                        [
+                            "id"=> 11,
+                            "fecha_inicial"=> "2016-01-20",
+                            "fecha_alta"=> "2016-05-28",
+                            "monto"=> 16789.6,
+                            "observacion"=> "Observacion Fixture 11",
+                            "proposito"=> "Un proposito hecho con fixtures 11",
+                            "programaid"=> 1,
+                            "tipo_recursoid"=> 2,
+                            "personaid"=> 1,
+                            "fecha_baja"=> null,
+                            "fecha_acreditacion"=> "2016-06-28",
+                            "descripcion_baja"=> null,
+                            "programa"=> "Subsidio",
+                            "tipo_recurso"=> "Empleo/Formación Laboral",
+                            "baja"=> false,
+                            "acreditacion"=> true
                         ]
                     ]
                 ]
