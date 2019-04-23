@@ -17,6 +17,38 @@ class RecursoTest extends \Codeception\Test\Unit
     {
     }
 
+    public function testFallaCrearRecursoSiDatosVacios()
+    {
+        $this->tester->haveFixtures([
+            \app\tests\fixtures\RecursoFixture::className()
+        ]);
+        
+        $model = new Recurso();  
+        
+        $errors = Array(
+            'fecha_inicial' => Array (
+                0 => 'Fecha Inicial cannot be blank.'
+            ),
+            'fecha_alta' => Array (
+                0 => 'Fecha Alta cannot be blank.'
+            ),
+            'monto' => Array (
+                0 => 'Monto cannot be blank.'
+            ),
+            'programaid' => Array (
+                0 => 'Programaid cannot be blank.'
+            ),
+            'tipo_recursoid' => Array (
+                0 => 'Tipo Recursoid cannot be blank.'
+            ),
+            'personaid' => Array (
+                0 => 'Personaid cannot be blank.'
+            ),
+        );
+        $model->validate();
+        $this->assertArraySubset($model->getErrors(),$errors);
+    }
+    
     public function testFallaDarBajaRecursoSiDatosVacios()
     {
         $this->tester->haveFixtures([
