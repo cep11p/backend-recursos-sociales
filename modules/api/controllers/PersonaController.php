@@ -213,15 +213,16 @@ class PersonaController extends ActiveController{
         $resultado['estado']=false;   
         $resultado = \Yii::$app->registral->buscarPersonaPorNroDocumento($nro_documento);
         
-        if($resultado['estado']!=true){
-            $data['success']=false;            
-            $data['resultado']=[];
-            $data['message']="No se encontró ninguna persona!";   
-        }else{
+//        print_r($resultado);die();
+        
+        if(isset($resultado['resultado']) && count($resultado['resultado'])>0){
             $data['success']=true;
             $data['resultado']=$resultado['resultado'];
+        }else{
+            $data['success']=false;  
+            $data['message']="No se encontró ninguna persona!";
         }
-        
+
         return $data;
 
     }

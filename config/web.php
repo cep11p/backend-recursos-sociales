@@ -122,9 +122,12 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/persona', 
                     'extraPatterns' => [
+                        'GET buscar-por-documento/{nro_documento}' => 'buscar-por-documento',
+                        'OPTIONS buscar-por-documento/{nro_documento}' => 'buscar-por-documento',
                         'PUT contacto/{id}' => 'contacto',
                         'OPTIONS contacto/{id}' => 'contacto',
-                    ], 
+                    ],
+                    'tokens' => [ '{id}' => '<id:\\w+>', '{nro_documento}'=>'<nro_documento:\\w+>' ],
                 ],
                 [   #sexo
                     'class' => 'yii\rest\UrlRule',
