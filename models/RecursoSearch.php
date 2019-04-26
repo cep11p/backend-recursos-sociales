@@ -290,9 +290,13 @@ class RecursoSearch extends Recurso
         #### Filtro por baja ####
         if(isset($params['baja']) && strtolower($params['baja'])=='true'){
             $query->andWhere(['not', ['fecha_baja' => null]]);
-        }
+            #### recursos acreditados dados de baja ####
+            if(isset($params['acreditacion']) && strtolower($params['acreditacion'])=='true'){
+                $query->andWhere(['not', ['fecha_acreditacion' => null]]);
+            }
+        
         #### Filtro por acreditacion ####
-        if(isset($params['acreditacion']) && strtolower($params['acreditacion'])=='true'){
+        }else if(isset($params['acreditacion']) && strtolower($params['acreditacion'])=='true'){
             $query->andWhere(['not', ['fecha_acreditacion' => null]]);
             $query->andWhere(['fecha_baja' => null]);
         }
