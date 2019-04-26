@@ -116,6 +116,15 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/usuario', 
                 ],
+                [   #Usuario
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/usuario',   
+                    'extraPatterns' => [
+                        'POST login' => 'login',
+                        'OPTIONS login' => 'options'
+                    ],                       
+                     
+                ],   
                 
                 ##### Interoperabilidad con Registral #####
                 [   #persona
