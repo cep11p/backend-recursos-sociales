@@ -1,5 +1,7 @@
 <?php 
 
+use Helper\Api;
+
 class recursoCest
 {
     /**
@@ -8,12 +10,12 @@ class recursoCest
      */    
     protected $api;
     
-//    public function _before(ApiTester $I,Api $api)
-//    {
-//        $I->wantTo('Login');
-//        $token = $api->generarToken();
-//        $I->amBearerAuthenticated($token);
-//    }
+    public function _before(ApiTester $I,Api $api)
+    {
+        $I->wantTo('Login');
+        $token = $api->generarToken();
+        $I->amBearerAuthenticated($token);
+    }
     
     public function _fixtures()
     {
@@ -1324,4 +1326,32 @@ class recursoCest
         $I->seeResponseCodeIs(200);     
         
     }
+    
+//    public function seFiltraRecursosAcreditadosDadosDeBaja(ApiTester $I)
+//    {        
+//        $I->wantTo('Se filtra recursos que fueron dados de baja');
+//        
+//        $I->sendGET('/api/recursos?acreditacion=true&baja=true');
+//        $I->seeResponseContainsJson([
+//            "id"=> 61,
+//            "fecha_inicial"=> "2017-11-10",
+//            "fecha_alta"=> "2019-03-20",
+//            "monto"=> 19789.8,
+//            "observacion"=> "Observacion Fixture 61",
+//            "proposito"=> "Un proposito hecho con fixtures 61",
+//            "programaid"=> 3,
+//            "tipo_recursoid"=> 3,
+//            "personaid"=> 12,
+//            "fecha_baja"=> null,
+//            "fecha_acreditacion"=> null,
+//            "descripcion_baja"=> null,
+//            "programa"=> "Emprender",
+//            "tipo_recurso"=> "Mejora Habitacional",
+//            "baja"=> false,
+//            "acreditacion"=> false,
+//            
+//        ]);
+//        $I->seeResponseCodeIs(200);     
+//        
+//    }
 }

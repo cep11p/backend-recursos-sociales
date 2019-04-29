@@ -1,5 +1,6 @@
 <?php 
 
+use Helper\Api;
 class beneficiarioCest
 {
     /**
@@ -8,12 +9,12 @@ class beneficiarioCest
      */    
     protected $api;
     
-//    public function _before(ApiTester $I,Api $api)
-//    {
-//        $I->wantTo('Login');
-//        $token = $api->generarToken();
-//        $I->amBearerAuthenticated($token);
-//    }
+    public function _before(ApiTester $I,Api $api)
+    {
+        $I->wantTo('Login');
+        $token = $api->generarToken();
+        $I->amBearerAuthenticated($token);
+    }
     
     public function _fixtures()
     {
