@@ -286,21 +286,24 @@ class RecursoSearch extends Recurso
         }else if(isset($params['fecha_alta_hasta'])){
             $query->andWhere(['between', 'fecha_alta', '1970-01-01', $params['fecha_alta_hasta']]);
         }
+
         
-        #### Filtro por baja ####
-        if(isset($params['baja']) && strtolower($params['baja'])=='true'){
-            $query->andWhere(['not', ['fecha_baja' => null]]);
-            #### recursos acreditados dados de baja ####
-            if(isset($params['acreditacion']) && strtolower($params['acreditacion'])=='true'){
+         #### Filtro por estado ####
+        switch ($params['estado']) {
+            case 'baja':
+                $query->andWhere(['not', ['fecha_baja' => null]]);
+                break;
+            case 'acreditado':                
                 $query->andWhere(['not', ['fecha_acreditacion' => null]]);
-            }
-        
-        #### Filtro por acreditacion ####
-        }else if(isset($params['acreditacion']) && strtolower($params['acreditacion'])=='true'){
-            $query->andWhere(['not', ['fecha_acreditacion' => null]]);
-            $query->andWhere(['fecha_baja' => null]);
+                $query->andWhere(['fecha_baja' => null]);
+                break;
+            case 'sin-acreditar':
+                $query->andWhere(['fecha_acreditacion' => null]);
+                $query->andWhere(['fecha_baja' => null]);
+                break;
+            default :                
+                break;
         }
-        
         
         #predeterminadamente vamos a ordenar por fecha_alta
         if(!isset($params['sort']) || empty($params['sort'])){
