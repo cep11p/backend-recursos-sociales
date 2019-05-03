@@ -137,7 +137,7 @@ class Recurso extends BaseRecurso
     }
 
         /**
-     * Se vinculan los alumnos(Persona) con la capación que bringa el programa Emprender, En otras palabras
+     * Se vinculan los alumnos(Persona) a la capacitación que brinda el programa Emprender, En otras palabras
      * se vinculan alumnos con el recurso_social
      * @throws Exception
      */
@@ -158,7 +158,7 @@ class Recurso extends BaseRecurso
             ]);
 
             if(!$aula->save()){
-                $arrayErrors['aula'][] = $aula->getErrors();
+                $arrayErrors = $aula->getErrors();
                 throw new Exception(json_encode($arrayErrors));
             }
         }

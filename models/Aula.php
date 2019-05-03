@@ -29,6 +29,7 @@ class Aula extends BaseAula
             [
                 # custom validation rules
                 ['alumnoid', 'existePersonaEnRegistral'],
+                ['alumnoid', 'existeComoBeneficiario'],
                 ['alumnoid', 'compare','compareValue'=>0,'operator'=>'!=','message' => 'No se pudo registrar la persona correctamente en el Sistema Registral.']
             ]
         );
@@ -39,6 +40,14 @@ class Aula extends BaseAula
         
         if(isset($response['estado']) && $response['estado']!=true){
             $this->addError('id', 'La persona con el id '.$this->alumnoid.' no existe!');
+        }
+    }
+    
+    public function existeComoBeneficiario(){
+            
+        
+        if($this->alumnoid == $this->recurso->personaid){
+            $this->addError('lista de alumnos', 'El beneficiario no puede ser un alumno!');
         }
     }
 }
