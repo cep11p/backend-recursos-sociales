@@ -70,7 +70,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+        <p class="pull-left">&copy; Area de desarrollo del ministerio de desarrollo social 2019</p>
 
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
