@@ -18,7 +18,7 @@ class ProgramaController extends \app\modules\backend\controllers\base\ProgramaC
         
         
         if($model==NULL){
-            \Yii::$app->session->setFlash('error','La delegación a borrar es incorrecta!!');
+            \Yii::$app->session->setFlash('error','El programa a borrar es incorrecta!!');
         }
         
         if(count($model->recursos)>0){
