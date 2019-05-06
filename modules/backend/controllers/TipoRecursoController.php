@@ -1,12 +1,28 @@
 <?php
 
 namespace app\modules\backend\controllers;
-
+use yii\filters\AccessControl;
 /**
 * This is the class for controller "TipoRecursoController".
 */
 class TipoRecursoController extends \app\modules\backend\controllers\base\TipoRecursoController
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+//                        'roles' => ['usuario_soporte'],
+                    ],
+                ],
+            ],
+        ];
+    }
+    
      public function actions() {
         $actions = parent::actions();
         unset($actions['delete']);
