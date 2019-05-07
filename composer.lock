@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4bb968146e6dd289884bfcea63b62986",
+    "content-hash": "0dd1fb2a785389938a113f0c6c1ee3f6",
     "packages": [
         {
             "name": "2amigos/yii2-chartjs-widget",
@@ -196,7 +196,7 @@
             "version": "3.2.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jquery/jquery-dist.git",
+                "url": "git@github.com:jquery/jquery-dist.git",
                 "reference": "77d2a51d0520d2ee44173afdf4e40a9201f5964e"
             },
             "dist": {
@@ -476,16 +476,16 @@
         },
         {
             "name": "dektrium/yii2-rbac",
-            "version": "1.0.0-alpha",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dektrium/yii2-rbac.git",
-                "reference": "0943e66c450132b306584a37caefc2aa04258372"
+                "reference": "2dac3918af17178f2ba944d4338c3fcfa732d08c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dektrium/yii2-rbac/zipball/0943e66c450132b306584a37caefc2aa04258372",
-                "reference": "0943e66c450132b306584a37caefc2aa04258372",
+                "url": "https://api.github.com/repos/dektrium/yii2-rbac/zipball/2dac3918af17178f2ba944d4338c3fcfa732d08c",
+                "reference": "2dac3918af17178f2ba944d4338c3fcfa732d08c",
                 "shasum": ""
             },
             "require": {
@@ -525,7 +525,7 @@
                 "yii2",
                 "yii2-rbac"
             ],
-            "time": "2016-08-15T15:49:54+00:00"
+            "time": "2018-03-26T12:33:41+00:00"
         },
         {
             "name": "dektrium/yii2-user",
@@ -5002,8 +5002,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "schmunk42/yii2-giiant": 0,
-        "dektrium/yii2-rbac": 20
+        "schmunk42/yii2-giiant": 0
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -23,7 +23,7 @@
         "rmrevin/yii2-fontawesome": "~3.2",
         "dektrium/yii2-user": "^0.9.14",
         "guzzlehttp/guzzle": "^6.3",
-        "dektrium/yii2-rbac": "1.0.0-alpha@dev",
+        "dektrium/yii2-rbac": "1.0.1",
         "msheng/yii2-jwt": "~1.0.0"
     },
     "require-dev": {
