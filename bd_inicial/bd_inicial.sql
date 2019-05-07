@@ -63,7 +63,7 @@ CREATE TABLE `audit_entry` (
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`user_id`),
   KEY `idx_route` (`route`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4690 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -290,6 +290,7 @@ CREATE TABLE `auth_item` (
 
 LOCK TABLES `auth_item` WRITE;
 /*!40000 ALTER TABLE `auth_item` DISABLE KEYS */;
+INSERT INTO `auth_item` VALUES ('acreditar_prestacion',2,'Permite visualizar una prestación y acreditarla',NULL,NULL,1557243158,1557243158),('baja_prestacion',2,'Permite visualizar una prestación y darla de baja',NULL,NULL,1557243211,1557243211),('consultar_persona',2,'Permite buscar y visualizar un lista de persona',NULL,NULL,1557242128,1557242675),('consultar_prestacion',2,'Solo permite visualizar una prestación con la persona',NULL,NULL,1557242362,1557242362),('crear_modificar_persona',2,'Permite crear, modificar y visualizar una persona',NULL,NULL,1557242240,1557243629),('crear_modificar_prestacion',2,'Esto permite crear y editar un beneficiario con su prestación',NULL,NULL,1557242998,1557244032),('usuario_carga',1,'Este tipo de usuario puede cargar, editar y visualizar un beneficiario con su prestación',NULL,NULL,1557238559,1557244060),('usuario_consulta',1,'Este tipo de usuario solo puede visualizar reportes de prestaciones junto con el beneficiario',NULL,NULL,1557238482,1557243805),('usuario_soporte',1,'Se encarga de administrar el sistema',NULL,NULL,1557160315,1557244270);
 /*!40000 ALTER TABLE `auth_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -316,6 +317,7 @@ CREATE TABLE `auth_item_child` (
 
 LOCK TABLES `auth_item_child` WRITE;
 /*!40000 ALTER TABLE `auth_item_child` DISABLE KEYS */;
+INSERT INTO `auth_item_child` VALUES ('consultar_prestacion','consultar_persona'),('crear_modificar_persona','consultar_persona'),('usuario_consulta','consultar_persona'),('acreditar_prestacion','consultar_prestacion'),('baja_prestacion','consultar_prestacion'),('usuario_consulta','consultar_prestacion'),('crear_modificar_prestacion','crear_modificar_persona'),('usuario_carga','crear_modificar_prestacion');
 /*!40000 ALTER TABLE `auth_item_child` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -342,6 +344,30 @@ CREATE TABLE `auth_rule` (
 LOCK TABLES `auth_rule` WRITE;
 /*!40000 ALTER TABLE `auth_rule` DISABLE KEYS */;
 /*!40000 ALTER TABLE `auth_rule` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `migration`
+--
+
+DROP TABLE IF EXISTS `migration`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `migration` (
+  `version` varchar(180) NOT NULL,
+  `apply_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`version`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `migration`
+--
+
+LOCK TABLES `migration` WRITE;
+/*!40000 ALTER TABLE `migration` DISABLE KEYS */;
+INSERT INTO `migration` VALUES ('m000000_000000_base',1552672687);
+/*!40000 ALTER TABLE `migration` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -372,6 +398,7 @@ CREATE TABLE `profile` (
 
 LOCK TABLES `profile` WRITE;
 /*!40000 ALTER TABLE `profile` DISABLE KEYS */;
+INSERT INTO `profile` VALUES (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(3,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `profile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -387,7 +414,7 @@ CREATE TABLE `programa` (
   `nombre` varchar(200) DEFAULT NULL,
   `activo` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -396,7 +423,7 @@ CREATE TABLE `programa` (
 
 LOCK TABLES `programa` WRITE;
 /*!40000 ALTER TABLE `programa` DISABLE KEYS */;
-INSERT INTO `programa` VALUES (1,'Subsidio',NULL),(2,'Río Negro Presente',NULL),(3,'Emprender',NULL),(4,'Micro Emprendimiento',NULL),(5,'Hábitat',NULL),(6,NULL,NULL),(7,NULL,NULL);
+INSERT INTO `programa` VALUES (1,'Subsidio',NULL),(2,'Río Negro Presente',NULL),(3,'Emprender',NULL),(4,'Micro Emprendimiento',NULL),(5,'Hábitat',NULL);
 /*!40000 ALTER TABLE `programa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -424,6 +451,7 @@ CREATE TABLE `programa_has_tipo_recurso` (
 
 LOCK TABLES `programa_has_tipo_recurso` WRITE;
 /*!40000 ALTER TABLE `programa_has_tipo_recurso` DISABLE KEYS */;
+INSERT INTO `programa_has_tipo_recurso` VALUES (1,1),(2,1),(3,1),(1,2),(2,2),(3,2),(2,3),(2,4),(3,5);
 /*!40000 ALTER TABLE `programa_has_tipo_recurso` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -452,7 +480,7 @@ CREATE TABLE `recurso` (
   KEY `fk_recurso_tipo_recurso1_idx` (`tipo_recursoid`),
   CONSTRAINT `fk_recurso_programa1` FOREIGN KEY (`programaid`) REFERENCES `programa` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_recurso_tipo_recurso1` FOREIGN KEY (`tipo_recursoid`) REFERENCES `tipo_recurso` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -572,7 +600,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_unique_username` (`username`),
   UNIQUE KEY `user_unique_email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -581,6 +609,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'carlos','carlos@correo.com','$2y$10$zVXGxMgfQYdPIT.ks3dV9OMgcKwApSHdw1JiynJ3rsCeNdTi.XF/G','L3Jyc8aPVvz6_JHDVbByM1xDzgIaoWBN',1554217821,NULL,NULL,'172.18.0.2',1554217821,1554217821,0,1556900981),(2,'admin','admin@correo.com','$2y$10$dRNsC7/dP/xwS8b5/7830eyU3Kk2C3KLLjevB0ce.isSbCdT9oQlG','maXx0ibz2Br9UEfP06TVcltr0uOiWl4B',1556894840,NULL,NULL,'172.18.0.2',1556894840,1556894840,0,1557238194),(3,'arean','arean@correo.com','$2y$10$eU3lbvgKNGyQCHB8FUEb9ehcOaweFzAD9ruY7UiXjZ//lrfHrgyBi','bQNUdHEBMcqZfQ2cxmvOBUm4WTSdq1Rc',1557159226,NULL,NULL,'172.18.0.2',1557159226,1557159226,0,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -593,4 +622,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-15 12:47:51
+-- Dump completed on 2019-05-07 13:13:32
