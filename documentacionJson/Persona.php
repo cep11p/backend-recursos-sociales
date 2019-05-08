@@ -232,6 +232,21 @@
     }
 **/
 
+/***** Para Modificar/Actualizar el contacto de la Persona****
+ * Esta funcion actualiza/modifica los datos de contacto de una persona que ya existe en el sistema registral (interoperabilidad)
+ * Es obligatorio que el parametro id vaya en la url
+ * @url http://recurso-social.local/api/personas/1
+ * @method PUT
+ * @param
+ 
+    {    
+        "email": "Romina@correo.com",
+        "red_social": "romi_123",
+        "telefono": "29890098",
+        "celular":"(2920) 15 412129"
+    }
+**/
+
 /**** obtener Persona por nro_documento ***
 @url ejemplo http://recurso-social.local/api/personas/buscar-por-documento/29800100
 @Method GET
