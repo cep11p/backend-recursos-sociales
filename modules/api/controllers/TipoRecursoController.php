@@ -38,12 +38,13 @@ class TipoRecursoController extends ActiveController{
 
         $behaviors['access'] = [
             'class' => \yii\filters\AccessControl::className(),
-            'only' => ['*'],
+            'only' => ['index'],
             'rules' => [
                 [
                     'allow' => true,
-                    'roles' => ['@'],
-                ]
+                    'actions' => ['index'],
+                    'roles' => ['consultar_prestacion'],
+                ],
             ]
         ];
 
@@ -57,6 +58,7 @@ class TipoRecursoController extends ActiveController{
         $actions = parent::actions();
         unset($actions['create']);
         unset($actions['update']);
+        unset($actions['view']);
         $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
         return $actions;
     
@@ -72,40 +74,40 @@ class TipoRecursoController extends ActiveController{
     }  
     
     
-    public function actionCreate()
-    {
-        $resultado['message']='Se guarda un tipo recurso social';
-        $param = Yii::$app->request->post();
-        $transaction = Yii::$app->db->beginTransaction();
-        $arrayErrors = array();
-        try {
-       
-            die($resultado['message']);
-           
-        }catch (Exception $exc) {
-            $transaction->rollBack();
-            $mensaje =$exc->getMessage();
-            throw new \yii\web\HttpException(500, $mensaje);
-        }
-
-    }
+//    public function actionCreate()
+//    {
+//        $resultado['message']='Se guarda un tipo recurso social';
+//        $param = Yii::$app->request->post();
+//        $transaction = Yii::$app->db->beginTransaction();
+//        $arrayErrors = array();
+//        try {
+//       
+//            die($resultado['message']);
+//           
+//        }catch (Exception $exc) {
+//            $transaction->rollBack();
+//            $mensaje =$exc->getMessage();
+//            throw new \yii\web\HttpException(500, $mensaje);
+//        }
+//
+//    }
     
-    public function actionUpdate($id)
-    {
-        $resultado['message']='Se guarda un tipo recurso social';
-        $param = Yii::$app->request->post();
-        $transaction = Yii::$app->db->beginTransaction();
-        $arrayErrors = array();
-        try {
-       
-            die($resultado['message']);
-           
-        }catch (Exception $exc) {
-            $transaction->rollBack();
-            $mensaje =$exc->getMessage();
-            throw new \yii\web\HttpException(500, $mensaje);
-        }
-
-    }
+//    public function actionUpdate($id)
+//    {
+//        $resultado['message']='Se guarda un tipo recurso social';
+//        $param = Yii::$app->request->post();
+//        $transaction = Yii::$app->db->beginTransaction();
+//        $arrayErrors = array();
+//        try {
+//       
+//            die($resultado['message']);
+//           
+//        }catch (Exception $exc) {
+//            $transaction->rollBack();
+//            $mensaje =$exc->getMessage();
+//            throw new \yii\web\HttpException(500, $mensaje);
+//        }
+//
+//    }
     
 }

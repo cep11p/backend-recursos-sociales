@@ -16,8 +16,7 @@ class ProgramaHasTipoRecursoController extends \app\modules\backend\controllers\
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['@'],
-//                        'roles' => ['usuario_soporte'],
+                        'roles' => ['usuario_soporte'],
                     ],
                 ],
             ],

@@ -38,11 +38,17 @@ class ProgramaController extends ActiveController{
 
         $behaviors['access'] = [
             'class' => \yii\filters\AccessControl::className(),
-            'only' => ['*'],
+            'only' => ['index', 'view', 'create','update'],
             'rules' => [
                 [
                     'allow' => true,
-                    'roles' => ['@'],
+                    'actions' => ['index'],
+                    'roles' => ['consultar_prestacion'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['view'],
+                    'roles' => ['consultar_prestacion'],
                 ]
             ]
         ];
@@ -57,6 +63,7 @@ class ProgramaController extends ActiveController{
         $actions = parent::actions();
         unset($actions['create']);
         unset($actions['update']);
+        unset($actions['delete']);
         $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
         return $actions;
     
@@ -73,40 +80,40 @@ class ProgramaController extends ActiveController{
         return $resultado;
     }
     
-    public function actionCreate()
-    {
-        $resultado['message']='Se guarda un programa';
-        $param = Yii::$app->request->post();
-        $transaction = Yii::$app->db->beginTransaction();
-        $arrayErrors = array();
-        try {
-       
-            die($resultado['message']);
-           
-        }catch (Exception $exc) {
-            $transaction->rollBack();
-            $mensaje =$exc->getMessage();
-            throw new \yii\web\HttpException(500, $mensaje);
-        }
-
-    }
+//    public function actionCreate()
+//    {
+//        $resultado['message']='Se guarda un programa';
+//        $param = Yii::$app->request->post();
+//        $transaction = Yii::$app->db->beginTransaction();
+//        $arrayErrors = array();
+//        try {
+//       
+//            die($resultado['message']);
+//           
+//        }catch (Exception $exc) {
+//            $transaction->rollBack();
+//            $mensaje =$exc->getMessage();
+//            throw new \yii\web\HttpException(500, $mensaje);
+//        }
+//
+//    }
     
-    public function actionUpdate($id)
-    {
-        $resultado['message']='Se guarda un programa';
-        $param = Yii::$app->request->post();
-        $transaction = Yii::$app->db->beginTransaction();
-        $arrayErrors = array();
-        try {
-       
-            die($resultado['message']);
-           
-        }catch (Exception $exc) {
-            $transaction->rollBack();
-            $mensaje =$exc->getMessage();
-            throw new \yii\web\HttpException(500, $mensaje);
-        }
-
-    }
+//    public function actionUpdate($id)
+//    {
+//        $resultado['message']='Se guarda un programa';
+//        $param = Yii::$app->request->post();
+//        $transaction = Yii::$app->db->beginTransaction();
+//        $arrayErrors = array();
+//        try {
+//       
+//            die($resultado['message']);
+//           
+//        }catch (Exception $exc) {
+//            $transaction->rollBack();
+//            $mensaje =$exc->getMessage();
+//            throw new \yii\web\HttpException(500, $mensaje);
+//        }
+//
+//    }
     
 }

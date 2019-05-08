@@ -39,12 +39,18 @@ class BeneficiarioController extends ActiveController{
 
         $behaviors['access'] = [
             'class' => \yii\filters\AccessControl::className(),
-            'only' => ['*'],
+            'only' => ['index', 'view'],
             'rules' => [
                 [
                     'allow' => true,
-                    'roles' => ['@'],
-                ]
+                    'actions' => ['index'],
+                    'roles' => ['consultar_persona'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['view'],
+                    'roles' => ['consultar_persona'],
+                ],
             ]
         ];
 

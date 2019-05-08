@@ -15,8 +15,7 @@ class ProgramaController extends \app\modules\backend\controllers\base\ProgramaC
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['@'],
-//                        'roles' => ['usuario_soporte'],
+                        'roles' => ['usuario_soporte'],
                     ],
                 ],
             ],

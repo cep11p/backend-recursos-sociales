@@ -39,12 +39,33 @@ class RecursoController extends ActiveController{
 
         $behaviors['access'] = [
             'class' => \yii\filters\AccessControl::className(),
-            'only' => ['*'],
+            'only' => ['index', 'view', 'create','baja','acreditar'],
             'rules' => [
                 [
                     'allow' => true,
-                    'roles' => ['@'],
-                ]
+                    'actions' => ['index'],
+                    'roles' => ['consultar_prestacion'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['view'],
+                    'roles' => ['consultar_prestacion'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['create'],
+                    'roles' => ['crear_modificar_prestacion'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['baja'],
+                    'roles' => ['baja_prestacion'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['acreditar'],
+                    'roles' => ['acreditar_prestacion'],
+                ],
             ]
         ];
 
@@ -109,23 +130,23 @@ class RecursoController extends ActiveController{
 
     }
     
-    public function actionUpdate($id)
-    {
-        $resultado['message']='Se guarda un recurso social';
-        $param = Yii::$app->request->post();
-        $transaction = Yii::$app->db->beginTransaction();
-        $arrayErrors = array();
-        try {
-       
-            die($resultado['message']);
-           
-        }catch (Exception $exc) {
-            $transaction->rollBack();
-            $mensaje =$exc->getMessage();
-            throw new \yii\web\HttpException(400, $mensaje);
-        }
-
-    }
+//    public function actionUpdate($id)
+//    {
+//        $resultado['message']='Se guarda un recurso social';
+//        $param = Yii::$app->request->post();
+//        $transaction = Yii::$app->db->beginTransaction();
+//        $arrayErrors = array();
+//        try {
+//       
+//            die($resultado['message']);
+//           
+//        }catch (Exception $exc) {
+//            $transaction->rollBack();
+//            $mensaje =$exc->getMessage();
+//            throw new \yii\web\HttpException(400, $mensaje);
+//        }
+//
+//    }
     
     public function actionView($id)
     {

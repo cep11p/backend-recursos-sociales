@@ -37,12 +37,13 @@ class EstadoCivilController extends ActiveController{
 
         $behaviors['access'] = [
             'class' => \yii\filters\AccessControl::className(),
-            'only' => ['*'],
+            'only' => ['index'],
             'rules' => [
                 [
                     'allow' => true,
-                    'roles' => ['@'],
-                ]
+                    'actions' => ['index'],
+                    'roles' => ['consultar_persona'],
+                ],
             ]
         ];
 
@@ -55,6 +56,9 @@ class EstadoCivilController extends ActiveController{
     {
         $actions = parent::actions();
         unset($actions['index']);
+        unset($actions['view']);
+        unset($actions['create']);
+        unset($actions['update']);
         return $actions;
     
     }

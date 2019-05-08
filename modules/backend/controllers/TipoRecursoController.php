@@ -15,8 +15,7 @@ class TipoRecursoController extends \app\modules\backend\controllers\base\TipoRe
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['@'],
-//                        'roles' => ['usuario_soporte'],
+                        'roles' => ['usuario_soporte'],
                     ],
                 ],
             ],

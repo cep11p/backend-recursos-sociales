@@ -38,12 +38,38 @@ class PersonaController extends ActiveController{
 
         $behaviors['access'] = [
             'class' => \yii\filters\AccessControl::className(),
-            'only' => ['*'],
+            'only' => ['index', 'view', 'create','update','contacto','buscar-por-documento'],
             'rules' => [
                 [
                     'allow' => true,
-                    'roles' => ['@'],
-                ]
+                    'actions' => ['index'],
+                    'roles' => ['consultar_persona'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['view'],
+                    'roles' => ['consultar_persona'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['create'],
+                    'roles' => ['crear_modificar_persona'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['update'],
+                    'roles' => ['crear_modificar_persona'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['contacto'],
+                    'roles' => ['crear_modificar_persona'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['buscar-por-documento'],
+                    'roles' => ['consultar_persona'],
+                ],
             ]
         ];
 
