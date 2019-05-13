@@ -12,7 +12,7 @@ class Api extends \Codeception\Module
      * @param int $id
      * @return token
      */
-    public function generarToken($usuario = 'test',$id = 1) {
+    public function generarToken($usuario = 'test',$id = 4) {
         $payload = [
             'exp'=>time()+3600,
             'usuario'=>$usuario,
