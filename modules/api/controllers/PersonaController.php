@@ -169,9 +169,7 @@ class PersonaController extends ActiveController{
             if(is_int($id)){
                 throw new Exception("El id es invalido.");
             }
-            
-            $param = \yii\helpers\ArrayHelper::merge(['id'=>$id], $param);
-            
+                        
             $model = new PersonaForm();
             $model->setAttributesAndSave($param);
             

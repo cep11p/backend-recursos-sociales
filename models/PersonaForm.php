@@ -46,6 +46,7 @@ class PersonaForm extends Model
             ['id', 'existeEnRegistral'],
             ['nucleoid', 'existeNucleoEnRegistral','skipOnEmpty' => true],
             ['nro_documento', 'existeNroDocumentoEnRegistral'],
+            ['id', 'compare','compareValue'=>0,'operator'=>'==','message' => 'No se pudo registrar la persona correctamente en el Sistema Registral.']
         ];
     }
     
