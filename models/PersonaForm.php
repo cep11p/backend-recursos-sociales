@@ -42,11 +42,7 @@ class PersonaForm extends Model
             [['email','red_social'], 'string', 'max' => 200],            
             [['email'], 'email'],
             [['fecha_nacimiento'], 'date', 'format' => 'php:Y-m-d'],
-            ['nro_documento', 'match', 'pattern' => "/^[0-9]+$/"],
-            ['id', 'existeEnRegistral'],
-            ['nucleoid', 'existeNucleoEnRegistral','skipOnEmpty' => true],
-            ['nro_documento', 'existeNroDocumentoEnRegistral'],
-            ['id', 'compare','compareValue'=>0,'operator'=>'==','message' => 'No se pudo registrar la persona correctamente en el Sistema Registral.']
+            ['nro_documento', 'match', 'pattern' => "/^[0-9]+$/"]
         ];
     }
     
@@ -111,27 +107,23 @@ class PersonaForm extends Model
         
     }
     
-    public function setAttributesAndSave($param) {
-        $nucleoForm = new NucleoForm();
-        $nucleoForm->nombre = "Predeterminado";
-        $hogarForm = new HogarForm();
-        $lugarForm = new LugarForm();
+    public function setAttributesAndSave($param = array()) {
+        
         
         ####### Instanciamos atributos de PersonaForm #########
-        if(isset($param)){
-            $this->setAttributes($param);
-        }           
+        $this->setAttributes($param);
         if(!$this->validate()){
             $arrayErrors = ArrayHelper::merge($arrayErrors, $this->getErrors());
         }   
         
         ####### Instanciamos atributos de LugarForm #########
+        $lugarForm = new LugarForm();
         if(isset($param['lugar'])){
             $lugarForm->setAttributes($param['lugar']);
         }                
         
         if(!$lugarForm->validate()){
-            $arrayErrors=ArrayHelper::merge($arrayErrors, array('lugar'=>$lugarForm->getErrors()));
+            $arrayErrors=ArrayHelper::merge($arrayErrors, $lugarForm->getErrors());
         } 
         
         ###### chequeamos si existen errores ###############        
@@ -148,47 +140,26 @@ class PersonaForm extends Model
             }      
         }
         
-        /*************** Lugar/Hogar/Nucleo ******************/
-        //se debe hacer un buscado de nucleo mediante los datos de direccion que tiene lugar[]
-        //se busca integridad de la persona con respecto a su direccion
-        if($lugarForm->validate()){
-            $lugarEncontrado = $lugarForm->buscarLugarIdenticoEnSistemaLugar();
-            //Verificamos si existe el lugar y seteamos el hogar con el nucleo que corresponde
-            if(isset($lugarEncontrado['id'])){
-                
-                $hogarForm->lugarid = $lugarEncontrado['id'];
-                $hogarEncontrado = $hogarForm->buscarHogarEnSistemaRegistral();
-                
-                if($hogarEncontrado!=null){
-                    $hogarForm->setAttributes($hogarEncontrado);
-                    $nucleoEncontrado = $nucleoForm->buscarNucleoEnSistemaRegistral(['hogarid'=>$hogarForm->id,'nombre'=>'Predeterminado']);
-                }
-                
-                if(isset($nucleoEncontrado)){
-                    $nucleoForm->setAttributes($nucleoEncontrado);
-                    $nucleoForm->validate();
-                    //instanceamos el nucleo encontrado
-                    $this->nucleoid = $nucleoForm->id;  
-                }             
-            }
-        }
-        
+        #Preparamos los parametros para interoperar con registral
         $param_persona = $this->toArray();
         $param_persona['estudios'] = (isset($coleccionEstudio))?$coleccionEstudio:array();
-        $param_persona['hogar'] = $hogarForm->toArray();
         $param_persona['lugar'] = $lugarForm->toArray();
-        $param_persona['nucleo'] = $nucleoForm->toArray();
         
         /*************** Ejecutamos la interoperabilidad ************************/
         //Si es una persona con id entonces ya existe en Registral
-        $personaid = 0;
         if(isset($this->id) && !empty($this->id)){
-            $personaid = intval(\Yii::$app->registral->actualizarPersona($param_persona));
-            $this->id = $personaid;
+            $resultado = \Yii::$app->registral->actualizarPersona($param_persona);
+            if(isset($resultado->message)){
+                throw new Exception($resultado->message);
+            }
+            $this->id = intval($resultado);
             
         }else{
-            $personaid = intval(\Yii::$app->registral->crearPersona($param_persona));
-            $this->id = $personaid;
+            $resultado = \Yii::$app->registral->crearPersona($param_persona);
+            if(isset($resultado->message)){
+                throw new Exception($resultado->message);
+            }
+            $this->id = intval($resultado);
         }
         
     }
@@ -206,15 +177,14 @@ class PersonaForm extends Model
         $estudioForm->setAttributes($param);
         
         if(!$estudioForm->validate()){
-            $arrayErrors['estudios']=$estudioForm->getErrors();
-            throw new Exception(json_encode($arrayErrors));
+            throw new Exception(json_encode($estudioForm->getErrors()));
         }
         
         return $estudioForm->toArray();
     }
     
     /**
-     * Se cargar los atributos de la persona encontrada
+     * Se instancian los atributos de la persona encontrada
      * @param int $id
      * Del sistema registral obtenemos un array con datos, y de lo obtenido manipulamos los atributos relevantes para instanciar un persona PersonaForm, 
      * El array obtenido es como el siguiente ejemplo

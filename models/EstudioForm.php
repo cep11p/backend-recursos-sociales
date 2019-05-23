@@ -28,7 +28,7 @@ class EstudioForm extends Model
             [['nivel_educativoid', 'completo', 'en_curso', 'personaid'], 'integer'],
             [['anio'], 'date', 'format' => 'php:Y'],
             [['titulo'], 'string', 'max' => 200],
-            ['nivel_educativoid','existeNivelEducativoEnRegistral']
+//            ['nivel_educativoid','existeNivelEducativoEnRegistral']
         ];
     }
     
