@@ -24,7 +24,8 @@
         "dektrium/yii2-user": "^0.9.14",
         "guzzlehttp/guzzle": "^6.3",
         "dektrium/yii2-rbac": "1.0.1",
-        "msheng/yii2-jwt": "~1.0.0"
+        "msheng/yii2-jwt": "~1.0.0",
+        "phpoffice/phpspreadsheet": "^1.7"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
