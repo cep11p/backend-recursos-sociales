@@ -10,6 +10,10 @@ use yii\base\Exception;
 use app\models\Recurso;
 use app\models\Aula;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf;
+
 class RecursoController extends ActiveController{
     
     public $modelClass = 'app\models\Recurso';
@@ -39,7 +43,7 @@ class RecursoController extends ActiveController{
 
         $behaviors['access'] = [
             'class' => \yii\filters\AccessControl::className(),
-            'only' => ['index', 'view', 'create','baja','acreditar'],
+            'only' => ['index', 'view', 'create','baja','acreditar','exportar-prestaciones-xls'],
             'rules' => [
                 [
                     'allow' => true,
@@ -65,6 +69,11 @@ class RecursoController extends ActiveController{
                     'allow' => true,
                     'actions' => ['acreditar'],
                     'roles' => ['acreditar_prestacion'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['exportar-prestaciones-xls'],
+                    'roles' => ['consultar_prestacion'],
                 ],
             ]
         ];
@@ -129,24 +138,6 @@ class RecursoController extends ActiveController{
         }
 
     }
-    
-//    public function actionUpdate($id)
-//    {
-//        $resultado['message']='Se guarda un recurso social';
-//        $param = Yii::$app->request->post();
-//        $transaction = Yii::$app->db->beginTransaction();
-//        $arrayErrors = array();
-//        try {
-//       
-//            die($resultado['message']);
-//           
-//        }catch (Exception $exc) {
-//            $transaction->rollBack();
-//            $mensaje =$exc->getMessage();
-//            throw new \yii\web\HttpException(400, $mensaje);
-//        }
-//
-//    }
     
     public function actionView($id)
     {
@@ -252,5 +243,106 @@ class RecursoController extends ActiveController{
         }
 
     }
+    
+    public function actionExportarPrestacionesXls()
+    {
+        $resultado['message']='Se exportan todas la prestaciones';
+        $transaction = Yii::$app->db->beginTransaction();
+        
+        try{
+            $searchModel = new \app\models\RecursoSearch();
+            $params = \Yii::$app->request->queryParams;
+            $resultado = $searchModel->busquedadGeneral($params);
+            
+//            print_r($resultado);
+//            die();
+            
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            
+            /**** Cabecera de Persona*****/
+            $sheet->setCellValue('A1', 'Nro Documento');
+            $sheet->setCellValue('B1', 'Apellido y Nombre');
+            $sheet->setCellValue('C1', 'Localidad');
+            $sheet->setCellValue('D1', 'Dirección');
+            $sheet->setCellValue('E1', 'Contacto');
+            
+            /**** Cabecera de Prestacion*****/
+            $sheet->setCellValue('F1', 'Programa');
+            $sheet->setCellValue('G1', 'Tipo Recurso');
+            $sheet->setCellValue('H1', 'Fecha Alta');
+            $sheet->setCellValue('I1', 'Monto');
+            $sheet->setCellValue('J1', 'Proposito');
+            $sheet->setCellValue('K1', 'Observacion');
+            $sheet->setCellValue('L1', 'Estado');
+            
+            /**** Contenido ****/
+            $fila = 2;
+            foreach ($resultado['resultado'] as $value) {
+                
+                /***** Registros de Persona *****/
+                $sheet->setCellValue('A'.$fila, $value['persona']['nro_documento']);
+                $sheet->setCellValue('B'.$fila, $value['persona']['apellido'].', '.$value['persona']['nombre']);
+                $sheet->setCellValue('C'.$fila, $value['persona']['lugar']['localidad']);
+                $sheet->setCellValue('D'.$fila, \app\components\Help::componerDireccion($value['persona']['lugar']));
+                $sheet->setCellValue('E'.$fila, \app\components\Help::componerContacto($value['persona']));
+                
+                /***** Registros de Prestacion *****/
+                $sheet->setCellValue('F'.$fila, $value['programa']);
+                $sheet->setCellValue('G'.$fila, $value['tipo_recurso']);
+                $sheet->setCellValue('H'.$fila, $value['fecha_alta']);
+                $sheet->setCellValue('I'.$fila, '$'.$value['monto']);
+                $sheet->setCellValue('J'.$fila, $value['proposito']);
+                $sheet->setCellValue('L'.$fila, \app\components\Help::componerEstadoPrestacion($value));
+                
+                $fila++;
+            }
+            $fila = $fila+2;
+            $sheet->setCellValue('J'.$fila, 'Monto acreditado: $'.$resultado['monto_acreditado']);
+            $sheet->setCellValue('K'.$fila, 'Monto sin acreditar: $'.$resultado['monto_sin_acreditar']);
+            
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="prestaciones.xls"');
+            header('Cache-Control: max-age=0');
+            $writer = new Xlsx($spreadsheet);
+//            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Mpdf');
+
+            $writer->save('php://output');
+            exit();
+        }catch (Exception $exc) {
+            $transaction->rollBack();
+            $mensaje =$exc->getMessage();
+            throw new \yii\web\HttpException(400, $mensaje);
+        }
+
+    }
+    
+//    public function actionExportarPrestacionesPdf()
+//    {
+//        $resultado['message']='Se exportan todas la prestaciones';
+//        $transaction = Yii::$app->db->beginTransaction();
+//        
+//        try{
+//            
+//
+//            $spreadsheet = new Spreadsheet();
+//            $sheet = $spreadsheet->getActiveSheet();
+//            $sheet->setCellValue('A1', 'Hello World !');
+//            
+//            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+//            header('Content-Disposition: attachment;filename="hola.pdf"');
+//            header('Cache-Control: max-age=0');
+//            
+//            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Mpdf');
+//            
+//            $writer->save('php://output');
+//            exit();
+//        }catch (Exception $exc) {
+//            $transaction->rollBack();
+//            $mensaje =$exc->getMessage();
+//            throw new \yii\web\HttpException(400, $mensaje);
+//        }
+//
+//    }
     
 }

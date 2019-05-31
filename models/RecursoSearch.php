@@ -611,11 +611,12 @@ class RecursoSearch extends Recurso
     private function obtenerPersonaVinculada($coleccion_recursos = array()) {
         $personaForm = new PersonaForm();
         $ids='';
+        $pagesize = count($coleccion_recursos); 
         foreach ($coleccion_recursos as $recursos) {
             $ids .= (empty($ids))?$recursos['personaid']:','.$recursos['personaid'];
         }
         
-        $coleccionPersona = $personaForm->buscarPersonaEnRegistral(array("ids"=>$ids));
+        $coleccionPersona = $personaForm->buscarPersonaEnRegistral(array("ids"=>$ids,"pagesize"=>$pagesize));
         
         return $coleccionPersona;
     }

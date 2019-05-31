@@ -99,7 +99,7 @@ $config = [
                         'OPTIONS baja/{id}' => 'baja',
                         'PUT acreditar/{id}' => 'acreditar',
                         'OPTIONS acreditar/{id}' => 'acreditar',
-                        'GET exportarPrestaciones' => 'exportar-prestaciones',
+                        'GET exportarPrestacionesXls' => 'exportar-prestaciones-xls',
                         'OPTIONS exportarPrestaciones' => 'exportar-prestaciones',
                     ], 
                 ],

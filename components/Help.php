@@ -89,4 +89,68 @@ class Help extends \yii\base\Component{
         $texto = str_replace($no_permitidas, $permitidas ,$cadena);
         return $texto;
     }
+    
+    /**
+     * Se recibe un lugar para componer la dirección
+     * @param array $lugar
+     * @return string $direccion
+     */
+    public static function componerDireccion($lugar) {
+        
+        $dir = '';
+        $dir .= (!empty($lugar['calle']))?' '.$lugar['calle']:'';
+        $dir .= (!empty($lugar['altura']))?' '.$lugar['altura']:'';
+        $dir .= (!empty($lugar['piso']))?' piso: '.$lugar['piso']:'';
+        $dir .= (!empty($lugar['depto']))?' dpto: '.$lugar['depto']:'';
+        $dir .= (!empty($lugar['escalera']))?' esc/mod: '.$lugar['escalera']:'';
+        $dir .= (!empty($lugar['barrio']))?', Bº: '.$lugar['barrio']:'';
+        
+        return $dir;
+    }
+    
+    /**
+     * Se recibe una array con datos de persona para componer contacto (numeros de telefonos y/o celulares)
+     * @param array $persona
+     * @return string
+     */
+    public static function componerContacto($persona) {
+        
+        $contacto = '';
+        
+        #si existe el télefono lo agregamos
+        $contacto .=(isset($persona['telefono']) && !empty($persona['telefono']))?$persona['telefono']:'';
+        #Si existe telefono y celular agregamos ', '
+        $contacto .=(!empty($contacto) && isset($persona['celular']) && !empty($persona['celular']))?', ':'';
+        #Si existe celular lo agregamos 
+        $contacto .=(isset($persona['celular']) && !empty($persona['celular']))?$persona['celular']:'';
+        
+        return $contacto;
+    }
+    
+    /**
+     * Se recibe una prestacion y se define el estado (Acreditado, Sin Acreditar, Baja)
+     * @param array $prestacion
+     * @return string
+     */
+    public static function componerEstadoPrestacion($prestacion) {
+        
+        $estado = '';
+        
+        #Baja
+        if($prestacion['baja']){
+            $estado = 'Baja';
+        }
+        
+        #Sin Acreditar
+        if(!$prestacion['baja'] && !$prestacion['acreditacion']){
+            $estado = 'Sin Acreditar';
+        }
+        
+        #Acreditado
+        if(!$prestacion['baja'] && $prestacion['acreditacion']){
+            $estado = 'Acreditado';
+        }
+        
+        return $estado;
+    }
 }
