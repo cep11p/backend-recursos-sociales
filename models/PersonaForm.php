@@ -131,18 +131,10 @@ class PersonaForm extends Model
             throw new Exception(json_encode($arrayErrors));
         }
         
-        #Una vez que ya existe la persona
-        /********************** Instanciamos una coleccion de Estudios *********************/
-        if(isset($param['estudios'])){
-            $coleccionEstudio = array();
-            foreach ($param['estudios'] as $estudio) {
-                $coleccionEstudio[] = $this->serializarEstudio($estudio);
-            }      
-        }
-        
         #Preparamos los parametros para interoperar con registral
         $param_persona = $this->toArray();
-        $param_persona['estudios'] = (isset($coleccionEstudio))?$coleccionEstudio:array();
+        $param_persona['estudios'] = (isset($param['estudios']))?$param['estudios']:array();
+        $param_persona['lista_red_social'] = (isset($param['lista_red_social']))?$param['lista_red_social']:array();
         $param_persona['lugar'] = $lugarForm->toArray();
         
         /*************** Ejecutamos la interoperabilidad ************************/

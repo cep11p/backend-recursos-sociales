@@ -170,6 +170,7 @@ class PersonaController extends ActiveController{
                 throw new Exception("El id es invalido.");
             }
                         
+            $param['id'] = $id;            
             $model = new PersonaForm();
             $model->setAttributesAndSave($param);
             

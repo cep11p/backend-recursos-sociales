@@ -52,6 +52,16 @@
                 ]
             },
             "estudios": [],
+            "lista_red_social": [
+                {
+                    "id": 32,
+                    "personaid": 1,
+                    "tipo_red_socialid": 1,
+                    "perfil": "https://www.facebook.com/cep11p",
+                    "icono_class": "fab fa-facebook-square",
+                    "tipo_red_social": "Facebook"
+                }
+            ],
             "sexo": "Mujer",
             "genero": "",
             "estado_civil": "",
@@ -115,6 +125,16 @@
                 ]
             },
             "estudios": [],
+            "lista_red_social": [
+                {
+                    "id": 32,
+                    "personaid": 1,
+                    "tipo_red_socialid": 1,
+                    "perfil": "https://www.facebook.com/cep11p",
+                    "icono_class": "fab fa-facebook-square",
+                    "tipo_red_social": "Facebook"
+                }
+            ],
             "sexo": "Mujer",
             "genero": "",
             "estado_civil": "",
@@ -173,6 +193,16 @@
             "en_curso":0,
             "anio":"2014"
         }],
+        "lista_red_social": [
+            {
+            "tipo_red_socialid":1,
+            "perfil":"cep11p"
+            },
+            {
+            "tipo_red_socialid":2,
+            "perfil":"kar2000"
+            }
+        ]
         "lugar": {
             "barrio":"Don bosco",
             "calle":"Mitre",
@@ -218,6 +248,16 @@
             "en_curso":0,
             "anio":"2014"
         }],
+        "lista_red_social": [
+            {
+            "tipo_red_socialid":1,
+            "perfil":"cep11p"
+            },
+            {
+            "tipo_red_socialid":2,
+            "perfil":"kar2000"
+            }
+        ]
         "lugar": {
             "barrio":"Don bosco",
             "calle":"Mitre",
@@ -322,6 +362,16 @@
         ]
     },
     "estudios": [],
+    "lista_red_social": [
+        {
+            "id": 32,
+            "personaid": 1,
+            "tipo_red_socialid": 1,
+            "perfil": "https://www.facebook.com/cep11p",
+            "icono_class": "fab fa-facebook-square",
+            "tipo_red_social": "Facebook"
+        }
+    ],
     "sexo": "Mujer",
     "genero": "",
     "estado_civil": "",
