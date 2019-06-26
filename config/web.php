@@ -145,6 +145,10 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/sexo', 
                 ],
+                [   #tipo-red-social
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/tipo-red-social', 
+                ],
                 [   #genero
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/genero', 
