@@ -83,27 +83,45 @@ class PersonaForm extends Model
         
     }
     
-    public function setContacto($param) {
+    /**
+     * Se reciben los parametros de contactos + id y se hace un update interoperable con el sistema regrital
+     * @param array $param
+     * @throws Exception
+     */
+    public function setContactoAndSave($param) {
+        
+        ### Filtramos los parametros relevantes a contacto ###
+        
+        /*id*/
+        if(isset($param['id']) && !empty($param['id'])){
+            $parametros['id'] = $param['id'];
+        } 
         
         /*email*/
         if(isset($param['email']) && !empty($param['email'])){
-            $this->email = $param['email'];
-        }  
-        
-        /*red_social*/
-        if(isset($param['red_social']) && !empty($param['red_social'])){
-            $this->red_social = $param['red_social'];
+            $parametros['email'] = $param['email'];
         }  
         
         /*telefono*/
         if(isset($param['telefono']) && !empty($param['telefono'])){
-            $this->telefono = $param['telefono'];
+            $parametros['telefono'] = $param['telefono'];
         }  
         
         /*celular*/
         if(isset($param['celular']) && !empty($param['celular'])){
-            $this->celular = $param['celular'];
+            $parametros['celular'] = $param['celular'];
+        }
+        
+        /*lista de redes sociales*/
+        if(isset($param['lista_red_social']) && !empty($param['lista_red_social'])){
+            $parametros['lista_red_social'] = $param['lista_red_social'];
         }  
+                
+        $resultado = \Yii::$app->registral->actualizarPersona($parametros);
+        if(isset($resultado->message)){
+            throw new Exception($resultado->message);
+        }
+        $this->id = intval($resultado);
         
     }
     

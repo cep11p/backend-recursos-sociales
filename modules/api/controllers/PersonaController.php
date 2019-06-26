@@ -132,6 +132,11 @@ class PersonaController extends ActiveController{
 
     }
     
+    /**
+     * Se reciben los parametros para crear un persona y realizar la interoperabilidad con registral
+     * @return array
+     * @throws \yii\web\HttpException
+     */
     public function actionCreate()
     {
         $resultado['message']='Se registró una nueva persona';
@@ -187,7 +192,7 @@ class PersonaController extends ActiveController{
     }
     
     /**
-     * Solo se editan los datos de contacto: email, telefono, celular, red social
+     * Solo se editan los datos de contacto: email, telefono, celular, lista_red_social
      * @param int $id
      * @return array 
      * @throws \yii\web\HttpException
@@ -204,15 +209,10 @@ class PersonaController extends ActiveController{
             }
             
             #es necesario concatenar el id
-            $param = \yii\helpers\ArrayHelper::merge(['id'=>$id], $param);
+            $param['id'] = $id;
             
             $model = new PersonaForm();
-            $model->buscarPersonaPorIdEnRegistral($id);
-            $model->setContacto($param);
-            
-            if(!$model->save()){
-                throw new Exception(json_encode($model->getErrors()));
-            }
+            $model->setContactoAndSave($param);
             
             $resultado['success']=true;
             $resultado['data']['id']=$model->id;
@@ -237,8 +237,6 @@ class PersonaController extends ActiveController{
     {
         $resultado['estado']=false;   
         $resultado = \Yii::$app->registral->buscarPersonaPorNroDocumento($nro_documento);
-        
-//        print_r($resultado);die();
         
         if(isset($resultado['resultado']) && count($resultado['resultado'])>0){
             $data['success']=true;
