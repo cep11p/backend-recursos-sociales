@@ -257,3 +257,11 @@
         "fecha_acreditacion": "2014-10-06"
     }
  */
+
+/**
+ **** Realiza una exportacion a excel****
+ * Se exporta una lista de prestaciones
+ * Se permiten todos los parametros para realzar un exportacion por criterio
+ * @url http://recurso-social.local/api/recurso/exportar-prestaciones-xls
+ * @method GET
+ */

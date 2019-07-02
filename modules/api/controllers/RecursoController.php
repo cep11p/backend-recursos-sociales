@@ -250,6 +250,7 @@ class RecursoController extends ActiveController{
         try{
             $searchModel = new \app\models\RecursoSearch();
             $params = \Yii::$app->request->queryParams;
+            $params['pagesize']=99999;
             $resultado = $searchModel->busquedadGeneral($params);
             
             #cargamos el temprate
