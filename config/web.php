@@ -99,6 +99,12 @@ $config = [
                         'OPTIONS baja/{id}' => 'baja',
                         'PUT acreditar/{id}' => 'acreditar',
                         'OPTIONS acreditar/{id}' => 'acreditar',
+                    ], 
+                ],
+                [   #Export
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/export', 
+                    'extraPatterns' => [
                         'GET exportarPrestacionesXls' => 'exportar-prestaciones-xls',
                         'OPTIONS exportarPrestaciones' => 'exportar-prestaciones',
                     ], 
