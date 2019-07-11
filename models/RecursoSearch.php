@@ -524,15 +524,26 @@ class RecursoSearch extends Recurso
             'fecha_alta'=>SORT_DESC
             ]);
         
+        #### preparamos los datos del beneficiario para mostrar ####
         $personaForm = new PersonaForm();
         $resultado = $personaForm->obtenerPersonaConLugarYEstudios($this->personaid);
+        
+        #### Obtenemos la lista de recursos que tiene el beneficiario ####
         if($dataProvider->getTotalCount()){
             $resultado['recurso_lista'] = array();
             foreach ($dataProvider->getModels() as $value) {
-                $resultado['recurso_lista'][] = $value->toArray();
+                $pretacion = $value->toArray();
+                
+                #### Si la prestacion tiene alumnos, agregramos una lista de alumnos ####
+                if(count($value->alumnos)>0){
+                    $pretacion = \yii\helpers\ArrayHelper::merge($pretacion,array("alumno_lista"=>$value->alumnos));
+                }
+                
+                #### Preparamos la prestacion para mostrar ####
+                $resultado['recurso_lista'][] = $pretacion;
             }
            
-            #Ser ordena la lista de recursos por programa y fecha_alta desc
+            #Se ordena y se agrupa la lista de recursos por programa y fecha_alta desc
             $programas = array();
             $coleccion_por_programa = array();
             $recurso_lista = array();
@@ -544,6 +555,7 @@ class RecursoSearch extends Recurso
                             $existe = true;
                     }
                 }
+                #### Se crea listado de prestaciones en programa_grupo ####
                 if(!$existe){
                     for($j=0;$j<count($resultado['recurso_lista']);$j++){
                         if($programa_old == $resultado['recurso_lista'][$j]['programa']){                        
