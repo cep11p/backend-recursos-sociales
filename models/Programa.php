@@ -73,4 +73,14 @@ class Programa extends BasePrograma
             ]
         );
     }
+    public function fields()
+    {
+        return ArrayHelper::merge(parent::fields(), [
+            #Se prepara la lista de tipo de recursos para ser clasificados
+            'lista_tipo_recurso'=> function($model){
+                return $model->tipoRecursos;
+            }
+        ]);
+        
+    }
 }
