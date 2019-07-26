@@ -64,14 +64,13 @@ class ProgramaController extends ActiveController{
         unset($actions['create']);
         unset($actions['update']);
         unset($actions['delete']);
-        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
         return $actions;
     
     }
     
     
     
-    public function prepareDataProvider() 
+    public function actionDetalle() 
     {
         $searchModel = new \app\models\ProgramaSearch();
         $params = \Yii::$app->request->queryParams;

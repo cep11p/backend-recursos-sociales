@@ -116,6 +116,10 @@ $config = [
                 [   #Programa
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/programa', 
+                    'extraPatterns' => [
+                        'GET detalle' => 'detalle',
+                        'OPTIONS detalle' => 'detalle',
+                    ], 
                 ],
                 [   #Tipo Recurso
                     'class' => 'yii\rest\UrlRule',
