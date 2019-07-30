@@ -72,6 +72,26 @@ class LugarForm extends Model
     }
     
     /**
+     * Vamos a filtrar localidades según el criterio, es decir
+     * que vamos a chequear si coinciden los atributos
+     * @return array $resultado;
+     */
+    public function buscarLocalidadEnSistemaLugar($params = null) {
+        
+        $resultado = null;
+        if(isset($params)){
+            $response = \Yii::$app->lugar->buscarLocalidad($params);   
+        }
+        
+        if(isset($response['success']) && $response['success']==true){
+
+            $resultado = $response['resultado'];
+        }
+        
+        return $resultado;
+    }
+    
+    /**
      * Vamos a ver si existe un lugar identico en el sistema lugar, es decir
      * que vamos a buscar un lugar unico
      * @return LugarForm $lugarEncontrado;
