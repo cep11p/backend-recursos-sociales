@@ -21,6 +21,7 @@ use Yii;
  * @property string $fecha_baja
  * @property string $fecha_acreditacion
  * @property string $descripcion_baja
+ * @property integer $localidadid
  *
  * @property \app\models\Aula[] $aulas
  * @property \app\models\Programa $programa
@@ -50,7 +51,7 @@ abstract class Recurso extends \yii\db\ActiveRecord
             [['fecha_inicial', 'fecha_alta', 'fecha_baja', 'fecha_acreditacion'], 'safe'],
             [['monto'], 'number'],
             [['observacion', 'proposito', 'descripcion_baja'], 'string'],
-            [['programaid', 'tipo_recursoid', 'personaid'], 'integer'],
+            [['programaid', 'tipo_recursoid', 'personaid', 'localidadid'], 'integer'],
             [['programaid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Programa::className(), 'targetAttribute' => ['programaid' => 'id']],
             [['tipo_recursoid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\TipoRecurso::className(), 'targetAttribute' => ['tipo_recursoid' => 'id']]
         ];
@@ -74,6 +75,7 @@ abstract class Recurso extends \yii\db\ActiveRecord
             'fecha_baja' => 'Fecha Baja',
             'fecha_acreditacion' => 'Fecha Acreditacion',
             'descripcion_baja' => 'Descripcion Baja',
+            'localidadid' => 'Localidadid',
         ];
     }
 
@@ -86,6 +88,7 @@ abstract class Recurso extends \yii\db\ActiveRecord
             'observacion' => '
 ',
             'personaid' => 'Este atributo hace referencia a una persona del sistema Registral',
+            'localidadid' => 'Este atributo hace referencia al sistema Lugar (interoperabilidad)',
         ]);
     }
 

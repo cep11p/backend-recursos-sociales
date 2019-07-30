@@ -77,6 +77,7 @@ class Recurso extends BaseRecurso
                 ['fecha_alta', 'validarFechaAlta'],
                 ['fecha_acreditacion', 'validarFechaAcreditacion'],
                 ['personaid', 'existePersonaEnRegistral'],
+                ['localidadid', 'existeLocalidadEnLugar'],
                 ['personaid', 'compare','compareValue'=>0,'operator'=>'!=','message' => 'No se pudo registrar la persona correctamente en el Sistema Registral.']
             ]
         );
@@ -118,6 +119,13 @@ class Recurso extends BaseRecurso
         
         if(isset($response['estado']) && $response['estado']!=true){
             $this->addError('id', 'La persona con el id '.$this->personaid.' no existe!');
+        }
+    }
+    
+    public function existeLocalidadEnLugar(){
+        $response = \Yii::$app->lugar->buscarLocalidadPorId($this->localidadid); 
+        if(!isset($response['success']) || (isset($response['success']) && $response['success']!=true)){
+            $this->addError('localidadid', 'La localidad con el id '.$this->localidadid.' no existe!');
         }
     }
     

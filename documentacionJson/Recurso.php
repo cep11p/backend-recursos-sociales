@@ -167,12 +167,13 @@
  * @param
  * {
         "personaid": 9,
+        "localidadid": 2530,
         "programaid": 2,
         "tipo_recursoid": 1,
         "prosito": "un proposito",
         "fecha_alta": "2011-02-02",
         "monto": 1234.4,
-        "observacion": "uuuuuuunaaaaaaaaaaaaa Observacion",
+        "observacion": "uuuuuuunaaaaaaaaaaaaa Observacion"
     }
  */
 
