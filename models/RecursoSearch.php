@@ -18,7 +18,7 @@ class RecursoSearch extends Recurso
     public function rules()
     {
     return [
-        [['id', 'programaid', 'tipo_recursoid', 'personaid'], 'integer'],
+        [['id', 'programaid', 'tipo_recursoid', 'personaid','localidadid'], 'integer'],
         [['fecha_inicial', 'fecha_alta', 'observacion', 'proposito','recurso_cantidad'], 'safe'],
         [['monto'], 'number'],
     ];
@@ -213,15 +213,6 @@ class RecursoSearch extends Recurso
     
     private function createQuery($params) {
         $query = Recurso::find();
-        
-//        $pagesize = (!isset($params['pagesize']) || !is_numeric($params['pagesize']) || $params['pagesize']==0)?20:intval($params['pagesize']);
-//        $dataProvider = new ActiveDataProvider([
-//            'query' => $query,
-//            'pagination' => [
-//                'pageSize' => $pagesize,
-//                'page' => (isset($params['page']) && is_numeric($params['page']))?$params['page']:0
-//            ],
-//        ]);
 
         $this->load($params,'');
         
@@ -236,10 +227,6 @@ class RecursoSearch extends Recurso
         $personaForm = new PersonaForm();
         if(isset($params['global_param']) && !empty($params['global_param'])){
             $persona_params["global_param"] = $params['global_param'];
-        }
-        
-        if(isset($params['localidadid']) && !empty($params['localidadid'])){
-            $persona_params['localidadid'] = $params['localidadid'];
         }
         
         if(isset($params['calle']) && !empty($params['calle'])){
@@ -258,6 +245,10 @@ class RecursoSearch extends Recurso
             }
         }
         
+//        if(isset($params['localidadid']) && !empty($params['localidadid'])){
+//            $persona_params['localidadid'] = $params['localidadid'];
+//        }
+        
         
         #Criterio de recurso social por lista de persona.... lista de personaid
         if(count($lista_personaid)>0){
@@ -273,6 +264,7 @@ class RecursoSearch extends Recurso
             'programaid' => $this->programaid,
             'tipo_recursoid' => $this->tipo_recursoid,
             'personaid' => $this->personaid,
+            'localidadid' => $this->localidadid,
         ]);
 
         $query->andFilterWhere(['like', 'observacion', $this->observacion])
