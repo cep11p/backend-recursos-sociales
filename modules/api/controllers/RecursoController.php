@@ -142,6 +142,7 @@ class RecursoController extends ActiveController{
             }
             
             $resultado = $model->toArray();
+            $resultado['localidad'] = $model->getLocalidad();
             $resultado['persona'] = $model->getPersona();
             
             if(count($model->getAlumnos())!=0){

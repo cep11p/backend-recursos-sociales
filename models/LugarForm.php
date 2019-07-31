@@ -74,7 +74,7 @@ class LugarForm extends Model
     /**
      * Vamos a filtrar localidades según el criterio, es decir
      * que vamos a chequear si coinciden los atributos
-     * @return array $resultado;
+     * @return array $resultado se devuelve una coleccion de localidades;
      */
     public function buscarLocalidadEnSistemaLugar($params = null) {
         
@@ -86,6 +86,25 @@ class LugarForm extends Model
         if(isset($response['success']) && $response['success']==true){
 
             $resultado = $response['resultado'];
+        }
+        
+        return $resultado;
+    }
+    
+    /**
+     * Vamos a filtrar un localidad por id
+     * @return array $resultado se devuelve una localidad;
+     */
+    public function buscarLocalidadPorIdEnSistemaLugar($params = null) {
+        
+        $resultado = null;
+        if(isset($params)){
+            $response = \Yii::$app->lugar->buscarLocalidadPorId($params);   
+        }
+        
+        if(isset($response['nombre'])){
+
+            $resultado = $response;
         }
         
         return $resultado;

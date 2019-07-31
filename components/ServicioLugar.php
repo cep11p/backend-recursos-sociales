@@ -37,7 +37,7 @@ class ServicioLugar extends Component implements IServicioLugar
 //                'Content-Type'=>'application/json'
             ];          
             
-            $response = $client->request('GET', 'http://lugar/api/localidad?id='.$id, ['headers' => $headers]);
+            $response = $client->request('GET', 'http://lugar/api/localidads/'.$id, ['headers' => $headers]);
             $respuesta = json_decode($response->getBody()->getContents(), true);
             \Yii::info($respuesta);
             
@@ -81,7 +81,11 @@ class ServicioLugar extends Component implements IServicioLugar
        
     }
     
-    
+    /**
+     * Se interopera con el sistema Lugar
+     * @param array $param Criterio de busquedad
+     * @return array Se devuelve una coleccion de localidades
+     */
     public function buscarLugar($param)
     {
         

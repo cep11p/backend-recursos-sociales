@@ -192,6 +192,24 @@ class Recurso extends BaseRecurso
     }
     
     /**
+     * Se obtiene la localidad
+     * para obtener este dato se requiere hacer una interoperabilidad con el sistema Lugar
+     * @return array
+     */
+    public function getLocalidad(){
+        $resultado = null;
+        $model = new LugarForm();
+        $arrayResultado = $model->buscarLocalidadPorIdEnSistemaLugar($this->localidadid);
+        
+        if($arrayResultado){
+            $resultado = $arrayResultado['nombre'];
+        }        
+        
+        return $resultado;       
+        
+    }
+    
+    /**
      * Se obtiene una lista de alumnos si es que el recurso tiene esa coleccion
      * @return array
      */
