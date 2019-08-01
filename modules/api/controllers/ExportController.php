@@ -69,7 +69,6 @@ class ExportController extends ActiveController{
     
     public function actionExportarPrestacionesXls()
     {
-//        die("hola contralodor export");
         $resultado['message']='Se exportan todas la prestaciones';
         $transaction = Yii::$app->db->beginTransaction();
         
@@ -121,7 +120,10 @@ class ExportController extends ActiveController{
             $sheet->setCellValue('I'.$cabeceraRow, 'Monto');
             $sheet->setCellValue('J'.$cabeceraRow, 'Propósito');
             $sheet->setCellValue('K'.$cabeceraRow, 'Estado');
-            $sheet->setCellValue('L'.$cabeceraRow, 'Observación');
+            $sheet->setCellValue('L'.$cabeceraRow, 'Fecha de acreditación');
+            $sheet->setCellValue('M'.$cabeceraRow, 'Fecha de baja');
+            $sheet->setCellValue('N'.$cabeceraRow, 'Descripción de baja');
+            $sheet->setCellValue('O'.$cabeceraRow, 'Observación');
             
             $styleArray = [
                 'font' => [
@@ -133,14 +135,14 @@ class ExportController extends ActiveController{
             ];
             
             #Se pone en negrita
-            $sheet->getStyle('A'.$cabeceraRow.':L'.$cabeceraRow)->applyFromArray($styleArray);
+            $sheet->getStyle('A'.$cabeceraRow.':O'.$cabeceraRow)->applyFromArray($styleArray);
             
             /**** Contenido ****/
             $fila = 10;
             foreach ($resultado['resultado'] as $value) {
                 #se alterna el color de fondo de las filas
                 if($fila%2==0){
-                    $spreadsheet->getActiveSheet()->getStyle('A'.$fila.':L'.$fila)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('eeeeee');
+                    $spreadsheet->getActiveSheet()->getStyle('A'.$fila.':O'.$fila)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('eeeeee');
                 }
                 
                 /***** Registros de Persona *****/
@@ -160,7 +162,10 @@ class ExportController extends ActiveController{
                 $sheet->setCellValue('I'.$fila, '$'.$value['monto']);
                 $sheet->setCellValue('J'.$fila, $value['proposito']);
                 $sheet->setCellValue('K'.$fila, \app\components\Help::componerEstadoPrestacion($value));
-                $sheet->setCellValue('L'.$fila, $value['observacion']);
+                $sheet->setCellValue('L'.$fila, $value['fecha_acreditacion']);
+                $sheet->setCellValue('M'.$fila, $value['fecha_baja']);
+                $sheet->setCellValue('N'.$fila, $value['descripcion_baja']);
+                $sheet->setCellValue('O'.$fila, $value['observacion']);
                 
                 $fila++;
             }
