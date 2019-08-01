@@ -17,11 +17,11 @@ class RecursoSearch extends Recurso
     */
     public function rules()
     {
-    return [
-        [['id', 'programaid', 'tipo_recursoid', 'personaid','localidadid'], 'integer'],
-        [['fecha_inicial', 'fecha_alta', 'observacion', 'proposito','recurso_cantidad'], 'safe'],
-        [['monto'], 'number'],
-    ];
+        return [
+            [['id', 'programaid', 'tipo_recursoid', 'personaid','localidadid'], 'integer'],
+            [['fecha_inicial', 'fecha_alta', 'observacion', 'proposito','recurso_cantidad'], 'safe'],
+            [['monto'], 'number'],
+        ];
     }
 
     /**
@@ -245,11 +245,6 @@ class RecursoSearch extends Recurso
             }
         }
         
-//        if(isset($params['localidadid']) && !empty($params['localidadid'])){
-//            $persona_params['localidadid'] = $params['localidadid'];
-//        }
-        
-        
         #Criterio de recurso social por lista de persona.... lista de personaid
         if(count($lista_personaid)>0){
             $query->andWhere(array('in', 'personaid', $lista_personaid));
@@ -313,7 +308,6 @@ class RecursoSearch extends Recurso
      */
     public function busquedadGeneral($params)
     {
-//        $query = Recurso::find();
         $query = $this->createQuery($params);
         $pagesize = (!isset($params['pagesize']) || !is_numeric($params['pagesize']) || $params['pagesize']==0)?20:intval($params['pagesize']);
         $dataProvider = new ActiveDataProvider([
@@ -323,7 +317,6 @@ class RecursoSearch extends Recurso
                 'page' => (isset($params['page']) && is_numeric($params['page']))?$params['page']:0
             ],
         ]);
-//
         $this->load($params,'');
         
         $monto_acreditado = $this->sumarMontoAcreditado($params);
@@ -338,11 +331,12 @@ class RecursoSearch extends Recurso
         }
         
         if(count($coleccion_recurso)>0){
+            #Se vinculan los datos de las personas correspondiente a cada prestacion
             $coleccion_persona = $this->obtenerPersonaVinculada($coleccion_recurso);
             $coleccion_recurso = $this->vincularPersona($coleccion_recurso, $coleccion_persona);
             
+            #Se vinculan los nombre de la localidares correspondiente a cada prestacion
             $coleccion_localidad = $this->obtenerLocalidadVinculada($coleccion_recurso);
-//            print_r($coleccion_localidad);die();
             $coleccion_recurso = $this->vincularLocalidad($coleccion_recurso, $coleccion_localidad);
         } 
 
@@ -669,7 +663,6 @@ class RecursoSearch extends Recurso
         
         $coleccion = $lugarForm->buscarLocalidadEnSistemaLugar(array("ids"=>$ids,"pagesize"=>$pagesize));
         
-//        print_r($coleccion);die();
         return $coleccion;
     }
 
