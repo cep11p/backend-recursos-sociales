@@ -121,6 +121,15 @@ $config = [
                         'OPTIONS detalle' => 'detalle',
                     ], 
                 ],
+                [   #Estadistica
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/estadistica', 
+                    'extraPatterns' => [
+                        'GET beneficiarios-por-programa-en-localidad/{localidadid}' => 'beneficiarios-por-programa-en-localidad',
+                        'OPTIONS beneficiarios-por-programa-en-localidad/{localidadid}' => 'beneficiarios-por-programa-en-localidad',
+                    ],
+                    'tokens' => [ '{id}' => '<id:\\w+>', '{localidadid}'=>'<localidadid:\\w+>' ],
+                ],
                 [   #Tipo Recurso
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/tipo-recurso', 
