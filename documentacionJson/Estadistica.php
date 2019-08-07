@@ -28,7 +28,7 @@
  */
 
 /**** Se obtienen la cantidad de beneficiarios clasificados por tipos de recurso(tipo de prestacion) en una determinada localidad ***
-@url ejemplo http://recurso-social.local/api/estadisticas/beneficiarios-por-programa-en-localidad/2640
+@url ejemplo http://recurso-social.local/api/estadisticas/beneficiarios-por-tipo-recurso-en-localidad/2640
 @Method GET
 [
     {
