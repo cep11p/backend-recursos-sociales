@@ -127,6 +127,8 @@ $config = [
                     'extraPatterns' => [
                         'GET beneficiarios-por-programa-en-localidad/{localidadid}' => 'beneficiarios-por-programa-en-localidad',
                         'OPTIONS beneficiarios-por-programa-en-localidad/{localidadid}' => 'beneficiarios-por-programa-en-localidad',
+                        'GET beneficiarios-por-tipo-recurso-en-localidad/{localidadid}' => 'beneficiarios-por-tipo-recurso-en-localidad',
+                        'OPTIONS beneficiarios-por-tipo-recurso-en-localidad/{localidadid}' => 'beneficiarios-por-tipo-recurso-en-localidad',
                     ],
                     'tokens' => [ '{id}' => '<id:\\w+>', '{localidadid}'=>'<localidadid:\\w+>' ],
                 ],
