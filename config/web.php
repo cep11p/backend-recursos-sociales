@@ -129,8 +129,10 @@ $config = [
                         'OPTIONS beneficiarios-por-programa-en-localidad/{localidadid}' => 'beneficiarios-por-programa-en-localidad',
                         'GET beneficiarios-por-tipo-recurso-en-localidad/{localidadid}' => 'beneficiarios-por-tipo-recurso-en-localidad',
                         'OPTIONS beneficiarios-por-tipo-recurso-en-localidad/{localidadid}' => 'beneficiarios-por-tipo-recurso-en-localidad',
+                        'GET montos-por-localidades/{rango}' => 'montos-por-localidades',
+                        'OPTIONS montos-por-localidades/{rango}' => 'montos-por-localidades',
                     ],
-                    'tokens' => [ '{id}' => '<id:\\w+>', '{localidadid}'=>'<localidadid:\\w+>' ],
+                    'tokens' => [ '{rango}' => '<rango:\\w+>', '{localidadid}'=>'<localidadid:\\w+>' ],
                 ],
                 [   #Tipo Recurso
                     'class' => 'yii\rest\UrlRule',

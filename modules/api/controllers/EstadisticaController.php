@@ -96,4 +96,17 @@ class EstadisticaController extends ActiveController{
         return $resultado;
     }
     
+    /**
+     * Se obtienen tipos de montos(acreditado, sin acreditar, baja) clasificados por localidades con orden descendente de monto
+     * @param int $rango rango de localidades
+     * @return array
+     */
+    public function actionMontosPorLocalidades($rango) 
+    {
+        $searchModel = new \app\models\EstadisticaSearch();
+        $resultado = $searchModel->montosPorLocalidades($rango);
+
+        return $resultado;
+    }
+    
 }
