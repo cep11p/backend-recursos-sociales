@@ -85,7 +85,6 @@ class EstadisticaSearch
         
         $resultado = array();
         foreach ($rows as $value) {
-//            $localidad = $value;
             $localidad['localidadid'] = intval($value['localidadid']);
             $localidad['monto_acreditado'] = ($value['monto_acreditado']!=null)? doubleval($value['monto_acreditado']):0;
             $localidad['monto_baja'] = ($value['monto_baja']!=null)? doubleval($value['monto_baja']):0;            
@@ -98,6 +97,55 @@ class EstadisticaSearch
             $resultado[] = $localidad;
         }
         
+        if(count($resultado)>0){            
+            #Se vinculan los nombre de la localidares correspondiente a cada prestacion
+            $coleccion_localidad = $this->obtenerLocalidadVinculada($resultado);
+            $resultado = $this->vincularLocalidad($resultado, $coleccion_localidad);
+        }
+        
         return $resultado;
+    }
+    
+    /**
+     * Se vinculan las localidades a la lista de recursos
+     * @param array $coleccion_recurso
+     * @param array $coleccion_localidadid
+     * @return array
+     */
+    private function vincularLocalidad($coleccion_recurso = array(), $coleccion_localidadid = array()) {
+        $i=0;
+        foreach ($coleccion_recurso as $recurso) {
+            foreach ($coleccion_localidadid as $localidad) {
+                if(isset($recurso['localidadid']) && isset($localidad['id']) && $recurso['localidadid']==$localidad['id']){                    
+                    $recurso['localidad'] = $localidad['nombre'];
+                    $coleccion_recurso[$i] = $recurso;
+                }
+            }
+            $i++;
+        }
+        
+        return $coleccion_recurso;
+    }
+    
+    /**
+     * Se obtienen las localidades que están vinculadas a la lista de recursos (localidadid)
+     * @param array $coleccion_recursos
+     * @return array
+     */
+    private function obtenerLocalidadVinculada($coleccion_recursos = array()) {
+        $lugarForm = new LugarForm();
+        $ids='';
+        $pagesize = count($coleccion_recursos); 
+        foreach ($coleccion_recursos as $recursos) {
+            #si esta seteada la localidad
+            if(isset($recursos['localidadid'])){
+                $ids .= (empty($ids))?$recursos['localidadid']:','.$recursos['localidadid'];
+            }
+            
+        }
+        
+        $coleccion = $lugarForm->buscarLocalidadEnSistemaLugar(array("ids"=>$ids,"pagesize"=>$pagesize));
+        
+        return $coleccion;
     }
 }
