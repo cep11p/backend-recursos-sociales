@@ -28,24 +28,15 @@ class DummyServicioLugar extends Component implements IServicioLugar
      * @return boolean
      */
     public function buscarLocalidadPorId($id)
-    {
-       
-        #injectamos el array de datos (mock)
-        $data = require(\Yii::getAlias('@app').'/components/DataLocalidad.php');
-        
+    {       
         #preparamos el resultado
         $resultado = array(
-            "success"=>FALSE,
-            "resultado"=>array()
-        );
-        
-        #filtramos por la clave el array $data
-        $modelEncontrado = Help::filter_by_value($data, 'id', $id);        
-        
-        if($modelEncontrado){
-            $resultado['success'] = true;
-            $resultado['resultado'] = $modelEncontrado;
-        }
+            "id"=> 2640,
+            "nombre"=> "ViedmaDummy",
+            "regionid"=> null,
+            "departamentoid"=> 405,
+            "municipioid"=> null            
+        );        
         
         return $resultado;
        
@@ -99,29 +90,32 @@ class DummyServicioLugar extends Component implements IServicioLugar
     
     public function buscarLocalidad($param)
     {
+        #injectamos el array de datos (mock)
+        $data = require(\Yii::getAlias('@app').'/components/DataLugar.php');   
         
-        $criterio = $this->crearCriterioBusquedad($param);
-        $client =   $this->_client;
-        try{
-            $headers = [
-//                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_LUGAR'],
-                'Content-Type'=>'application/json'
-            ];          
-            
-            $response = $client->request('GET', 'http://api.lugar.local/api/localidad?'.$criterio, ['headers' => $headers]);
-            $respuesta = json_decode($response->getBody()->getContents(), true);
-            \Yii::error($respuesta);
-            
-            return $respuesta;
-        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
-                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e->getResponse()->getBody()));
-                \Yii::error('Error de integración:'.$e->getResponse()->getBody(), $category='apioj');
-                return false;
-        } catch (Exception $e) {
-                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e));
-                \Yii::error('Error inesperado: se produjo:'.$e->getMessage(), $category='apioj');
-                return false;
+        #set page
+        $page = 0;
+        if(isset($param['page']) && is_numeric($param['page'])){
+            $page = $param['page'];
         }
+        
+        #preparamos el resultado
+        $resultado = array(
+            "success"=>FALSE,
+            "resultado"=>array()
+        );
+        
+        $data = array_chunk($data, 20);
+        
+        $response = $coleccion = array(
+            "success"=> "true",
+            "pagesize"=> 20,
+            "pages"=> 6,
+            "total_filtrado"=> 104,
+            "resultado"=>$data,
+        );
+        
+        return $response;
        
     }
     

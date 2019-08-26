@@ -70,6 +70,7 @@ class Recurso extends BaseRecurso
             parent::rules(),
             [
                 ['monto', 'double'],
+                [['localidadid'], 'required','message' =>'No hay localidad asignada a el beneficiario'],
                 [['descripcion_baja', 'fecha_baja'], 'required', 'on' => self::SCENARIO_BAJA],
                 [['fecha_acreditacion'], 'required', 'on' => self::SCENARIO_ACREDITACION],
                 [['fecha_baja','fecha_acreditacion','fecha_inicial','fecha_alta'], 'date', 'format' => 'php:Y-m-d'],
@@ -124,7 +125,7 @@ class Recurso extends BaseRecurso
     
     public function existeLocalidadEnLugar(){
         $response = \Yii::$app->lugar->buscarLocalidadPorId($this->localidadid); 
-        if(!isset($response['success']) || (isset($response['success']) && $response['success']!=true)){
+        if(!isset($response['nombre'])){
             $this->addError('localidadid', 'La localidad con el id '.$this->localidadid.' no existe!');
         }
     }
