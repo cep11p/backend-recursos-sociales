@@ -44,6 +44,9 @@ class RecursoTest extends \Codeception\Test\Unit
             'personaid' => Array (
                 0 => 'Personaid cannot be blank.'
             ),
+            'localidadid' => Array(
+                0 => 'No hay localidad asignada a el beneficiario'
+            )
         );
         $model->validate();
         $this->assertArraySubset($model->getErrors(),$errors);
