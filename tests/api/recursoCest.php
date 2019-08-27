@@ -3027,6 +3027,35 @@ class recursoCest
         );
         $I->seeResponseCodeIs(200);
     }
+    /**
+     * 
+     * @param ApiTester $I
+     */
+    public function filtrarRecursosPorLocalidad(ApiTester $I)
+    {        
+        $I->wantTo('Se filtran recursos por localidad');
+        
+        $I->haveFixtures([
+            'recursos' => app\tests\fixtures\RecursoFixture::className(),
+        ]); 
+        
+        $I->sendGET('/api/recursos?localidadid=2640');
+        $I->seeResponseContainsJson(
+            [
+                "pagesize"=> 20,
+                "pages"=> 1,
+                "total_filtrado"=> 16,
+                "monto_acreditado"=> 99058.48,
+                "monto_baja"=> 117352.5,
+                "monto_sin_acreditar"=> 63936.3,
+                "recurso_acreditado_cantidad"=> 7,
+                "recurso_baja_cantidad"=> 5,
+                "resultado"=> []
+            ]
+        );
+        $I->seeResponseCodeIs(200);
+    }
+    
     public function seVisualizaUnRecursoDeTipoEmprendiemiento(ApiTester $I)
     {        
         $I->wantTo('Se visualiza un recurso de tipo emprendimiento');
