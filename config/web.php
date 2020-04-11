@@ -138,9 +138,9 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/tipo-recurso', 
                 ],
-                [   #Tipo Recurso
+                [   #Tipo Responsable
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/usuario', 
+                    'controller' => 'api/tipo-responsable', 
                 ],
                 [   #Usuario
                     'class' => 'yii\rest\UrlRule',
