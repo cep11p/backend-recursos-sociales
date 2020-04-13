@@ -2,7 +2,7 @@
 
 /**** Para mostrar listado ****/
 /**
-* @url http://recurso-social.local/api/
+* @url http://recurso-social.local/api/tipo-responsable
 * @method GET
 */
 

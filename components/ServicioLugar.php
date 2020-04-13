@@ -175,6 +175,105 @@ class ServicioLugar extends Component implements IServicioLugar
        
     }
     
+    /**
+     * Se obtiene un listado de municipios
+     * @param array $param es utilizado para realizar un criterio de busqueda
+     * @return boolean
+     */
+    public function buscarMunicipio($param = array())
+    {
+        
+        $criterio = $this->crearCriterioBusquedad($param);
+        $client =   $this->_client;
+        try{
+            $headers = [
+//                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_LUGAR'],
+                'Content-Type'=>'application/json'
+            ];          
+            
+            $response = $client->request('GET', 'http://lugar/api/municipios?'.$criterio, ['headers' => $headers]);
+            $respuesta = json_decode($response->getBody()->getContents(), true);
+            \Yii::info($respuesta);
+            
+            return $respuesta;
+        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e->getResponse()->getBody()));
+                \Yii::error('Error de integración:'.$e->getResponse()->getBody(), $category='apioj');
+                return false;
+        } catch (Exception $e) {
+                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e));
+                \Yii::error('Error inesperado: se produjo:'.$e->getMessage(), $category='apioj');
+                return false;
+        }
+       
+    }
+    
+    /**
+     * Se obtiene un listado de comision de fomento
+     * @param array $param es utilizado para realizar un criterio de busqueda
+     * @return boolean
+     */
+    public function buscarComisionFomento($param = array())
+    {
+        
+        $criterio = $this->crearCriterioBusquedad($param);
+        $client =   $this->_client;
+        try{
+            $headers = [
+//                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_LUGAR'],
+                'Content-Type'=>'application/json'
+            ];          
+            
+            $response = $client->request('GET', 'http://lugar/api/comision-fomentos?'.$criterio, ['headers' => $headers]);
+            $respuesta = json_decode($response->getBody()->getContents(), true);
+            \Yii::info($respuesta);
+            
+            return $respuesta;
+        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e->getResponse()->getBody()));
+                \Yii::error('Error de integración:'.$e->getResponse()->getBody(), $category='apioj');
+                return false;
+        } catch (Exception $e) {
+                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e));
+                \Yii::error('Error inesperado: se produjo:'.$e->getMessage(), $category='apioj');
+                return false;
+        }
+       
+    }
+    
+    /**
+     * Se obtiene un listado de delegacion
+     * @param array $param es utilizado para realizar un criterio de busqueda
+     * @return boolean
+     */
+    public function buscarDelegacion($param = array())
+    {
+        
+        $criterio = $this->crearCriterioBusquedad($param);
+        $client =   $this->_client;
+        try{
+            $headers = [
+//                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_LUGAR'],
+                'Content-Type'=>'application/json'
+            ];          
+            
+            $response = $client->request('GET', 'http://lugar/api/delegacions?'.$criterio, ['headers' => $headers]);
+            $respuesta = json_decode($response->getBody()->getContents(), true);
+            \Yii::info($respuesta);
+            
+            return $respuesta;
+        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e->getResponse()->getBody()));
+                \Yii::error('Error de integración:'.$e->getResponse()->getBody(), $category='apioj');
+                return false;
+        } catch (Exception $e) {
+                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e));
+                \Yii::error('Error inesperado: se produjo:'.$e->getMessage(), $category='apioj');
+                return false;
+        }
+       
+    }
+    
     public function buscarLugarPorId($id)
     {
         

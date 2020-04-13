@@ -119,6 +119,39 @@ class DummyServicioLugar extends Component implements IServicioLugar
        
     }
     
+    public function buscarMunicipio($param = array())
+    {
+        
+        $response = $coleccion = array(
+            "lista"=> "crear listado para el dev"
+        );
+        
+        return $response;
+       
+    }
+    
+    public function buscarDelegacion($param = array())
+    {
+        
+        $response = $coleccion = array(
+            "lista"=> "crear listado para el dev"
+        );
+        
+        return $response;
+       
+    }
+    
+    public function buscarDelegacion($param = array())
+    {
+        
+        $response = $coleccion = array(
+            "lista"=> "crear listado para el dev"
+        );
+        
+        return $response;
+       
+    }
+    
     public function buscarLugarPorId($id)
     {
        

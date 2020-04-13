@@ -26,6 +26,9 @@ interface IServicioLugar {
     public function buscarLugar($param);
     
     public function buscarLocalidad($param);
+    public function buscarMunicipio($param = array());
+    public function buscarDelegacion($param = array());
+    public function buscarComisionFomento($param = array());
     
     public function buscarLugarPorId($id);
     

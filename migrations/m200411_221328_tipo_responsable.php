@@ -19,6 +19,7 @@ class m200411_221328_tipo_responsable extends Migration
         
         $this->insert('tipo_responsable', ['nombre'=>'municipio']);
         $this->insert('tipo_responsable', ['nombre'=>'delegacion']);
+        $this->insert('tipo_responsable', ['nombre'=>'comision de fomento']);
     }
 
     /**
