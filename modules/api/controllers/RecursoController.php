@@ -104,7 +104,6 @@ class RecursoController extends ActiveController{
        
             $model = new Recurso();
             $model->setAttributes($param);
-            $model->fecha_inicial = date('Y-m-d');   
             
             if(!$model->save()){
                 throw new Exception(json_encode($model->getErrors()));

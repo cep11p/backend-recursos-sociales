@@ -22,10 +22,13 @@ use Yii;
  * @property string $fecha_acreditacion
  * @property string $descripcion_baja
  * @property integer $localidadid
+ * @property integer $responsable_entregaid
+ * @property integer $cant_modulo
  *
  * @property \app\models\Aula[] $aulas
  * @property \app\models\Programa $programa
  * @property \app\models\TipoRecurso $tipoRecurso
+ * @property \app\models\Responsable $responsableEntrega
  * @property string $aliasModel
  */
 abstract class Recurso extends \yii\db\ActiveRecord
@@ -51,9 +54,10 @@ abstract class Recurso extends \yii\db\ActiveRecord
             [['fecha_inicial', 'fecha_alta', 'fecha_baja', 'fecha_acreditacion'], 'safe'],
             [['monto'], 'number'],
             [['observacion', 'proposito', 'descripcion_baja'], 'string'],
-            [['programaid', 'tipo_recursoid', 'personaid', 'localidadid'], 'integer'],
+            [['programaid', 'tipo_recursoid', 'personaid', 'localidadid', 'responsable_entregaid', 'cant_modulo'], 'integer'],
             [['programaid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Programa::className(), 'targetAttribute' => ['programaid' => 'id']],
-            [['tipo_recursoid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\TipoRecurso::className(), 'targetAttribute' => ['tipo_recursoid' => 'id']]
+            [['tipo_recursoid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\TipoRecurso::className(), 'targetAttribute' => ['tipo_recursoid' => 'id']],
+            [['responsable_entregaid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Responsable::className(), 'targetAttribute' => ['responsable_entregaid' => 'id']]
         ];
     }
 
@@ -76,6 +80,8 @@ abstract class Recurso extends \yii\db\ActiveRecord
             'fecha_acreditacion' => 'Fecha Acreditacion',
             'descripcion_baja' => 'Descripcion Baja',
             'localidadid' => 'Localidadid',
+            'responsable_entregaid' => 'Responsable Entregaid',
+            'cant_modulo' => 'Cant Modulo',
         ];
     }
 
@@ -114,6 +120,14 @@ abstract class Recurso extends \yii\db\ActiveRecord
     public function getTipoRecurso()
     {
         return $this->hasOne(\app\models\TipoRecurso::className(), ['id' => 'tipo_recursoid']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getResponsableEntrega()
+    {
+        return $this->hasOne(\app\models\Responsable::className(), ['id' => 'responsable_entregaid']);
     }
 
 

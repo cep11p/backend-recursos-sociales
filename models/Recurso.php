@@ -14,6 +14,7 @@ use yii\base\Exception;
 class Recurso extends BaseRecurso
 {
     const SCENARIO_BAJA = 'baja';
+    const SCENARIO_CREAR_MODULO_ALIMENTICIO = 'crear_modulo_alimenticio';
     const SCENARIO_ACREDITACION = 'acreditacion';
     
     /**
@@ -70,7 +71,8 @@ class Recurso extends BaseRecurso
             parent::rules(),
             [
                 ['monto', 'double'],
-                [['localidadid'], 'required','message' =>'No hay localidad asignada a el beneficiario'],
+                [['localidadid'], 'required','message' =>'No hay localidad asignada a la prestación'],
+                [['responsable_entregaid', 'cant_modulo'], 'required', 'on' => self::SCENARIO_CREAR_MODULO_ALIMENTICIO],
                 [['descripcion_baja', 'fecha_baja'], 'required', 'on' => self::SCENARIO_BAJA],
                 [['fecha_acreditacion'], 'required', 'on' => self::SCENARIO_ACREDITACION],
                 [['fecha_baja','fecha_acreditacion','fecha_inicial','fecha_alta'], 'date', 'format' => 'php:Y-m-d'],
@@ -84,6 +86,36 @@ class Recurso extends BaseRecurso
         );
     }
     
+    public function setAttributes($values, $safeOnly = true) {
+        parent::setAttributes($values, $safeOnly);
+        $this->fecha_inicial = date('Y-m-d');  
+        
+        //seteamos el escenario adecuado
+        if(isset($this->programaid) && $this->programa->nombre == 'Modulo Alimenticio'){
+            $this->setScenario(Recurso::SCENARIO_CREAR_MODULO_ALIMENTICIO);
+            $this->monto = 0;
+            $this->setResponsable($values);
+        }
+         
+    }
+    
+    /**
+     * Realizamos el registro de un reponsable
+     * @param array $param atributos de la tabla responsable
+     * @throws Exception
+     */
+    private function setResponsable($param) {
+        $model = new Responsable();
+        $model->setAttributes($param);
+        
+        if(!$model->save()){
+            throw new Exception(json_encode($model->getErrors()));
+        }
+        
+        $this->responsable_entregaid = $model->id;
+    }
+
+
     public function validarFechaBaja(){          
         
         if(date('Y-m-d') < $this->fecha_baja){
@@ -259,4 +291,4 @@ class Recurso extends BaseRecurso
         ]);
         
     }
-    }
+}
