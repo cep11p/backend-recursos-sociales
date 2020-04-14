@@ -15,11 +15,11 @@ class m200413_171649_responsable_entrega extends Migration
         $table = 'responsable';
         $this->createTable($table, [
             'id'=> $this->primaryKey(),
-            'tipo_responsable'=> $this->integer()->notNull(),
+            'tipo_responsableid'=> $this->integer()->notNull(),
             'responsableid'=> $this->integer()->notNull(),
         ]);
         $this->addCommentOnColumn($table, 'responsableid', 'estos responsables son obtenidos desde el sistema lugar mediante interoperablidad, donde el tipo de responsable nos identifica que tabla viene el responsable');
-        $this->addCommentOnColumn($table, 'tipo_responsable', 'esto nos permite tener multiples tipos de responsables. ej municipio, delegacion, comision de fomente,etc');
+        $this->addCommentOnColumn($table, 'tipo_responsableid', 'esto nos permite tener multiples tipos de responsables. ej municipio, delegacion, comision de fomente,etc');
     }
 
     /**
