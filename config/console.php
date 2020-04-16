@@ -34,13 +34,14 @@ $config = [
             "class"=>"bedezign\yii2\audit\Audit",
         ]
     ],
-    /*
+    
     'controllerMap' => [
         'fixture' => [ // Fixture generation command line.
-            'class' => 'yii\faker\FixtureController',
-        ],
+            'class' => 'yii\console\controllers\FixtureController',
+            'namespace' => 'app\tests\fixtures',
+        ]
     ],
-    */
+    
 ];
 
 if (YII_ENV_DEV) {

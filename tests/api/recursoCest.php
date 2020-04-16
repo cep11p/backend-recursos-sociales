@@ -4,6 +4,11 @@ use Helper\Api;
 
 class recursoCest
 {
+    const  PROGRAMA_MODULO_ALIMENTICIO_ID = 6;
+    const  TIPO_RESPONSABLE_MUNICIPIO_ID = 1;
+    const  TIPO_RESPONSABLE_DELEGACION_ID = 2;
+    const  TIPO_RESPONSABLE_COMISION_DE_FOMENTO_ID = 2;
+
     /**
      *
      * @var Helper\Api
@@ -431,8 +436,6 @@ class recursoCest
         ]);
         
         $I->seeResponseCodeIs(200);
-        
-        
     }
     
     public function crearUnRecursoSinLocalidad(ApiTester $I)
@@ -452,9 +455,64 @@ class recursoCest
         $I->sendPOST('/api/recursos',$param);
         $I->seeResponseContainsJson([
             'name' => 'Bad Request',
-            'message' => '{"localidadid":["No hay localidad asignada a el beneficiario"]}',
+            'message' => '{"localidadid":["No hay localidad asignada a la prestaci\u00f3n"]}',
         ]);
         $I->seeResponseCodeIs(400);
+        
+    }
+    
+    public function crearUnRecursoDeModuloAlimenticioConCamposVacios(ApiTester $I)
+    {
+        $I->wantTo('Se crea un recurso de modulo alimenticio con campos vacios');
+        
+        $param = [            
+            "programaid"=>$this::PROGRAMA_MODULO_ALIMENTICIO_ID,
+        ];
+        
+        $I->sendPOST('/api/recursos',$param);
+        $I->seeResponseContainsJson([
+            'name' => 'Bad Request',
+            'message' => '{"fecha_alta":["Fecha Alta no puede estar vac\u00edo."],"tipo_recursoid":["Tipo Recursoid no puede estar vac\u00edo."],"personaid":["Personaid no puede estar vac\u00edo."],"localidadid":["No hay localidad asignada a la prestaci\u00f3n"],"cant_modulo":["Cant Modulo no puede estar vac\u00edo."],"tipo_responsableid":["Tipo Responsableid no puede estar vac\u00edo."],"responsableid":["Responsableid no puede estar vac\u00edo."]}',
+        ]);
+        $I->seeResponseCodeIs(400);
+        
+    }
+    
+    public function crearUnRecursoDeModuloAlimenticio(ApiTester $I)
+    {
+        $I->wantTo('Se crea un recurso de modulo alimenticio con campos vacios');
+        
+        $param = [            
+            "programaid"=>$this::PROGRAMA_MODULO_ALIMENTICIO_ID,
+            "fecha_alta"=>'2020-01-02',
+            "tipo_recursoid"=>4,
+            "personaid"=>2,
+            "localidadid"=>1000,
+            "cant_modulo"=>4,
+            "tipo_responsableid"=> $this::TIPO_RESPONSABLE_DELEGACION_ID,
+            "responsableid"=> 1,
+        ];
+        
+        $I->sendPOST('/api/recursos',$param);
+        $I->seeResponseContainsJson([
+            'message' => 'Se guarda una prestacion',
+            'success' => true
+        ]);
+        $I->seeResponseCodeIs(200);
+        
+    }
+    
+    public function verUnRecursoDeModuloAlimenticio(ApiTester $I)
+    {
+        $I->wantTo('Se visualiza un recurso de modulo alimenticio');
+        
+        $id = 118;
+        $I->sendGET("/api/recursos/".$id);
+        $I->seeResponseContainsJson([
+            'message' => 'Se guarda una prestacion',
+            'success' => true
+        ]);
+        $I->seeResponseCodeIs(200);
         
     }
     

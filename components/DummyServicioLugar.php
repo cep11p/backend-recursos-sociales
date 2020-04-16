@@ -141,7 +141,7 @@ class DummyServicioLugar extends Component implements IServicioLugar
        
     }
     
-    public function buscarDelegacion($param = array())
+    public function buscarComisionFomento($param = array())
     {
         
         $response = $coleccion = array(

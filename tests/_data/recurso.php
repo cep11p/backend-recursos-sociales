@@ -118,5 +118,6 @@ return [
     'recurso115'=>['personaid'=>49,'programaid'=>2,'tipo_recursoid'=>1,'proposito'=>'Necesidad alimentaria','fecha_inicial'=>'2019-05-18','fecha_alta'=>'2019-05-18','monto'=>11236,'observacion'=>'Se solicita una ayuda alimentaria','fecha_baja'=>'','fecha_acreditacion'=>'','localidadid'=>3976,'descripcion_baja'=>NULL],
     'recurso116'=>['personaid'=>50,'programaid'=>2,'tipo_recursoid'=>1,'proposito'=>'Necesidad alimentaria','fecha_inicial'=>'2019-03-17','fecha_alta'=>'2019-03-17','monto'=>12233,'observacion'=>'Se solicita una ayuda alimentaria','fecha_baja'=>'','fecha_acreditacion'=>'','localidadid'=>2640,'descripcion_baja'=>NULL],
     'recurso117'=>['personaid'=>36,'programaid'=>2,'tipo_recursoid'=>1,'proposito'=>'Necesidad alimentaria','fecha_inicial'=>'2019-01-06','fecha_alta'=>'2019-01-06','monto'=>13234,'observacion'=>'Se solicita una ayuda alimentaria','fecha_baja'=>'','fecha_acreditacion'=>'2019-03-17','localidadid'=>2539,'descripcion_baja'=>NULL],
+    'recurso118'=>['id'=>118,'personaid'=>36,'proposito'=>'Necesidad alimentaria','fecha_inicial'=>'2019-01-06','localidadid'=>2539,"programaid"=>6,"fecha_alta"=>'2020-01-02',"tipo_recursoid"=>4,"cant_modulo"=>4,"responsable_entregaid"=>1,"monto"=>0]
 
 ];

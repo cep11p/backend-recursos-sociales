@@ -72,7 +72,7 @@ class Recurso extends BaseRecurso
             [
                 ['monto', 'double'],
                 [['localidadid'], 'required','message' =>'No hay localidad asignada a la prestación'],
-                [['responsable_entregaid', 'cant_modulo'], 'required', 'on' => self::SCENARIO_CREAR_MODULO_ALIMENTICIO],
+                [['cant_modulo','personaid'], 'required', 'on' => self::SCENARIO_CREAR_MODULO_ALIMENTICIO],
                 [['descripcion_baja', 'fecha_baja'], 'required', 'on' => self::SCENARIO_BAJA],
                 [['fecha_acreditacion'], 'required', 'on' => self::SCENARIO_ACREDITACION],
                 [['fecha_baja','fecha_acreditacion','fecha_inicial','fecha_alta'], 'date', 'format' => 'php:Y-m-d'],
@@ -86,7 +86,7 @@ class Recurso extends BaseRecurso
         );
     }
     
-    public function setAttributes($values, $safeOnly = true) {
+    public function setAttributesCustom($values, $safeOnly = true) {
         parent::setAttributes($values, $safeOnly);
         $this->fecha_inicial = date('Y-m-d');  
         
@@ -95,6 +95,10 @@ class Recurso extends BaseRecurso
             $this->setScenario(Recurso::SCENARIO_CREAR_MODULO_ALIMENTICIO);
             $this->monto = 0;
             $this->setResponsable($values);
+        }
+        
+        if($this->getErrors()){
+            throw new Exception(json_encode($this->getErrors()));
         }
          
     }
@@ -109,7 +113,9 @@ class Recurso extends BaseRecurso
         $model->setAttributes($param);
         
         if(!$model->save()){
-            throw new Exception(json_encode($model->getErrors()));
+//            throw new Exception(json_encode($model->getErrors()));
+            $this->validate();
+            $this->addErrors($model->getErrors());
         }
         
         $this->responsable_entregaid = $model->id;

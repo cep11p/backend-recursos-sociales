@@ -69,8 +69,6 @@ class RecursoController extends ActiveController{
             ]
         ];
 
-
-
         return $behaviors;
     }
     
@@ -103,7 +101,7 @@ class RecursoController extends ActiveController{
         try {
        
             $model = new Recurso();
-            $model->setAttributes($param);
+            $model->setAttributesCustom($param);
             
             if(!$model->save()){
                 throw new Exception(json_encode($model->getErrors()));
