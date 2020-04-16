@@ -174,6 +174,12 @@ class DummyServicioLugar extends Component implements IServicioLugar
         
         return $resultado;
     }
+    public function buscarDelegacionPorId($id)
+    {
+       
+        
+        return 'sin hacer';
+    }
     
     
     /**
