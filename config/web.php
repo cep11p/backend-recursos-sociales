@@ -180,6 +180,13 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/estado-civil', 
                 ],
+                /**HerramientaController**/
+                [   'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/herramienta',
+                    'extraPatterns' => [
+                        'POST import' => 'import',
+                    ], 
+                ],
                 
                 ##### Interoperabilidad con Lugar#####
                 [   #Localidad
