@@ -330,6 +330,7 @@ class RecursoSearch extends Recurso
             $coleccion_recurso[] = $value->toArray();
         }
         
+        /*** Se obtiene datos de otros sistemas ***/
         if(count($coleccion_recurso)>0){
             #Se vinculan los datos de las personas correspondiente a cada prestacion
             $coleccion_persona = $this->obtenerPersonaVinculada($coleccion_recurso);
@@ -338,6 +339,9 @@ class RecursoSearch extends Recurso
             #Se vinculan los nombre de la localidares correspondiente a cada prestacion
             $coleccion_localidad = $this->obtenerLocalidadVinculada($coleccion_recurso);
             $coleccion_recurso = $this->vincularLocalidad($coleccion_recurso, $coleccion_localidad);
+            
+            #Se vinculan los nombre de los responsables correspondiente a cada prestacion
+            $coleccion_recurso = $this->asociarResponsablesPorInteroperabilidad($coleccion_recurso);
         } 
 
         
@@ -664,6 +668,121 @@ class RecursoSearch extends Recurso
         $coleccion = $lugarForm->buscarLocalidadEnSistemaLugar(array("ids"=>$ids,"pagesize"=>$pagesize));
         
         return $coleccion;
+    }
+    
+    /**
+     * Se obtienen los reponsables mediante interoperabilidad con lugar y se vincula a la prestacion correspondiente.
+     * Esta funcion abarca estos 3 tipos de responsables: Delegacion, Municipio y Comision de fomento
+     * @param array $coleccion_recursos
+     * @return array
+     */
+    private function asociarResponsablesPorInteroperabilidad($coleccion_recursos = array()) {
+        $lugarForm = new LugarForm();
+        $pagesize = count($coleccion_recursos);
+        
+        $coleccion_delegacion = array();
+        $coleccion_comision_fomento = array();
+        $coleccion_municipio = array();
+
+        /** array con coleccions de ids para solicitar colección **/
+        $coleccion_municipio_ids = array();
+        $coleccion_comision_fomento_ids = array();
+        $coleccion_delegacion_ids = array();
+        
+        /** Buscamos si un recurso(prestacion) tiene resonsable, si tiene responsable es importante saber el tipo de reposable */
+        foreach ($coleccion_recursos as $recurso) {            
+            //vamos a chequear cuantas prestaciones fueron entregadas por Delegaciones
+            if(isset($recurso['responsable_entrega']['tipo_responsableid']) && ($recurso['responsable_entrega']['tipo_responsableid'] == $this::TIPO_RESPONSABLE_DELEGACION)){
+                #chequeamos el tipo de ids responsable
+                if(!in_array($recurso['responsable_entrega']['responsableid'], $coleccion_delegacion_ids)){
+                    $coleccion_delegacion_ids[] = $recurso['responsable_entrega']['responsableid'];
+                }
+            }
+            
+            ////vamos a chequear cuantas prestaciones fuerona entregadas por comisiones de fomento
+            if(isset($recurso['responsable_entrega']['tipo_responsableid']) && ($recurso['responsable_entrega']['tipo_responsableid'] == $this::TIPO_RESPONSABLE_MUNICIPIO)){
+                #obtenemos la lista de ids comisiones de fomento
+                if(!in_array($recurso['responsable_entrega']['responsableid'], $coleccion_comision_fomento_ids)){
+                    $coleccion_comision_fomento_ids[] = $recurso['responsable_entrega']['responsableid'];
+                }
+            }
+            
+            //vamos a chequear cuantas prestaciones fueron entregadas por Municipios
+            if(isset($recurso['responsable_entrega']['tipo_responsableid']) && ($recurso['responsable_entrega']['tipo_responsableid'] == $this::TIPO_RESPONSABLE_COMISION_FOMENTO)){
+                #obtenemos la lista de ids comisiones de fomento
+                if(!in_array($recurso['responsable_entrega']['responsableid'], $coleccion_municipio_ids)){
+                    $coleccion_municipio[] = $recurso['responsable_entrega']['responsableid'];
+                }
+            }
+        }
+        
+        /** Obtenemos las delegaciones relevantes a un entrega de prestacions **/
+        if(count($coleccion_delegacion_ids)>0){
+            //obtenemos la coleccion de las delegaciones
+            $delegacion_ids = '';
+            foreach ($coleccion_delegacion_ids as $id) {
+                    $delegacion_ids .= (empty($delegacion_ids))?$id:','.$id;
+            }
+            //vamos a mapear todas la delegaciones
+            $coleccion_delegacion = $lugarForm->buscarDelegacionEnSistemaLugar(array("ids"=>$delegacion_ids,"pagesize"=>$pagesize));
+        }
+        
+        /** Obtenemos las comisiones de fomentos relevantes a un entrega de prestacions **/
+        if(count($coleccion_comision_fomento_ids)){
+            //obtenemos la coleccion de las comisiones de fomento
+            $comision_fomento_ids = '';
+            foreach ($coleccion_comision_fomento_ids as $id) {
+                    $comision_fomento_ids .= (empty($comision_fomento_ids))?$id:','.$id;
+            }
+            //vamos a mapear todas la delegaciones
+            $coleccion_comision_fomento = $lugarForm->buscarDelegacionEnSistemaLugar(array("ids"=>$comision_fomento_ids,"pagesize"=>$pagesize));
+        }
+        
+        /** Obtenemos los municipios relevantes a un entrega de prestacions **/
+        if(count($coleccion_municipio_ids)){
+            //obtenemos la coleccion de las comisiones de fomento
+            $municipio_ids = '';
+            foreach ($coleccion_municipio as $id) {
+                    $municipio_ids .= (empty($municipio_ids))?$id:','.$id;
+            }
+            //vamos a mapear todas la delegaciones
+            $coleccion_municipio = $lugarForm->buscarDelegacionEnSistemaLugar(array("ids"=>$coleccion_municipio_ids,"pagesize"=>$pagesize));
+        }
+        
+        
+        
+        //vinculamos los responsables de entrega a a la coleccion de recursos(Prestaciónes)
+        $i=0;
+        foreach ($coleccion_recursos as $recurso){
+            
+            //Vinculamos las delegaciones
+            foreach ($coleccion_delegacion as $delegacion) {
+                //buscamos al recurso que tenga ese tipo de responsable y el responsable
+                if(isset($recurso['responsable_entrega']['responsableid']) && ($recurso['responsable_entrega']['responsableid'] == $delegacion['id'])){
+                    $recurso['responsable_entrega']['responsable']=$delegacion['nombre'];
+                    $coleccion_recursos[$i]=$recurso;
+                }
+            }
+            //Vinculamos las comisiones de fomentos
+            foreach ($coleccion_comision_fomento as $comision_fomento) {
+                //buscamos al recurso que tenga ese tipo de responsable y el responsable
+                if(isset($recurso['responsable_entrega']['responsableid']) && ($recurso['responsable_entrega']['responsableid'] == $comision_fomento['id'])){
+                    $recurso['responsable_entrega']['responsable']=$comision_fomento['nombre'];
+                    $coleccion_recursos[$i]=$recurso;
+                }
+            }  
+            //Vinculamos los municipios
+            foreach ($coleccion_municipio as $municipio) {
+                //buscamos al recurso que tenga ese tipo de responsable y el responsable
+                if(isset($recurso['responsable_entrega']['responsableid']) && ($recurso['responsable_entrega']['responsableid'] == $municipio['id'])){
+                    $recurso['responsable_entrega']['responsable']=$municipio['nombre'];
+                    $coleccion_recursos[$i]=$recurso;
+                }
+            }              
+            $i++;
+        }
+        
+        return $coleccion_recursos;
     }
 
 }

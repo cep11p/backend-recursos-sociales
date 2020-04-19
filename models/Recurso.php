@@ -14,8 +14,12 @@ use yii\base\Exception;
 class Recurso extends BaseRecurso
 {
     const SCENARIO_BAJA = 'baja';
-    const SCENARIO_CREAR_MODULO_ALIMENTICIO = 'crear_modulo_alimenticio';
     const SCENARIO_ACREDITACION = 'acreditacion';
+    const PRESTACION_MODULO_ALIMENTAR_ID = 6;
+    const PRESTACION_MODULO_ALIMENTAR = 6;
+    const TIPO_RESPONSABLE_MUNICIPIO= 1;
+    const TIPO_RESPONSABLE_DELEGACION= 2;
+    const TIPO_RESPONSABLE_COMISION_FOMENTO= 3;
     
     /**
      * variable auxiliar
@@ -72,7 +76,7 @@ class Recurso extends BaseRecurso
             [
                 ['monto', 'double'],
                 [['localidadid'], 'required','message' =>'No hay localidad asignada a la prestación'],
-                [['cant_modulo','personaid'], 'required', 'on' => self::SCENARIO_CREAR_MODULO_ALIMENTICIO],
+                [['cant_modulo','personaid'], 'required', 'on' => self::PRESTACION_MODULO_ALIMENTAR],
                 [['descripcion_baja', 'fecha_baja'], 'required', 'on' => self::SCENARIO_BAJA],
                 [['fecha_acreditacion'], 'required', 'on' => self::SCENARIO_ACREDITACION],
                 [['fecha_baja','fecha_acreditacion','fecha_inicial','fecha_alta'], 'date', 'format' => 'php:Y-m-d'],
@@ -91,8 +95,8 @@ class Recurso extends BaseRecurso
         $this->fecha_inicial = date('Y-m-d');  
         
         //seteamos el escenario adecuado
-        if(isset($this->programaid) && $this->programa->nombre == 'Modulo Alimenticio'){
-            $this->setScenario(Recurso::SCENARIO_CREAR_MODULO_ALIMENTICIO);
+        if(isset($this->programaid) && $this->programa->id == $this::PRESTACION_MODULO_ALIMENTAR_ID){
+            $this->setScenario(Recurso::PRESTACION_MODULO_ALIMENTAR);
             $this->monto = 0;
             $this->setResponsable($values);
         }
@@ -249,6 +253,19 @@ class Recurso extends BaseRecurso
     }
     
     /**
+     * Se obtiene al responsable
+     * @return array
+     */
+    public function getResponsableEntrega() {
+        $resultado = array();
+        if(parent::getResponsableEntrega()->one()!=null){
+            $resultado = parent::getResponsableEntrega()->one()->toArray();
+        }
+
+        return $resultado;
+    }
+    
+    /**
      * Se obtiene una lista de alumnos si es que el recurso tiene esa coleccion
      * @return array
      */
@@ -277,6 +294,9 @@ class Recurso extends BaseRecurso
             },
             'tipo_recurso'=> function($model){
                 return $model->tipoRecurso->nombre;
+            },
+            'responsable_entrega'=> function($model){
+                return $model->responsableEntrega;
             },
             #Flags para injectar botones 
             'baja'=> function($model){
