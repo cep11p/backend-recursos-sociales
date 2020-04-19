@@ -25,7 +25,7 @@ class LugarForm extends Model
     public function rules()
     {
         return [
-            [['calle', 'altura', 'localidadid'], 'required'],
+            [['calle', 'localidadid'], 'required'],
             [['localidadid','id'], 'integer'],
             [['nombre', 'calle', 'altura', 'latitud', 'longitud', 'barrio', 'piso', 'depto', 'escalera'], 'string', 'max' => 200],
         ];
@@ -92,6 +92,26 @@ class LugarForm extends Model
     }
     
     /**
+     * Vamos a filtrar delegaciones según el criterio, es decir
+     * que vamos a chequear si coinciden los atributos
+     * @return array $resultado se devuelve una coleccion de delegaciones;
+     */
+    public function buscarDelegacionEnSistemaLugar($params = null) {
+        
+        $resultado = null;
+        if(isset($params)){
+            $response = \Yii::$app->lugar->buscarDelegacion($params);   
+        }
+        
+        if(isset($response['success']) && $response['success']==true){
+
+            $resultado = $response['resultado'];
+        }
+        
+        return $resultado;
+    }
+    
+    /**
      * Vamos a filtrar un localidad por id
      * @return array $resultado se devuelve una localidad;
      */
@@ -107,6 +127,18 @@ class LugarForm extends Model
             $resultado = $response;
         }
         
+        return $resultado;
+    }
+    
+    public function buscarDelegacionPorId($params = null) {
+        $resultado = null;
+        if(isset($params)){
+            $response = \Yii::$app->lugar->buscarDelegacionPorId($params);   
+        }
+        
+        if(isset($response['nombre'])){
+            $resultado = $response['nombre'];
+        }
         return $resultado;
     }
     
