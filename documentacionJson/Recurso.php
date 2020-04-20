@@ -13,6 +13,7 @@
  * fecha_desde : busca por un rango de fecha sobre fecha_inicial
  * acreditacion = true busca los recursos que fueron acreditados
  * baja = true busca los recursos que fueron dados de baja
+ * tipo_responsableid = 2 filtro por tipo de responsable
  * sort=-id este parametro ordena en id descendiente, tambien se puede usar otras variebles del modelo como por ejemplo monto
 @Method GET
 
