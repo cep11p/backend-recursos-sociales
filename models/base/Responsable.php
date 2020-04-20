@@ -14,6 +14,7 @@ use Yii;
  * @property integer $responsableid
  *
  * @property \app\models\Recurso[] $recursos
+ * @property \app\models\TipoResponsable $tipoResponsable
  * @property string $aliasModel
  */
 abstract class Responsable extends \yii\db\ActiveRecord
@@ -36,7 +37,8 @@ abstract class Responsable extends \yii\db\ActiveRecord
     {
         return [
             [['tipo_responsableid', 'responsableid'], 'required'],
-            [['tipo_responsableid', 'responsableid'], 'integer']
+            [['tipo_responsableid', 'responsableid'], 'integer'],
+            [['tipo_responsableid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\TipoResponsable::className(), 'targetAttribute' => ['tipo_responsableid' => 'id']]
         ];
     }
 
@@ -69,6 +71,14 @@ abstract class Responsable extends \yii\db\ActiveRecord
     public function getRecursos()
     {
         return $this->hasMany(\app\models\Recurso::className(), ['responsable_entregaid' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTipoResponsable()
+    {
+        return $this->hasOne(\app\models\TipoResponsable::className(), ['id' => 'tipo_responsableid']);
     }
 
 
