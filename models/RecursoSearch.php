@@ -760,6 +760,7 @@ class RecursoSearch extends Recurso
                 //buscamos al recurso que tenga ese tipo de responsable y el responsable
                 if(isset($recurso['responsable_entrega']['responsableid']) && ($recurso['responsable_entrega']['responsableid'] == $delegacion['id'])){
                     $recurso['responsable_entrega']['responsable']=$delegacion['nombre'];
+                    $recurso['responsable_entrega']['tipo_responsable']='Delegación';
                     $coleccion_recursos[$i]=$recurso;
                 }
             }
@@ -768,6 +769,7 @@ class RecursoSearch extends Recurso
                 //buscamos al recurso que tenga ese tipo de responsable y el responsable
                 if(isset($recurso['responsable_entrega']['responsableid']) && ($recurso['responsable_entrega']['responsableid'] == $comision_fomento['id'])){
                     $recurso['responsable_entrega']['responsable']=$comision_fomento['nombre'];
+                    $recurso['responsable_entrega']['tipo_responsable']='Comision de Fomento';
                     $coleccion_recursos[$i]=$recurso;
                 }
             }  
@@ -776,6 +778,7 @@ class RecursoSearch extends Recurso
                 //buscamos al recurso que tenga ese tipo de responsable y el responsable
                 if(isset($recurso['responsable_entrega']['responsableid']) && ($recurso['responsable_entrega']['responsableid'] == $municipio['id'])){
                     $recurso['responsable_entrega']['responsable']=$municipio['nombre'];
+                    $recurso['responsable_entrega']['tipo_responsable']='Municipio';
                     $coleccion_recursos[$i]=$recurso;
                 }
             }              
