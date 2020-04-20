@@ -18,7 +18,7 @@ class RecursoSearch extends Recurso
     public function rules()
     {
         return [
-            [['id', 'programaid', 'tipo_recursoid', 'personaid','localidadid'], 'integer'],
+            [['id', 'programaid', 'tipo_recursoid', 'personaid','localidadid','tipo_responsableid'], 'integer'],
             [['fecha_inicial', 'fecha_alta', 'observacion', 'proposito','recurso_cantidad'], 'safe'],
             [['monto'], 'number'],
         ];
@@ -78,21 +78,16 @@ class RecursoSearch extends Recurso
      * @return double
      */
     public function sumarMontoAcreditado($params){
-        $query = Recurso::find();
-        $queryBase = $this->createQuery($params);
+        $query = $this->createQuery($params);
         
         $query->select([
                 'monto_acreditado'=>'sum(monto)'
             ]);
-        $query->Where([
+        $query->andWhere([
                 'not', ['fecha_acreditacion' => null]
             ]);
         
         $query->andWhere(['fecha_baja' => null]);
-        
-        if(count($queryBase->where)){
-            $query->andWhere($queryBase->where);
-        }
         
         $command = $query->createCommand();
         $rows = $command->queryAll();
@@ -108,19 +103,15 @@ class RecursoSearch extends Recurso
      * @return double
      */
     public function sumarMontoBaja($params){
-        $query = Recurso::find();
-        $queryBase = $this->createQuery($params);
+        $query = $this->createQuery($params);
         
         $query->select([
                 'monto_baja'=>'sum(monto)'
             ]);
-        $query->where([
+        $query->andwhere([
                 'not', ['fecha_baja' => null]
             ]);
         
-        if(count($queryBase->where)){
-            $query->andWhere($queryBase->where);
-        }
         
         $command = $query->createCommand();
         $rows = $command->queryAll();
@@ -136,15 +127,11 @@ class RecursoSearch extends Recurso
      * @return double
      */
     public function sumarMontoSinAcreditar($params){
-        $query = Recurso::find();
-        $queryBase = $this->createQuery($params);
+        $query = $this->createQuery($params);
         
         $query->select([
                 'monto_general'=>'sum(monto)'
             ]);
-        if(count($queryBase->where)){
-            $query->andWhere($queryBase->where);
-        }
         
         $command = $query->createCommand();
         $rows = $command->queryAll();
@@ -160,25 +147,19 @@ class RecursoSearch extends Recurso
      * @return int
      */
     public function contarRecursoAcreditado($params){
-        $query = Recurso::find();
-        $queryBase = $this->createQuery($params);
+        $query = $this->createQuery($params);
         
         $query->select([
-                'recurso_acreditado_cantidad'=>'count(id)'
+                'recurso_acreditado_cantidad'=>'count(recurso.id)'
             ]);
-        $query->where([
+        $query->andWhere([
                 'not', ['fecha_acreditacion' => null]
             ]);
         
         $query->andWhere(['fecha_baja' => null]);
-        
-        if(count($queryBase->where)){
-            $query->andWhere($queryBase->where);
-        }
-        
+             
         $command = $query->createCommand();
         $rows = $command->queryAll();
-        
         $resultado = ($rows[0]['recurso_acreditado_cantidad']=='')?0:$rows[0]['recurso_acreditado_cantidad'];
                 
         return intval($resultado);        
@@ -190,18 +171,14 @@ class RecursoSearch extends Recurso
      * @return int
      */
     public function contarRecursoBaja($params){
-        $query = Recurso::find();
-        $queryBase = $this->createQuery($params);
+        $query = $this->createQuery($params);
         
         $query->select([
-                'recurso_baja_cantidad'=>'count(id)'
+                'recurso_baja_cantidad'=>'count(recurso.id)'
             ]);
-        $query->where([
+        $query->andWhere([
                 'not', ['fecha_baja' => null]
             ]);
-        if(count($queryBase->where)){
-            $query->andWhere($queryBase->where);
-        }
         
         $command = $query->createCommand();
         $rows = $command->queryAll();
@@ -251,6 +228,12 @@ class RecursoSearch extends Recurso
         }
         ############ Fin filtrado por Persona ############
 
+        if(isset($this->tipo_responsableid)){
+            $query->leftJoin("responsable as r", "responsable_entregaid=r.id");
+            
+            $query->andFilterWhere(['r.tipo_responsableid' => $this->tipo_responsableid]);
+        }
+        
         $query->andFilterWhere([
             'id' => $this->id,
             'fecha_inicial' => $this->fecha_inicial,
@@ -297,7 +280,7 @@ class RecursoSearch extends Recurso
             $query->orderBy(['fecha_alta' => SORT_DESC]);
         }
         
-        
+//        print_r($query->createCommand()->sql);die();
         return $query;
     }
 
@@ -319,16 +302,17 @@ class RecursoSearch extends Recurso
         ]);
         $this->load($params,'');
         
-        $monto_acreditado = $this->sumarMontoAcreditado($params);
-        $monto_baja = $this->sumarMontoBaja($params);
-        $monto_sin_acreditar = $this->sumarMontoSinAcreditar($params)-$monto_baja-$monto_acreditado;
-        $recurso_acreditado_cantidad = $this->contarRecursoAcreditado($params);
-        $recurso_baja_cantidad = $this->contarRecursoBaja($params);
         
         $coleccion_recurso = array();
         foreach ($dataProvider->getModels() as $value) {
             $coleccion_recurso[] = $value->toArray();
         }
+
+        $monto_acreditado = $this->sumarMontoAcreditado($params);
+        $monto_baja = $this->sumarMontoBaja($params);
+        $monto_sin_acreditar = $this->sumarMontoSinAcreditar($params)-$monto_baja-$monto_acreditado;
+        $recurso_acreditado_cantidad = $this->contarRecursoAcreditado($params);
+        $recurso_baja_cantidad = $this->contarRecursoBaja($params);
         
         /*** Se obtiene datos de otros sistemas ***/
         if(count($coleccion_recurso)>0){

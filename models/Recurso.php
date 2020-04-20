@@ -22,6 +22,12 @@ class Recurso extends BaseRecurso
     const TIPO_RESPONSABLE_COMISION_FOMENTO= 3;
     
     /**
+     * Atributo correspondiente a la tabla responsable, esto nos permite hacer un join con responsable y poder filtrar prestaciones de tipo reponsable
+     * @var int 
+     */
+    public $tipo_responsableid;
+    
+    /**
      * variable auxiliar
      * cuantifica la cantidad de recursos que tiene un beneficiario
      * @var int 
