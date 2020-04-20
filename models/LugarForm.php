@@ -96,18 +96,53 @@ class LugarForm extends Model
      * que vamos a chequear si coinciden los atributos
      * @return array $resultado se devuelve una coleccion de delegaciones;
      */
-    public function buscarDelegacionEnSistemaLugar($params = null) {
+    public function buscarDelegacionEnSistemaLugar($params = array()) {
         
         $resultado = null;
-        if(isset($params)){
-            $response = \Yii::$app->lugar->buscarDelegacion($params);   
-        }
+        $response = \Yii::$app->lugar->buscarDelegacion($params);   
         
-        if(isset($response['success']) && $response['success']==true){
+        if(count($response)>0){
 
-            $resultado = $response['resultado'];
+            $resultado = $response;
         }
         
+        return $resultado;
+    }
+    
+    /**
+     * Vamos a filtrar municipios según el criterio, es decir
+     * que vamos a chequear si coinciden los atributos
+     * @return array $resultado se devuelve una coleccion de municipios;
+     */
+    public function buscarMunicipioEnSistemaLugar($params = array()) {
+        
+        $resultado = null;
+        $response = \Yii::$app->lugar->buscarMunicipio($params);   
+        
+        if(count($response)>0){
+
+            $resultado = $response;
+        }
+        
+        return $resultado;
+    }
+    
+    /**
+     * Vamos a filtrar comisiones de fomento según el criterio, es decir
+     * que vamos a chequear si coinciden los atributos
+     * @return array $resultado se devuelve una coleccion de comisiones de fomento;
+     */
+    public function buscarComisionFomentoEnSistemaLugar($params = array()) {
+        
+        $resultado = null;
+        $response = \Yii::$app->lugar->buscarComisionFomento($params);   
+        
+        
+        if(count($response)>0){
+
+            $resultado = $response;
+        }
+//        print_r($resultado);die();
         return $resultado;
     }
     
