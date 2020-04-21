@@ -197,6 +197,10 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/delegacion', 
                 ],
+                [   #Municipio
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/municipio', 
+                ],
             ],
         ],
         
