@@ -3,13 +3,13 @@
 namespace app\models;
 
 use Yii;
-use \app\models\base\Responsable as BaseResponsable;
+use \app\models\base\ResponsableEntrega as BaseResponsableEntrega;
 use yii\helpers\ArrayHelper;
 
 /**
- * This is the model class for table "responsable".
+ * This is the model class for table "responsable_entrega".
  */
-class Responsable extends BaseResponsable
+class ResponsableEntrega extends BaseResponsableEntrega
 {
 
     public function behaviors()

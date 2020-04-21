@@ -28,7 +28,7 @@ use Yii;
  * @property \app\models\Aula[] $aulas
  * @property \app\models\Programa $programa
  * @property \app\models\TipoRecurso $tipoRecurso
- * @property \app\models\Responsable $responsableEntrega
+ * @property \app\models\ResponsableEntrega $responsableEntrega
  * @property string $aliasModel
  */
 abstract class Recurso extends \yii\db\ActiveRecord
@@ -56,8 +56,7 @@ abstract class Recurso extends \yii\db\ActiveRecord
             [['observacion', 'proposito', 'descripcion_baja'], 'string'],
             [['programaid', 'tipo_recursoid', 'personaid', 'localidadid', 'responsable_entregaid', 'cant_modulo'], 'integer'],
             [['programaid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Programa::className(), 'targetAttribute' => ['programaid' => 'id']],
-            [['tipo_recursoid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\TipoRecurso::className(), 'targetAttribute' => ['tipo_recursoid' => 'id']],
-            [['responsable_entregaid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Responsable::className(), 'targetAttribute' => ['responsable_entregaid' => 'id']]
+            [['tipo_recursoid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\TipoRecurso::className(), 'targetAttribute' => ['tipo_recursoid' => 'id']]
         ];
     }
 
@@ -127,7 +126,7 @@ abstract class Recurso extends \yii\db\ActiveRecord
      */
     public function getResponsableEntrega()
     {
-        return $this->hasOne(\app\models\Responsable::className(), ['id' => 'responsable_entregaid']);
+        return $this->hasOne(\app\models\ResponsableEntrega::className(), ['recursoid' => 'id']);
     }
 
 

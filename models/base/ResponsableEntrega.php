@@ -7,17 +7,17 @@ namespace app\models\base;
 use Yii;
 
 /**
- * This is the base-model class for table "responsable".
+ * This is the base-model class for table "responsable_entrega".
  *
- * @property integer $id
  * @property integer $tipo_responsableid
- * @property integer $responsableid
+ * @property integer $recursoid
+ * @property integer $responsable_entregaid
  *
- * @property \app\models\Recurso[] $recursos
+ * @property \app\models\Recurso $recurso
  * @property \app\models\TipoResponsable $tipoResponsable
  * @property string $aliasModel
  */
-abstract class Responsable extends \yii\db\ActiveRecord
+abstract class ResponsableEntrega extends \yii\db\ActiveRecord
 {
 
 
@@ -27,7 +27,7 @@ abstract class Responsable extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'responsable';
+        return 'responsable_entrega';
     }
 
     /**
@@ -36,8 +36,9 @@ abstract class Responsable extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['tipo_responsableid', 'responsableid'], 'required'],
-            [['tipo_responsableid', 'responsableid'], 'integer'],
+            [['tipo_responsableid'], 'required'],
+            [['tipo_responsableid', 'responsable_entregaid'], 'integer'],
+            [['recursoid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Recurso::className(), 'targetAttribute' => ['recursoid' => 'id']],
             [['tipo_responsableid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\TipoResponsable::className(), 'targetAttribute' => ['tipo_responsableid' => 'id']]
         ];
     }
@@ -48,9 +49,9 @@ abstract class Responsable extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
             'tipo_responsableid' => 'Tipo Responsableid',
-            'responsableid' => 'Responsableid',
+            'recursoid' => 'Recursoid',
+            'responsable_entregaid' => 'Responsable Entregaid',
         ];
     }
 
@@ -61,16 +62,15 @@ abstract class Responsable extends \yii\db\ActiveRecord
     {
         return array_merge(parent::attributeHints(), [
             'tipo_responsableid' => 'esto nos permite tener multiples tipos de responsables. ej municipio, delegacion, comision de fomente,etc',
-            'responsableid' => 'estos responsables son obtenidos desde el sistema lugar mediante interoperablidad, donde el tipo de responsable nos identifica que tabla viene el responsable',
         ]);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getRecursos()
+    public function getRecurso()
     {
-        return $this->hasMany(\app\models\Recurso::className(), ['responsable_entregaid' => 'id']);
+        return $this->hasOne(\app\models\Recurso::className(), ['id' => 'recursoid']);
     }
 
     /**

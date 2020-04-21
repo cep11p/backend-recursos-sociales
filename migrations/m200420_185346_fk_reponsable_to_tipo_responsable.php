@@ -12,7 +12,7 @@ class m200420_185346_fk_reponsable_to_tipo_responsable extends Migration
      */
     public function safeUp()
     {
-        $table = 'responsable';
+        $table = 'responsable_entrega';
         $this->addForeignKey('fk_tipo_responsableid', $table, 'tipo_responsableid', 'tipo_responsable', 'id');
     }
 

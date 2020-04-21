@@ -107,6 +107,8 @@ class RecursoController extends ActiveController{
                 throw new Exception(json_encode($model->getErrors()));
             }
             
+            $model->setResponsableEntrega($param);
+            
             #### Guardamos coleccion de alumnos si el pregroma es "Emprender" ####
             if(isset($param['alumno_lista']) && (count($param['alumno_lista'])>0) &&  $model->programa->nombre == 'Emprender'){
                 $model->vincularAlumnosAEmprender($param);

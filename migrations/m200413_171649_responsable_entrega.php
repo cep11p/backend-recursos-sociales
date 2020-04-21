@@ -12,7 +12,7 @@ class m200413_171649_responsable_entrega extends Migration
      */
     public function safeUp()
     {
-        $table = 'responsable';
+        $table = 'responsable_entrega';
         $this->createTable($table, [
             'id'=> $this->primaryKey(),
             'tipo_responsableid'=> $this->integer()->notNull(),

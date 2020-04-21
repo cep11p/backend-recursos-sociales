@@ -98,19 +98,7 @@ class Recurso extends BaseRecurso
     
     public function setAttributesCustom($values, $safeOnly = true) {
         parent::setAttributes($values, $safeOnly);
-        $this->fecha_inicial = date('Y-m-d');  
-        
-        //seteamos el escenario adecuado
-        if(isset($this->programaid) && $this->programa->id == $this::PRESTACION_MODULO_ALIMENTAR_ID){
-            $this->setScenario(Recurso::PRESTACION_MODULO_ALIMENTAR);
-            $this->monto = 0;
-            $this->setResponsable($values);
-        }
-        
-        if($this->getErrors()){
-            throw new Exception(json_encode($this->getErrors()));
-        }
-         
+        $this->fecha_inicial = date('Y-m-d');           
     }
     
     /**
@@ -118,17 +106,16 @@ class Recurso extends BaseRecurso
      * @param array $param atributos de la tabla responsable
      * @throws Exception
      */
-    private function setResponsable($param) {
-        $model = new Responsable();
-        $model->setAttributes($param);
-        
-        if(!$model->save()){
-//            throw new Exception(json_encode($model->getErrors()));
-            $this->validate();
-            $this->addErrors($model->getErrors());
+    public function setResponsableEntrega($param) {
+        if(isset($this->programaid) && $this->programa->id == $this::PRESTACION_MODULO_ALIMENTAR_ID){
+            $model = new ResponsableEntrega();
+            $model->setAttributes($param);
+            $model->recursoid = $this->id;
+
+            if(!$model->save()){
+                throw new Exception(json_encode($model->getErrors()));
+            }
         }
-        
-        $this->responsable_entregaid = $model->id;
     }
 
 
@@ -146,9 +133,9 @@ class Recurso extends BaseRecurso
     
     public function validarFechaAlta(){          
         
-        if(date('Y-m-d') < $this->fecha_alta){
-            $this->addError('fecha_alta', 'La fecha de alta no puede ser mayor a la fecha de hoy '.date('d/m/Y'));
-        }
+//        if(date('Y-m-d') < $this->fecha_alta){
+//            $this->addError('fecha_alta', 'La fecha de alta no puede ser mayor a la fecha de hoy '.date('d/m/Y'));
+//        }
     }
     
     public function validarFechaAcreditacion(){          

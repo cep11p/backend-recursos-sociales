@@ -46,9 +46,9 @@
             "programa": "Módulo Alimentar",
             "tipo_recurso": "Emergencia",
             "responsable_entrega": {
-                "id": 476,
+                "recursoid": 31858,
                 "tipo_responsableid": 2,
-                "responsableid": 22,
+                "responsable_entregaid": 22,
                 "responsable": "Delegación Zona Alto Valle Centro",
                 "tipo_responsable": "Delegación"
             },
