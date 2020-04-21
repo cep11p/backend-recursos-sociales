@@ -133,9 +133,9 @@ class Recurso extends BaseRecurso
     
     public function validarFechaAlta(){          
         
-//        if(date('Y-m-d') < $this->fecha_alta){
-//            $this->addError('fecha_alta', 'La fecha de alta no puede ser mayor a la fecha de hoy '.date('d/m/Y'));
-//        }
+        if(date('Y-m-d') < $this->fecha_alta){
+            $this->addError('fecha_alta', 'La fecha de alta no puede ser mayor a la fecha de hoy '.date('d/m/Y'));
+        }
     }
     
     public function validarFechaAcreditacion(){          
