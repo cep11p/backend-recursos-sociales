@@ -193,6 +193,10 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/localidad', 
                 ],
+                [   #Delegacion
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/delegacion', 
+                ],
             ],
         ],
         
