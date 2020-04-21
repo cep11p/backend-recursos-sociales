@@ -97,15 +97,14 @@ class LugarForm extends Model
      * @return array $resultado se devuelve una coleccion de delegaciones;
      */
     public function buscarDelegacionEnSistemaLugar($params = array()) {
-        
-        $resultado = null;
+        $resultado = [];
         $response = \Yii::$app->lugar->buscarDelegacion($params);   
         
         if(count($response)>0){
 
             $resultado = $response;
         }
-        
+
         return $resultado;
     }
     
