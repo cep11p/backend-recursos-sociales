@@ -201,6 +201,10 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/municipio', 
                 ],
+                [   #Municipio
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/comision-fomento', 
+                ],
             ],
         ],
         
