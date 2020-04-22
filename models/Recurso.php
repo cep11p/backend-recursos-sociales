@@ -98,7 +98,12 @@ class Recurso extends BaseRecurso
     
     public function setAttributesCustom($values, $safeOnly = true) {
         parent::setAttributes($values, $safeOnly);
-        $this->fecha_inicial = date('Y-m-d');           
+        $this->fecha_inicial = date('Y-m-d');
+        
+        if(isset($this->programaid) && $this->programa->id == $this::PRESTACION_MODULO_ALIMENTAR_ID){
+            $this->fecha_alta = (!empty($this->fecha_alta))?$this->fecha_alta: date('Y-m-d');
+            $this->fecha_acreditacion = $this->fecha_alta;
+        }
     }
     
     /**

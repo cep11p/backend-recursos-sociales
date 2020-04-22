@@ -24,6 +24,7 @@ use Yii;
  * @property integer $localidadid
  * @property integer $responsable_entregaid
  * @property integer $cant_modulo
+ * @property string $fecha_entrega
  *
  * @property \app\models\Aula[] $aulas
  * @property \app\models\Programa $programa
@@ -51,7 +52,7 @@ abstract class Recurso extends \yii\db\ActiveRecord
     {
         return [
             [['fecha_inicial', 'fecha_alta', 'monto', 'programaid', 'tipo_recursoid', 'personaid'], 'required'],
-            [['fecha_inicial', 'fecha_alta', 'fecha_baja', 'fecha_acreditacion'], 'safe'],
+            [['fecha_inicial', 'fecha_alta', 'fecha_baja', 'fecha_acreditacion', 'fecha_entrega'], 'safe'],
             [['monto'], 'number'],
             [['observacion', 'proposito', 'descripcion_baja'], 'string'],
             [['programaid', 'tipo_recursoid', 'personaid', 'localidadid', 'responsable_entregaid', 'cant_modulo'], 'integer'],
@@ -81,6 +82,7 @@ abstract class Recurso extends \yii\db\ActiveRecord
             'localidadid' => 'Localidadid',
             'responsable_entregaid' => 'Responsable Entregaid',
             'cant_modulo' => 'Cant Modulo',
+            'fecha_entrega' => 'Fecha Entrega',
         ];
     }
 
@@ -94,6 +96,7 @@ abstract class Recurso extends \yii\db\ActiveRecord
 ',
             'personaid' => 'Este atributo hace referencia a una persona del sistema Registral',
             'localidadid' => 'Este atributo hace referencia al sistema Lugar (interoperabilidad)',
+            'fecha_entrega' => 'Este atributo nos indica la fecha de entrega de la prestacion',
         ]);
     }
 
