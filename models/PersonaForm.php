@@ -399,21 +399,16 @@ class PersonaForm extends Model
     }
     
     /**
-     * Se chequea en el sistema registral si el nro de documento está en uso
+     * Se busca una persona por nro de documento
      */
-    public function existeNroDocumentoEnRegistral(){
-        
-        if(!isset($this->id)){
-            $response = \Yii::$app->registral->buscarPersonaPorNroDocumento($this->nro_documento);      
-            if(isset($response['estado']) && $response['estado']==true){
-                $this->addError('nro_documento', 'El nro de documento '.$this->nro_documento.' ya está en uso!');
-            }
-        }else{
-            $response = \Yii::$app->registral->buscarPersonaPorNroDocumento($this->nro_documento);  
-            if(isset($response['estado']) && $response['estado']==true && $this->id != $response['resultado'][0]['id']){
-                $this->addError('nro_documento', 'El nro de documento '.$this->nro_documento.' ya está en uso!');
-            }
+    public function BuscarPersonaPorNroDocumentoEnRegistral($nro_documento){
+        $resultado = array();
+        $response = \Yii::$app->registral->buscarPersonaPorNroDocumento($nro_documento);
+        foreach ($response as $value) {
+            $resultado = $value;
         }
+        
+        return $resultado;
     }
     
     /**

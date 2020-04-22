@@ -27,23 +27,23 @@ class HerramientaController extends ActiveController{
 
         $behaviors['authenticator'] = $auth;
 
-//        $behaviors['authenticator'] = [
-//            'class' => \yii\filters\auth\HttpBearerAuth::className(),
-//        ];
+        $behaviors['authenticator'] = [
+            'class' => \yii\filters\auth\HttpBearerAuth::className(),
+        ];
 
         // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
         $behaviors['authenticator']['except'] = ['options'];     
 
-//        $behaviors['access'] = [
-//            'class' => \yii\filters\AccessControl::className(),
-//            'only' => ['*'],
-//            'rules' => [
-//                [
-//                    'allow' => true,
-//                    'roles' => ['@'],
-//                ]
-//            ]
-//        ];
+        $behaviors['access'] = [
+            'class' => \yii\filters\AccessControl::className(),
+            'only' => ['*'],
+            'rules' => [
+                [
+                    'allow' => true,
+                    'roles' => ['@'],
+                ]
+            ]
+        ];
 
 
 
@@ -68,6 +68,7 @@ class HerramientaController extends ActiveController{
         /** Importamos archivo php **/
         $data = require(\Yii::getAlias('@app').$file);
         
+        /** Se limpia y se unifica el atributo calle **/
         $i=0;
         foreach ($data as $value) {
             $calle = trim($value['persona']['lugar']['calle']);
@@ -90,9 +91,15 @@ class HerramientaController extends ActiveController{
             $arrayErrors = array();
             try {
                 $model = new \app\models\PersonaForm();
-                $model->setAttributesAndSave($param);
+                $persona_array = $model->BuscarPersonaPorNroDocumentoEnRegistral($value['persona']['nro_documento']);
+                if(count($persona_array)>0){
+                    $value['personaid'] = $persona_array['id'];
+                    
 
-                $value['personaid'] = $model->id;
+                }else{
+                    $model->setAttributesAndSave($param);
+                    $value['personaid'] = $model->id;
+                }
             }catch (Exception $exc) {
                 $mensaje =$exc->getMessage();
                 throw new \yii\web\HttpException(400, $mensaje);
@@ -103,13 +110,13 @@ class HerramientaController extends ActiveController{
             $transaction = Yii::$app->db->beginTransaction();
             $arrayErrors = array();
             try {
-
                 $model = new \app\models\Recurso();
                 $model->setAttributesCustom($value);
 
                 if(!$model->save()){
                     throw new Exception(json_encode($model->getErrors()));
                 }
+                $model->setResponsableEntrega($value);
 
                 #### Guardamos coleccion de alumnos si el pregroma es "Emprender" ####
                 if(isset($param['alumno_lista']) && (count($param['alumno_lista'])>0) &&  $model->programa->nombre == 'Emprender'){
