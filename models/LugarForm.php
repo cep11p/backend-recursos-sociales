@@ -164,14 +164,47 @@ class LugarForm extends Model
         return $resultado;
     }
     
-    public function buscarDelegacionPorId($params = null) {
-        $resultado = null;
-        if(isset($params)){
-            $response = \Yii::$app->lugar->buscarDelegacionPorId($params);   
-        }
+    /**
+     * Buscamos la delegacion por id y obtenemos el nombre
+     * @param int $id
+     * @return array
+     */
+    public function buscarDelegacionPorId($id = '') {
+        $resultado = [];
+        $response = \Yii::$app->lugar->buscarDelegacionPorId($id);   
         
-        if(isset($response['nombre'])){
-            $resultado = $response['nombre'];
+        if(count($response)>0){
+            $resultado = $response;
+        }
+        return $resultado;
+    }
+    
+    /**
+     * Buscamos el municipio por id
+     * @param int $id
+     * @return array
+     */
+    public function buscarMunicipioPorId($id = '') {
+        $resultado = [];
+        $response = \Yii::$app->lugar->buscarMunicipioPorId($id);   
+        
+        if(count($response)>0){
+            $resultado = $response;
+        }
+        return $resultado;
+    }
+    
+    /**
+     * Buscamos la comision de fomento por id
+     * @param int id
+     * @return array
+     */
+    public function buscarComisionFomentoPorId($id = '') {
+        $resultado = [];
+        $response = \Yii::$app->lugar->buscarComisionFomentoPorId($id);   
+        
+        if(count($response)>0){
+            $resultado = $response;
         }
         return $resultado;
     }

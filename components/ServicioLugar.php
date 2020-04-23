@@ -305,7 +305,6 @@ class ServicioLugar extends Component implements IServicioLugar
     public function buscarDelegacionPorId($id)
     {
         
-//        $criterio = $this->crearCriterioBusquedad($param);
         $client =   $this->_client;
         try{
             $headers = [
@@ -314,6 +313,60 @@ class ServicioLugar extends Component implements IServicioLugar
             ];          
             
             $response = $client->request('GET', 'http://lugar/api/delegacions/'.$id, ['headers' => $headers]);
+            $respuesta = json_decode($response->getBody()->getContents(), true);
+            \Yii::info($respuesta);
+            
+            return $respuesta;
+        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e->getResponse()->getBody()));
+                \Yii::error('Error de integración:'.$e->getResponse()->getBody(), $category='apioj');
+                return false;
+        } catch (Exception $e) {
+                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e));
+                \Yii::error('Error inesperado: se produjo:'.$e->getMessage(), $category='apioj');
+                return false;
+        }
+       
+    }
+    
+    public function buscarMunicipioPorId($id)
+    {
+        
+        $client =   $this->_client;
+        try{
+            $headers = [
+//                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_LUGAR'],
+                'Content-Type'=>'application/json'
+            ];          
+            
+            $response = $client->request('GET', 'http://lugar/api/municipio/'.$id, ['headers' => $headers]);
+            $respuesta = json_decode($response->getBody()->getContents(), true);
+            \Yii::info($respuesta);
+            
+            return $respuesta;
+        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e->getResponse()->getBody()));
+                \Yii::error('Error de integración:'.$e->getResponse()->getBody(), $category='apioj');
+                return false;
+        } catch (Exception $e) {
+                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e));
+                \Yii::error('Error inesperado: se produjo:'.$e->getMessage(), $category='apioj');
+                return false;
+        }
+       
+    }
+    
+    public function buscarComisionFomentoPorId($id)
+    {
+        
+        $client =   $this->_client;
+        try{
+            $headers = [
+//                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_LUGAR'],
+                'Content-Type'=>'application/json'
+            ];          
+            
+            $response = $client->request('GET', 'http://lugar/api/comision-fomento/'.$id, ['headers' => $headers]);
             $respuesta = json_decode($response->getBody()->getContents(), true);
             \Yii::info($respuesta);
             

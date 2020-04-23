@@ -251,14 +251,31 @@ class Recurso extends BaseRecurso
     }
     
     /**
-     * Se obtiene al responsable
-     * @return array
+     * Se obtiene el nombre del responsable por interoperabilidad
+     * @return string
      */
-    public function getResponsableEntrega() {
-        $resultado = array();
-        if(parent::getResponsableEntrega()->one()!=null){
-            $resultado = parent::getResponsableEntrega()->one()->toArray();
+    public function getResponsableEntregaNombre() {
+        $resultado = '';
+        $model = new LugarForm();
+        
+        /**Delegacion**/
+        if($this->responsableEntrega->tipo_responsableid == $this::TIPO_RESPONSABLE_DELEGACION){
+            $array = $model->buscarDelegacionPorId($this->responsableEntrega->responsable_entregaid);
+            $resultado = (isset($array['nombre']))?$array['nombre']:'';
         }
+        /**Municipio**/
+        if($this->responsableEntrega->tipo_responsableid == $this::TIPO_RESPONSABLE_MUNICIPIO){
+            $array = $model->buscarMunicipioPorId($this->responsableEntrega->responsable_entregaid);
+            $resultado = (isset($array['nombre']))?$array['nombre']:'';
+        }
+        /**ComisionFomento**/
+        if($this->responsableEntrega->tipo_responsableid == $this::TIPO_RESPONSABLE_COMISION_FOMENTO){
+            $array = $model->buscarMunicipioPorId($this->responsableEntrega->responsable_entregaid);
+            $resultado = (isset($array['nombre']))?$array['nombre']:'';
+        }
+//        if($this->responsableEntrega->tipo_responsableid == $this::TIPO_RESPONSABLE_COMISION_FOMENTO){
+//            
+//        }
 
         return $resultado;
     }

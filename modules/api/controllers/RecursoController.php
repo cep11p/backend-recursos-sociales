@@ -143,6 +143,8 @@ class RecursoController extends ActiveController{
             $resultado = $model->toArray();
             $resultado['localidad'] = $model->getLocalidad();
             $resultado['persona'] = $model->getPersona();
+            $resultado['responsable_entrega']['responsable'] = $model->getResponsableEntregaNombre();
+            $resultado['responsable_entrega']['tipo_responsable'] = ucfirst($model->responsableEntrega->tipoResponsable->nombre);
             
             if(count($model->getAlumnos())!=0){
                 $resultado['alumno_lista'] = $model->getAlumnos();

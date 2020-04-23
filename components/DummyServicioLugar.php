@@ -180,6 +180,18 @@ class DummyServicioLugar extends Component implements IServicioLugar
         
         return 'sin hacer';
     }
+    public function buscarMunicipioPorId($id)
+    {
+       
+        
+        return 'sin hacer';
+    }
+    public function buscarComisionFomentoPorId($id)
+    {
+       
+        
+        return 'sin hacer';
+    }
     
     
     /**

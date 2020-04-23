@@ -32,6 +32,8 @@ interface IServicioLugar {
     
     public function buscarLugarPorId($id);
     public function buscarDelegacionPorId($id);
+    public function buscarMunicipioPorId($id);
+    public function buscarComisionFomentoPorId($id);
     
     
     /**
