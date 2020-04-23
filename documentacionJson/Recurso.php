@@ -248,6 +248,27 @@
  */
 
 /**
+ **** Para crear cualquier una prestacion del programa Modulo Alimentar****
+ * @url http://recurso-social.local/api/recursos
+ * @method POST
+ * @param
+ * {
+    "personaid": 9,
+    "localidadid": 2530,
+    "programaid": 6,
+    "tipo_recursoid": 4,
+    "prosito": "un proposito",
+    "monto": 1998,
+    "observacion": "una observación",
+    "cant_modulo":1,
+    "tipo_responsableid":2,
+    "responsable_entregaid":2,
+    "fecha_alta":"2020-04-22",
+    "fecha_entrega":"2020-04-22"
+    }
+ */
+
+/**
  **** Para visualizar un Recurso(prestacion)****
  * @url http://recurso-social.local/api/recursos/1
  * @method GET
