@@ -309,6 +309,83 @@
  */
 
 /**
+ **** Para visualizar un Recurso(prestacion) del progrma Modulo Alimentar****
+ * @url http://recurso-social.local/api/recursos/1
+ * @method GET
+ * @param
+ * 
+ * {
+    "id": 500,
+    "fecha_inicial": "2020-04-22",
+    "fecha_alta": "2020-04-22",
+    "monto": 1998,
+    "observacion": "uuuuuuunaaaaaaaaaaaaa Observacion",
+    "proposito": null,
+    "programaid": 6,
+    "tipo_recursoid": 4,
+    "personaid": 9,
+    "fecha_baja": null,
+    "fecha_acreditacion": "2020-04-22",
+    "descripcion_baja": null,
+    "localidadid": 2530,
+    "responsable_entregaid": 2,
+    "cant_modulo": 1,
+    "fecha_entrega": null,
+    "programa": "Modulo Alimenticio",
+    "tipo_recurso": "Emergencia",
+    "responsable_entrega": {
+        "tipo_responsableid": 2,
+        "recursoid": 500,
+        "responsable_entregaid": 22,
+        "responsable": "Delegación Zona Alto Valle Centro",
+        "tipo_responsable": "Delegacion"
+    },
+    "baja": false,
+    "acreditacion": true,
+    "localidad": "Picun Leufu",
+    "persona": {
+        "id": 9,
+        "nombre": "Monica ",
+        "apellido": "Arrieagada",
+        "nro_documento": "25765559",
+        "fecha_nacimiento": "1950-01-01",
+        "estado_civilid": null,
+        "telefono": null,
+        "celular": null,
+        "sexoid": null,
+        "tipo_documentoid": null,
+        "nucleoid": 9,
+        "situacion_laboralid": null,
+        "generoid": null,
+        "email": null,
+        "cuil": null,
+        "estudios": [],
+        "lista_red_social": [],
+        "sexo": "",
+        "genero": "",
+        "lista_oficio": [],
+        "estado_civil": "",
+        "lugar": {
+            "id": 9,
+            "nombre": "",
+            "calle": "antártida argentina n° 445",
+            "altura": "",
+            "localidadid": 2629,
+            "latitud": "",
+            "longitud": "",
+            "barrio": "",
+            "piso": "",
+            "depto": "",
+            "escalera": "",
+            "entre_calle_1": "",
+            "entre_calle_2": "",
+            "localidad": "San Antonio Oeste"
+        }
+    }
+}
+ */
+
+/**
  **** Realiza una baja de una recurso(prestacion) ****
  * @url http://recurso-social.local/api/recursos/baja/1
  * @method PUT
