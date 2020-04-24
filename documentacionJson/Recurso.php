@@ -357,10 +357,9 @@
     "responsable_entrega": {
         "tipo_responsableid": 2,
         "recursoid": 500,
-        "responsable_entregaid": 22,
-        "responsable": "Delegación Zona Alto Valle Centro",
-        "tipo_responsable": "Delegacion"
+        "responsable_entregaid": 22
     },
+    "responsable_entrega": "Delegación Zona Alto Valle Centro (Delegacion)",
     "baja": false,
     "acreditacion": true,
     "localidad": "Picun Leufu",
