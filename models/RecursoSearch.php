@@ -743,8 +743,8 @@ class RecursoSearch extends Recurso
             foreach ($coleccion_delegacion as $delegacion) {
                 //buscamos al recurso que tenga ese tipo de responsable y el responsable
                 if(isset($recurso['responsable_entrega']['responsable_entregaid']) && ($recurso['responsable_entrega']['responsable_entregaid'] == $delegacion['id'])){
-                    $recurso['responsable_entrega']['responsable']=$delegacion['nombre'];
-                    $recurso['responsable_entrega']['tipo_responsable']='Delegación';
+                    $recurso['responsable_entrega']=$delegacion['nombre'].' (Delegacion)';
+                    $recurso['tipo_responsable']='Delegación';
                     $coleccion_recursos[$i]=$recurso;
                 }
             }
@@ -752,8 +752,8 @@ class RecursoSearch extends Recurso
             foreach ($coleccion_comision_fomento as $comision_fomento) {
                 //buscamos al recurso que tenga ese tipo de responsable y el responsable
                 if(isset($recurso['responsable_entrega']['responsable_entregaid']) && ($recurso['responsable_entrega']['responsable_entregaid'] == $comision_fomento['id'])){
-                    $recurso['responsable_entrega']['responsable']=$comision_fomento['nombre'];
-                    $recurso['responsable_entrega']['tipo_responsable']='Comision de Fomento';
+                    $recurso['responsable_entrega']=$comision_fomento['nombre'].' (Comision de Fomento)';
+                    $recurso['tipo_responsable']='Comision de Fomento';
                     $coleccion_recursos[$i]=$recurso;
                 }
             }  
@@ -761,8 +761,8 @@ class RecursoSearch extends Recurso
             foreach ($coleccion_municipio as $municipio) {
                 //buscamos al recurso que tenga ese tipo de responsable y el responsable
                 if(isset($recurso['responsable_entrega']['responsable_entregaid']) && ($recurso['responsable_entrega']['responsable_entregaid'] == $municipio['id'])){
-                    $recurso['responsable_entrega']['responsable']=$municipio['nombre'];
-                    $recurso['responsable_entrega']['tipo_responsable']='Municipio';
+                    $recurso['responsable_entrega']=$municipio['nombre'].' (Municipio)';
+                    $recurso['tipo_responsable']='Municipio';
                     $coleccion_recursos[$i]=$recurso;
                 }
             }              
