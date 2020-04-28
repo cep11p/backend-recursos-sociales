@@ -18,7 +18,7 @@ class RecursoSearch extends Recurso
     public function rules()
     {
         return [
-            [['id', 'programaid', 'tipo_recursoid', 'personaid','localidadid','tipo_responsableid'], 'integer'],
+            [['id', 'programaid', 'tipo_recursoid', 'personaid','localidadid'], 'integer'],
             [['fecha_inicial', 'fecha_alta', 'observacion', 'proposito','recurso_cantidad'], 'safe'],
             [['monto'], 'number'],
         ];
@@ -206,8 +206,8 @@ class RecursoSearch extends Recurso
             $persona_params["global_param"] = $params['global_param'];
         }
         
-        if(isset($params['calle']) && !empty($params['calle'])){
-            $persona_params['calle'] = $params['calle'];    
+        if(isset($params['persona']['localidadid']) && !empty($params['persona']['localidadid'])){
+            $persona_params['localidadid'] = $params['persona']['localidadid'];    
         }
         
         $coleccion_persona = array();

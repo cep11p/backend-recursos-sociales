@@ -99,6 +99,8 @@ $config = [
                         'OPTIONS baja/{id}' => 'baja',
                         'PUT acreditar/{id}' => 'acreditar',
                         'OPTIONS acreditar/{id}' => 'acreditar',
+                        'POST filtrar-prestacion' => 'filtrar-prestacion',
+                        'OPTIONS filtrar-prestacion' => 'filtrar-prestacion',
                     ], 
                 ],
                 [   #Export

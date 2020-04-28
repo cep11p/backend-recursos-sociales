@@ -90,7 +90,17 @@ class RecursoController extends ActiveController{
         $resultado = $searchModel->busquedadGeneral($params);
 
         return $resultado;
-    }  
+    }
+    
+    public function actionFiltrarPrestacion()
+    {
+        $searchModel = new \app\models\RecursoSearch();
+        $params = \Yii::$app->request->post();
+        
+        $resultado = $searchModel->busquedadGeneral($params);
+
+        return $resultado;
+    }
     
     public function actionCreate()
     {
