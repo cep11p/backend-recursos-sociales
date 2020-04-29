@@ -19,6 +19,7 @@ class EstadisticaSearch
         $query->select([
             'r.localidadid', 
             'p.nombre', 
+            'p.color', 
             'count(distinct(r.personaid)) as beneficiario_cantidad'
         ]);
         $query->from(['programa p']);

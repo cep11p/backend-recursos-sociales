@@ -12,6 +12,7 @@ use Yii;
  * @property integer $id
  * @property string $nombre
  * @property integer $activo
+ * @property string $color
  *
  * @property \app\models\ProgramaHasTipoRecurso[] $programaHasTipoRecursos
  * @property \app\models\TipoRecurso[] $tipoRecursos
@@ -38,7 +39,9 @@ abstract class Programa extends \yii\db\ActiveRecord
     {
         return [
             [['activo'], 'integer'],
-            [['nombre'], 'string', 'max' => 200]
+            [['color'], 'required'],
+            [['nombre'], 'string', 'max' => 200],
+            [['color'], 'string', 'max' => 15]
         ];
     }
 
@@ -51,6 +54,7 @@ abstract class Programa extends \yii\db\ActiveRecord
             'id' => 'ID',
             'nombre' => 'Nombre',
             'activo' => 'Activo',
+            'color' => 'Color',
         ];
     }
 

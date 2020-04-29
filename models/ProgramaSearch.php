@@ -91,6 +91,7 @@ class ProgramaSearch extends Programa
         $query->select([
             'p.id',
             'p.nombre',
+            'p.color',
             'count(r.id) as recurso_cantidad',
             'sum(r.monto) as monto',
             'count(distinct(r.personaid)) as persona_cantidad',
