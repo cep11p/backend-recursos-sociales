@@ -56,7 +56,10 @@ class EstadisticaSearch
         $command = $query->createCommand();
         $rows = $command->queryAll();
         
-        return $rows;
+        $coleccion_localidad = \app\components\VinculoInteroperableHelp::obtenerLocalidadIdDeColeccion($rows);
+        $resultado = \app\components\VinculoInteroperableHelp::vincularLocalidad($rows, $coleccion_localidad);
+        
+        return $resultado;
     }
     
     /**
