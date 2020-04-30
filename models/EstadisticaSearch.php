@@ -32,6 +32,33 @@ class EstadisticaSearch
         
         return $rows;
     }
+    
+    /**
+     * Se obtienen la cantidad de beneficiarios clasificados por programas en una determinada localidad
+     * @param int $localidadid
+     * @return array
+     */
+    public function moduloAlimentarioPorLocalidad()
+    {
+        $lista_id = [2539,2586,2576,2640,2577,2589,2587,2629,2538,2591,2626];
+        $query = new \yii\db\Query();
+        
+        $query->select([
+            'r.localidadid', 
+            'sum(r.cant_modulo) as modulo_cantidad',
+            'count(r.id) as beneficiario_cantidad'
+        ]);
+        $query->from(['recurso r']);
+        $query->where(['r.programaid'=> Recurso::PRESTACION_MODULO_ALIMENTAR]);
+        $query->andWhere(array('in', 'r.localidadid', $lista_id));
+        $query->groupBy(['r.localidadid']);
+        
+        $command = $query->createCommand();
+        $rows = $command->queryAll();
+        
+        return $rows;
+    }
+    
     /**
      * Se obtienen la cantidad de beneficiarios clasificados por tipos de recurso(tipo de prestacion) en una determinada localidad
      * @param int $localidadid

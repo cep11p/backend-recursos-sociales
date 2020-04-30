@@ -84,6 +84,19 @@ class EstadisticaController extends ActiveController{
     }
     
     /**
+     * Se obtienen la cantidad de modulos alimentarios por localidad
+     * @param int $localidadid
+     * @return array
+     */
+    public function actionModuloAlimentarioPorLocalidad() 
+    {
+        $searchModel = new \app\models\EstadisticaSearch();
+        $resultado = $searchModel->moduloAlimentarioPorLocalidad();
+
+        return $resultado;
+    }
+    
+    /**
      * Se obtienen la cantidad de beneficiarios que hay en una localidad, clasificados por los tipos de recursos
      * @param int $localidadid
      * @return array
