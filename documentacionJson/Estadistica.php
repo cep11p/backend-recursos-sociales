@@ -1,6 +1,49 @@
 <?php
 
 /**** Se obtienen la cantidad de beneficiarios clasificados por programas en una determinada localidad ***
+@url ejemplo http://recurso-social.local/api/estadisticas/modulo-alimentario-por-localidad
+@Method GET
+[
+    {
+        "localidadid": "2576",
+        "modulo_cantidad": "33",
+        "beneficiario_cantidad": "32",
+        "localidad": "General Roca"
+    },
+    {
+        "localidadid": "2586",
+        "modulo_cantidad": "297",
+        "beneficiario_cantidad": "297",
+        "localidad": "Cipolletti"
+    },
+    {
+        "localidadid": "2587",
+        "modulo_cantidad": "28",
+        "beneficiario_cantidad": "28",
+        "localidad": "Cinco Saltos"
+    },
+    {
+        "localidadid": "2589",
+        "modulo_cantidad": "10",
+        "beneficiario_cantidad": "10",
+        "localidad": "Allen"
+    },
+    {
+        "localidadid": "2629",
+        "modulo_cantidad": "22",
+        "beneficiario_cantidad": "22",
+        "localidad": "San Antonio Oeste"
+    },
+    {
+        "localidadid": "2640",
+        "modulo_cantidad": "17",
+        "beneficiario_cantidad": "17",
+        "localidad": "Viedma"
+    }
+]
+ */
+
+/**** Se obtienen la cantidad de beneficiarios clasificados por programas en una determinada localidad ***
 @url ejemplo http://recurso-social.local/api/estadisticas/beneficiarios-por-programa-en-localidad/2640
 @Method GET
 [
