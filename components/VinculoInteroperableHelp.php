@@ -93,4 +93,58 @@ class VinculoInteroperableHelp extends \yii\base\Component{
         
         return $coleccion;
     }
+    
+    /**
+     * Se vincular los datos de lugar asociado a una prestacion
+     * @param array $coleccion que tiene vinculo con datos de lugar
+     * @return array
+     */
+    static function obtenerYVincularParametrosDeLugar($coleccion = array()) {
+        
+        #Hacemos el pedido de los parametros
+        $parametrosLugar = \Yii::$app->lugar->obtenerParametro();
+        
+        $i = 0;
+        foreach ($coleccion as $prestacion) {
+            
+            if(isset($prestacion['localidadid']) && !empty($prestacion['localidadid'])){
+                foreach ($parametrosLugar['localidad'] as $value) {
+                    if($prestacion['localidadid'] == $value['id']){
+                        $prestacion['localidad'] = $value['nombre'];
+                    }
+                }
+            }
+            
+            if(isset($prestacion['responsable_entrega']['tipo_responsableid']) && !empty($prestacion['responsable_entrega']['tipo_responsableid'])){
+                switch ($prestacion['responsable_entrega']['tipo_responsableid']) {
+                    case \app\models\Recurso::TIPO_RESPONSABLE_DELEGACION :
+                        foreach ($parametrosLugar['delegacion'] as $value) {
+                            if($prestacion['responsable_entrega']['responsable_entregaid'] == $value['id']){
+                                $prestacion['responsable_entrega']['responsable_entrega'] = $value['nombre'] .' (Delegación)';
+                            }
+                        }
+                        break;
+                    case \app\models\Recurso::TIPO_RESPONSABLE_MUNICIPIO :
+                        foreach ($parametrosLugar['municipio'] as $value) {
+                            if($prestacion['responsable_entrega']['responsable_entregaid'] == $value['id']){
+                                $prestacion['responsable_entrega']['responsable_entrega'] = $value['nombre'] .' (Municipio)';
+                            }
+                        }
+                        break;
+                    case \app\models\Recurso::TIPO_RESPONSABLE_COMISION_FOMENTO :
+                        foreach ($parametrosLugar['comision_fomento'] as $value) {
+                            if($prestacion['responsable_entrega']['responsable_entregaid'] == $value['id']){
+                                $prestacion['responsable_entrega']['responsable_entrega'] = $value['nombre'] .' (Comision de Fomento)';
+                            }
+                        }
+                        break;
+                }
+            }
+
+            $coleccion[$i] = $prestacion;
+            $i++;
+        }
+        
+        return $coleccion;
+    }
 }

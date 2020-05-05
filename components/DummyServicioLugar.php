@@ -228,6 +228,10 @@ class DummyServicioLugar extends Component implements IServicioLugar
         
         return $resultado;
     }
+    
+    public function obtenerParametro() {
+        return [];
+    }
    
    
    

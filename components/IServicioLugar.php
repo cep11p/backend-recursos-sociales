@@ -35,6 +35,9 @@ interface IServicioLugar {
     public function buscarMunicipioPorId($id);
     public function buscarComisionFomentoPorId($id);
     
+    public function obtenerParametro();
+
+    
     
     /**
      * crear un string con los criterio de busquedad por ejemplo: localidadid=1&calle=mata negra&altura=123

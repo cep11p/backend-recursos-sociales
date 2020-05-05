@@ -320,12 +320,9 @@ class RecursoSearch extends Recurso
             $coleccion_persona = $this->obtenerPersonaVinculada($coleccion_recurso);
             $coleccion_recurso = $this->vincularPersona($coleccion_recurso, $coleccion_persona);
             
-            #Se vinculan los nombre de la localidares correspondiente a cada prestacion
-            $coleccion_localidad = $this->obtenerLocalidadVinculada($coleccion_recurso);
-            $coleccion_recurso = $this->vincularLocalidad($coleccion_recurso, $coleccion_localidad);
+            #Vamos a obtener coleccion de ids que hacen referencia a el sistema Lugar
+            $coleccion_recurso = \app\components\VinculoInteroperableHelp::obtenerYVincularParametrosDeLugar($coleccion_recurso);
             
-            #Se vinculan los nombre de los responsables correspondiente a cada prestacion
-            $coleccion_recurso = $this->asociarResponsablesPorInteroperabilidad($coleccion_recurso);
         } 
 
         
@@ -770,6 +767,11 @@ class RecursoSearch extends Recurso
         }
         
         return $coleccion_recursos;
+    }
+    
+    public function obtenerParametrosLugar() {
+        $response = \Yii::$app->lugar->obtenerParametro($params);  
+        return $response;
     }
 
 }
