@@ -32,28 +32,12 @@ class TipoResponsable extends BaseTipoResponsable
         );
     }
     
-    public function getListaResponsable() {
-        $resultado = array();
-        if($this->nombre == 'municipio'){
-            $resultado = \Yii::$app->lugar->buscarMunicipio();
-        }else if($this->nombre == 'delegacion'){
-            $resultado = \Yii::$app->lugar->buscarDelegacion();
-        }else if($this->nombre == 'comision de fomento'){
-            $resultado = \Yii::$app->lugar->buscarComisionFomento();
-        }
-        return $resultado;
-    }
-
 
     public function fields()
     {
         return ArrayHelper::merge(parent::fields(), [
             'nombre'=> function($model){
                 return ucfirst($model->nombre);
-            },
-            #Se prepara la lista del tipo de responsable
-            'lista_responsable'=> function($model){
-                return $model->listaResponsable;
             }
         ]);        
     }

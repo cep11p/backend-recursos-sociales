@@ -58,8 +58,16 @@ class TipoResponsableController extends ActiveController{
         unset($actions['view']);
         unset($actions['create']);
         unset($actions['update']);
+        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
         return $actions;
+    }
     
+    public function prepareDataProvider() 
+    {
+        $searchModel = new \app\models\TipoResponsableSearch();
+        $params = \Yii::$app->request->queryParams;
+        $resultado = $searchModel->busquedaGeneral($params);
+        return $resultado;
     }
     
 }
