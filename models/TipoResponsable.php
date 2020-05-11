@@ -41,4 +41,26 @@ class TipoResponsable extends BaseTipoResponsable
             }
         ]);        
     }
+    
+    /**
+     * Se vincula un listado de responsable en cada tipo de responsable
+     * @param array $tipoResponsables
+     * @return array
+     */
+    public function vincularListaResponsable($tipoResponsables) {
+        $parametrosLugar = \Yii::$app->lugar->obtenerParametroPersonalizado(["delegacion"=>[],"municipio"=>[],"comision_fomento"=>[]]);
+        $resultado = array();
+        foreach ($tipoResponsables as $value) {
+            if($value['id'] == Recurso::TIPO_RESPONSABLE_COMISION_FOMENTO){
+                $arrayModel['lista_responsable'] = $parametrosLugar['comision_fomento'];
+            }else if($value['id'] == Recurso::TIPO_RESPONSABLE_MUNICIPIO){
+                $arrayModel['lista_responsable'] = $parametrosLugar['municipio'];
+            }else if($value['id'] == Recurso::TIPO_RESPONSABLE_DELEGACION){
+                $arrayModel['lista_responsable'] = $parametrosLugar['delegacion'];
+            }
+            
+            $resultado[] = $arrayModel;
+        }
+        return $resultado;
+    }
 }

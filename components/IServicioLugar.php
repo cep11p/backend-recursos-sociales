@@ -36,6 +36,7 @@ interface IServicioLugar {
     public function buscarComisionFomentoPorId($id);
     
     public function obtenerParametro();
+    public function obtenerParametroPersonalizado($param = array());
 
     
     

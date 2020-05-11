@@ -30,21 +30,12 @@ class TipoResponsableSearch extends TipoResponsable
 
         $query->andFilterWhere(['like', 'nombre', $this->nombre]);
         
-        $parametrosLugar = $parametrosLugar = \Yii::$app->lugar->obtenerParametro();
-        $coleccion = array();
         foreach ($dataProvider->models as $value) {
-            $arrayModel = $value->toArray();
-            if($value['id'] == Recurso::TIPO_RESPONSABLE_COMISION_FOMENTO){
-                $arrayModel['lista_responsable'] = $parametrosLugar['comision_fomento'];
-            }else if($value['id'] == Recurso::TIPO_RESPONSABLE_MUNICIPIO){
-                $arrayModel['lista_responsable'] = $parametrosLugar['municipio'];
-            }else if($value['id'] == Recurso::TIPO_RESPONSABLE_DELEGACION){
-                $arrayModel['lista_responsable'] = $parametrosLugar['delegacion'];
-            }
-            
+            $arrayModel = $value->toArray();            
             $coleccion[] = $arrayModel;
         }
         
-        return $coleccion;
+        $resultado = $this->vincularListaResponsable($coleccion);
+        return $resultado;
     }
 }

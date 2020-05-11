@@ -407,6 +407,42 @@ class ServicioLugar extends Component implements IServicioLugar
         }
     }
     
+    /**
+     * Se obtiene una coleccion de parametros lugar, localidad, delegacion, comision_fomento, municipio
+     * @param array
+        [
+            "delegacion"=> [["id"=>1],["id"=>2],["id"=>3]],
+            "localidad"=> [["id"=>1],["id"=>2],["id"=>3]],
+            "municipio"=> [],
+            "comision_fomento"=> [["id"=>1],["id"=>2],["id"=>3]],
+            "lugar"=> [["id"=>1],["id"=>2],["id"=>3]]
+        ]
+     * @return array
+     */
+    public function obtenerParametroPersonalizado($data = array()) {
+        $client =   $this->_client;
+        try{
+            $headers = [
+//                'Authorization' => 'Bearer ' .\Yii::$app->params['JWT_LUGAR'],
+                'Content-Type'=>'application/json'
+            ];          
+            
+            $response = $client->request('POST', 'http://lugar/api/parametros/lista', ['json' => $data,'headers' => $headers]);
+            $respuesta = json_decode($response->getBody()->getContents(), true);
+            \Yii::info($respuesta);
+            
+            return $respuesta;
+        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e->getResponse()->getBody()));
+                \Yii::error('Error de integración:'.$e->getResponse()->getBody(), $category='apioj');
+                return false;
+        } catch (Exception $e) {
+                \Yii::$app->getModule('audit')->data('catchedexc', \yii\helpers\VarDumper::dumpAsString($e));
+                \Yii::error('Error inesperado: se produjo:'.$e->getMessage(), $category='apioj');
+                return false;
+        }
+    }
+    
     
     /**
      * crear un string con los criterio de busquedad por ejemplo: localidadid=1&calle=mata negra&altura=123
