@@ -52,14 +52,14 @@ class TipoResponsable extends BaseTipoResponsable
         $resultado = array();
         foreach ($tipoResponsables as $value) {
             if($value['id'] == Recurso::TIPO_RESPONSABLE_COMISION_FOMENTO){
-                $arrayModel['lista_responsable'] = $parametrosLugar['comision_fomento'];
+                $value['lista_responsable'] = $parametrosLugar['comision_fomento'];
             }else if($value['id'] == Recurso::TIPO_RESPONSABLE_MUNICIPIO){
-                $arrayModel['lista_responsable'] = $parametrosLugar['municipio'];
+                $value['lista_responsable'] = $parametrosLugar['municipio'];
             }else if($value['id'] == Recurso::TIPO_RESPONSABLE_DELEGACION){
-                $arrayModel['lista_responsable'] = $parametrosLugar['delegacion'];
+                $value['lista_responsable'] = $parametrosLugar['delegacion'];
             }
             
-            $resultado[] = $arrayModel;
+            $resultado[] = $value;
         }
         return $resultado;
     }
