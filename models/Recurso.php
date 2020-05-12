@@ -310,7 +310,7 @@ class Recurso extends BaseRecurso
             'tipo_recurso'=> function($model){
                 return $model->tipoRecurso->nombre;
             },
-            'responsable_entrega'=> function($model){
+            'responsable_entrega_data'=> function($model){
                 return $model->responsableEntrega;
             },
             #Flags para injectar botones 
