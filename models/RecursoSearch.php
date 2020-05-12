@@ -210,6 +210,10 @@ class RecursoSearch extends Recurso
             $persona_params['localidadid'] = $params['persona']['localidadid'];    
         }
         
+        if(isset($params['persona']['direccion']) && !empty($params['persona']['direccion'])){
+            $persona_params['direccion'] = $params['persona']['direccion'];    
+        }
+        
         $coleccion_persona = array();
         $lista_personaid = array();
         if (isset($persona_params)) {
