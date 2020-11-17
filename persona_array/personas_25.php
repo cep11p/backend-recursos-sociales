@@ -1,0 +1,28 @@
+<?php
+
+$padron = array(
+	array('persona' => array('id' => 1,'nro_documento' => '23851266','nombre' => 'Martin Ignacio', 'apellido' => 'Abad', 'fecha_nacimiento' => '1974-01-01', 'sexoid' => 1, 'lugar' => array('localidadid'=>2640,'calle' => 'Piquillin 386         1'))),
+        array('persona' => array('id' => 2,'nro_documento' => '32054238','nombre' => 'Emilio Nicolas', 'apellido' => 'Abadia', 'fecha_nacimiento' => '1985-01-01', 'sexoid' => 1, 'lugar' => array('localidadid'=>2640,'calle' => 'Don Bosco 377'))),
+        array('persona' => array('id' => 3,'nro_documento' => '28414555','nombre' => 'Jorge Martin', 'apellido' => 'Abadia', 'fecha_nacimiento' => '1980-01-01', 'sexoid' => 1, 'lugar' => array('localidadid'=>2640,'calle' => 'A Arro 530'))),
+        array('persona' => array('id' => 4,'nro_documento' => '25047036','nombre' => 'Silvana Andrea', 'apellido' => 'Abadia', 'fecha_nacimiento' => '1975-01-01', 'sexoid' => 2, 'lugar' => array('localidadid'=>2640,'calle' => 'Zatti 1148'))),
+        array('persona' => array('id' => 5,'nro_documento' => '21618023','nombre' => 'Sandra Ronila', 'apellido' => 'Abalo', 'fecha_nacimiento' => '1970-01-01', 'sexoid' => 2, 'lugar' => array('localidadid'=>2640,'calle' => 'C De Tucuman 1307'))),
+        array('persona' => array('id' => 6,'nro_documento' => '20139199','nombre' => 'Myriam Alicia', 'apellido' => 'Abarzua', 'fecha_nacimiento' => '1968-01-01', 'sexoid' => 2, 'lugar' => array('localidadid'=>2640,'calle' => 'Don Bosco 515'))),
+        array('persona' => array('id' => 7,'nro_documento' => '20573429','nombre' => 'Sergio Damian', 'apellido' => 'Abate', 'fecha_nacimiento' => '1969-01-01', 'sexoid' => 1, 'lugar' => array('localidadid'=>2640,'calle' => 'Del Puente Viejo 10         D 3'))),
+        array('persona' => array('id' => 8,'nro_documento' => '38083938','nombre' => 'Damian Ernesto', 'apellido' => 'Abayu', 'fecha_nacimiento' => '1994-01-01', 'sexoid' => 1, 'lugar' => array('localidadid'=>2640,'calle' => 'Los Arrayanes 1959'))),
+        array('persona' => array('id' => 9,'nro_documento' => '5763623','nombre' => 'Maria Cristina', 'apellido' => 'Abbondi', 'fecha_nacimiento' => '1947-01-01', 'sexoid' => 2, 'lugar' => array('localidadid'=>2640,'calle' => 'J M Contin 460'))),
+        array('persona' => array('id' => 10,'nro_documento' => '30366897','nombre' => 'Martin', 'apellido' => 'Abdala', 'fecha_nacimiento' => '1983-01-01', 'sexoid' => 1, 'lugar' => array('localidadid'=>2640,'calle' => 'S F De Asis 322'))),
+        array('persona' => array('id' => 11,'nro_documento' => '35591077','nombre' => 'Lara Naimid', 'apellido' => 'Abel Otero', 'fecha_nacimiento' => '1990-01-01', 'sexoid' => 2, 'lugar' => array('localidadid'=>2640,'calle' => 'Bv Ituzaingo 670         3'))),
+        array('persona' => array('id' => 12,'nro_documento' => '7897018','nombre' => 'Jorge Arturo', 'apellido' => 'Abelleira', 'fecha_nacimiento' => '1942-01-01', 'sexoid' => 1, 'lugar' => array('localidadid'=>2640,'calle' => 'Flores Del Campo 319'))),
+        array('persona' => array('id' => 13,'nro_documento' => '14775419','nombre' => 'Adriana Sylvia', 'apellido' => 'Abrameto', 'fecha_nacimiento' => '1961-01-01', 'sexoid' => 2, 'lugar' => array('localidadid'=>2640,'calle' => 'Don Bosco 453'))),
+        array('persona' => array('id' => 14,'nro_documento' => '24187541','nombre' => 'Diego Moris', 'apellido' => 'Abrameto', 'fecha_nacimiento' => '1974-01-01', 'sexoid' => 1, 'lugar' => array('localidadid'=>2640,'calle' => 'Rawson 652'))),
+        array('persona' => array('id' => 15,'nro_documento' => '6078131','nombre' => 'Eva Elena', 'apellido' => 'Abrameto', 'fecha_nacimiento' => '1950-01-01', 'sexoid' => 2, 'lugar' => array('localidadid'=>2640,'calle' => 'Rawson 652'))),
+        array('persona' => array('id' => 16,'nro_documento' => '12057263','nombre' => 'Stella Maris', 'apellido' => 'Abrameto', 'fecha_nacimiento' => '1955-01-01', 'sexoid' => 2, 'lugar' => array('localidadid'=>2640,'calle' => 'San Francisco 178'))),
+        array('persona' => array('id' => 17,'nro_documento' => '33416601','nombre' => 'Juan Manuel', 'apellido' => 'Acejo', 'fecha_nacimiento' => '1987-01-01', 'sexoid' => 1, 'lugar' => array('localidadid'=>2640,'calle' => 'B Amel Esc 109         1 A'))),
+        array('persona' => array('id' => 18,'nro_documento' => '4237616','nombre' => 'Ana Maria', 'apellido' => 'Achigar', 'fecha_nacimiento' => '1941-01-01', 'sexoid' => 2, 'lugar' => array('localidadid'=>2640,'calle' => 'J M Contin 420'))),
+        array('persona' => array('id' => 19,'nro_documento' => '36850231','nombre' => 'Ana Florencia', 'apellido' => 'Acosta', 'fecha_nacimiento' => '1992-01-01', 'sexoid' => 2, 'lugar' => array('localidadid'=>2640,'calle' => 'M Mazzarello 1675'))),
+        array('persona' => array('id' => 20,'nro_documento' => '31139343','nombre' => 'Betiana Soledad', 'apellido' => 'Acosta', 'fecha_nacimiento' => '1984-01-01', 'sexoid' => 2, 'lugar' => array('localidadid'=>2640,'calle' => 'M Mazzarello 1675'))),
+        array('persona' => array('id' => 21,'nro_documento' => '33416587','nombre' => 'Jose Mariano', 'apellido' => 'Acosta', 'fecha_nacimiento' => '1987-01-01', 'sexoid' => 1, 'lugar' => array('localidadid'=>2640,'calle' => 'M Mazzarello 1675'))),
+        array('persona' => array('id' => 22,'nro_documento' => '14651486','nombre' => 'Jose Orlando', 'apellido' => 'Acosta', 'fecha_nacimiento' => '1962-01-01', 'sexoid' => 1, 'lugar' => array('localidadid'=>2640,'calle' => 'M Mazzarello 1675'))),
+);
+
+return $padron;

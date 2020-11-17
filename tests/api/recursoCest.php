@@ -505,7 +505,7 @@ class recursoCest
     public function verUnRecursoDeModuloAlimenticio(ApiTester $I)
     {
         $I->wantTo('Se visualiza un recurso de modulo alimenticio');
-        
+    
         $id = 118;
         $I->sendGET("/api/recursos/".$id);
         $I->seeResponseContainsJson([
