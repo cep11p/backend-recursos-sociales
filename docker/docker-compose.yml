@@ -1,0 +1,52 @@
+version: '2'
+
+services:
+
+##### RECURSO-SOCIAL
+  recurso_social:
+    build: dockerfile/php_yii_ds/.
+    image: php_yii_ds
+    volumes:
+      - /app/desarrollo-social/recurso-social/backend-recurso-social:/var/www/html
+    environment:
+      DB_HOST: 'recurso_social_db'
+      DB_NAME: 'recursosocial'
+    labels:
+     - "traefik.backend=recurso-social"
+     - "traefik.frontend.rule=Host:prestaciones-sociales.local"
+     - "traefik.port=80"
+    networks:
+      - backend
+
+  recurso_social_db:
+    ports:
+     - 3306:3306
+    networks:
+      - backend
+    image: mariadb:10.4
+    environment:
+     MYSQL_ROOT_PASSWORD: root
+     MYSQL_ROOT_HOST: '%'
+    volumes:
+     - /app/desarrollo-social/recurso-social/dbdata:/var/lib/mysql
+
+##### PROXY
+
+  proxy:
+    image: traefik:1.7.6
+    restart: always
+    command: --web --docker --docker.domain=local
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./config/proxy/traefik.toml:/etc/traefik/traefik.toml
+    labels:
+     - "traefik.backend=proxy"
+     - "traefik.frontend.rule=Host:proxy.local"
+     - "traefik.port=8080"
+    networks:
+      - backend
+     
+networks:
+  backend:
