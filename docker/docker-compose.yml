@@ -20,7 +20,7 @@ services:
 
   recurso_social_db:
     ports:
-     - 3306:3306
+     - 3307:3306
     networks:
       - backend
     image: mariadb:10.4
