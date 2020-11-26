@@ -218,7 +218,9 @@ $config = [
     'modules' => [
         'user' => [
             'class' => 'dektrium\user\Module',
-            'enableConfirmation'=>false,
+            'enableConfirmation'=> false,
+            'enableRegistration'=> false,
+            'enablePasswordRecovery'=> false,
             'admins'=>['admin']
         ],
         'rbac' => 'dektrium\rbac\RbacWebModule',
