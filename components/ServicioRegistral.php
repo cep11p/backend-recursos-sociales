@@ -517,7 +517,7 @@ class ServicioRegistral extends Component implements IServicioRegistral
             'usuario_real'=>\Yii::$app->user->identity->username
         ];
         
-        $token = \Firebase\JWT\JWT::encode($payload, \Yii::$app->params['JWT_SECRET']);   
+        $token = \Firebase\JWT\JWT::encode($payload, \Yii::$app->params['REGISTRAL_JWT_SECRET']);   
             
         return  $token;
     }
