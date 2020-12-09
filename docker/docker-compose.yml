@@ -7,7 +7,7 @@ services:
     build: dockerfile/php_yii_ds/.
     image: php_yii_ds
     volumes:
-      - /app/desarrollo-social/recurso-social/backend-recurso-social:/var/www/html
+      - ../:/var/www/html
     environment:
       DB_HOST: 'recurso_social_db'
       DB_NAME: 'recursosocial'
