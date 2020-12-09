@@ -42,27 +42,19 @@ The minimum requirement by this project template that your Web server supports P
 
 INSTALLATION
 ------------
-Lo primero que debemos hacer bajar e instalar los contenedores necesario para el funcionamiento del sistema
-    git clone https://github.com/cep11p/desarrollo-social.git
+Para el despliegue de la aplicacion vamos a la carpeta docker/ y corremos el sieguiente comando (esto mismo crea la bd)
+		
+		-ambiente prod
+		docker-compose -p app -f docker-compose.yml -f docker-compose-prod.yml up -d 
+		
+		-ambiente dev
+		docker-compose -p app -f docker-compose.yml -f docker-compose-dev.yml up -d 
 
-Luego vamos a la carpeta /desarrollo-social/dockerfiles/php_yii_ds y ejecutamos el siguiente comando
-    docker build -t php_yii_ds .
+	*Borramos los contenedores (borra los contenedores)
 
-Despues de crear la imagen de php, debemos crear y arrancar los contenedores que son necesario para el ambiente del sistema.
-    
-    *Levantamos/Creamos(si es la 1ra vez) los contenedores
+		docker-compose -p app down
 
-        -ambiente prod
-        docker-compose -f docker-compose.yml -f docker-compose-prod.yml up -d 
-
-        -ambiente dev
-        docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d 
-
-    *Borramos los contenedores (si es necesario)
-            docker-compose -f docker-compose.yml -f docker-compose-prod.yml down
-            docker-compose -f docker-compose.yml -f docker-compose-dev.yml down
-
-******************Ahora debemos importar el sql inicial del sistema******************
+******************Para importar la bd manualmente******************
 Creamos el esquema de la bd desde docker
         docker exec -i desarrollosocial_recurso_social_db_1 mysql -u root -p --execute 'create database recursosocial DEFAULT CHARACTER SET utf8'
 
