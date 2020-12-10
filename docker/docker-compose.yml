@@ -29,6 +29,7 @@ services:
      MYSQL_ROOT_HOST: '%'
     volumes:
      - /app/desarrollo-social/recurso-social/dbdata:/var/lib/mysql
+     - ../bd_inicial:/docker-entrypoint-initdb.d
 
 ##### PROXY
 

@@ -56,10 +56,10 @@ Para el despliegue de la aplicacion vamos a la carpeta docker/ y corremos el sie
 
 ******************Para importar la bd manualmente******************
 Creamos el esquema de la bd desde docker
-        docker exec -i desarrollosocial_recurso_social_db_1 mysql -u root -p --execute 'create database recursosocial DEFAULT CHARACTER SET utf8'
+        docker exec -i app_recurso_social_db_1 mysql -u root -proot --execute 'create database recursosocial DEFAULT CHARACTER SET utf8'
 
 Importamos el sql inicial que se encuentra en recurso-social/backend-recurso-social/bd_inicial
-	docker exec -i desarrollosocial_recurso_social_db_1 mysql -u root -proot recursosocial < bd_inicial.sql
+	docker exec -i app_recurso_social_db_1 mysql -u root -proot recursosocial < bd_inicial.sql
 
 Realizar los pasos en el siguiente orden:
 
