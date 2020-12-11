@@ -42,7 +42,7 @@ The minimum requirement by this project template that your Web server supports P
 
 INSTALLATION
 ------------
-Para el despliegue de la aplicacion vamos a la carpeta docker/ y corremos el sieguiente comando (esto mismo crea la bd)
+Para el despliegue de la aplicacion vamos a la carpeta docker/ y corremos el sieguiente comando
 		
 		-ambiente prod
 		docker-compose -p app -f docker-compose.yml -f docker-compose-prod.yml up -d 
@@ -65,7 +65,7 @@ Realizar los pasos en el siguiente orden:
 
     1- Ahora debemos ejecutar el comando composer install. Como tenemos php en un contenedor debemos ejecutar el mismo comando dentro del contenedor. Para ello debemos 
     entrar al contenedor con el siguiente comando: 
-        docker exec -ti desarrollosocial_recurso_social_db_1 bash. 
+        docker exec -ti app_recurso_social_db_1 bash. 
     y corremos el siguiente comando
         composer.phar install
 
