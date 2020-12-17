@@ -58,7 +58,7 @@
                     "personaid": 1,
                     "tipo_red_socialid": 1,
                     "perfil": "https://www.facebook.com/cep11p",
-                    "icono_class": "fab fa-facebook-square",
+                    "icon_class": "fab fa-facebook-square",
                     "tipo_red_social": "Facebook"
                 }
             ],
@@ -131,7 +131,7 @@
                     "personaid": 1,
                     "tipo_red_socialid": 1,
                     "perfil": "https://www.facebook.com/cep11p",
-                    "icono_class": "fab fa-facebook-square",
+                    "icon_class": "fab fa-facebook-square",
                     "tipo_red_social": "Facebook"
                 }
             ],
@@ -377,7 +377,7 @@
             "personaid": 1,
             "tipo_red_socialid": 1,
             "perfil": "https://www.facebook.com/cep11p",
-            "icono_class": "fab fa-facebook-square",
+            "icon_class": "fab fa-facebook-square",
             "tipo_red_social": "Facebook"
         }
     ],
