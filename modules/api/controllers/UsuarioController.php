@@ -63,10 +63,8 @@ class UsuarioController extends ActiveController
         $usuario = $this->finder->findUserByUsernameOrEmail($parametros['username']);       
         
         if(!($usuario !== null && Password::validate($parametros['password_hash'],$usuario->password_hash))){
-            throw new \yii\web\HttpException(500, 'usuario o contraseña inválido');
+            throw new \yii\web\HttpException(401, 'usuario o contraseña inválido');
         }
-                
-        
         
         $payload = [
             'exp'=>time()+3600*8,
@@ -74,23 +72,12 @@ class UsuarioController extends ActiveController
             'uid' => $usuario->id  
         ];
         
-        $token = \Firebase\JWT\JWT::encode($payload, \Yii::$app->params['JWT_SECRET']);   
-        
-//        if (\Yii::$app->authManager->checkAccess($usuario->id, 'crear_y_modificar_agente') ||
-//            \Yii::$app->authManager->checkAccess($usuario->id, 'inhabilitar_funcion') ||
-//            \Yii::$app->authManager->checkAccess($usuario->id, 'consulta')){
-            
-            return [
+        $token = \Firebase\JWT\JWT::encode($payload, \Yii::$app->params['JWT_SECRET']);
+
+        return [
             'access_token' => $token,
             'username' => $usuario->username
-            ];
-//        }else{
-//            throw new \yii\web\HttpException(403, 'No tiene los permisos para ingresar a la aplicación');
-//        }
-        
-            
-        
-        
+        ];
     }
 
     
