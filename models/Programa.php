@@ -11,6 +11,13 @@ use yii\helpers\ArrayHelper;
  */
 class Programa extends BasePrograma
 {
+    const EMPRENDER = 3;
+    const HABITAT = 5;
+    const MICRO_EMPRENDIMIENTO = 4;
+    const MODULO_ALIMENTICIO = 6;
+    const RIO_NEGRO_PRESENTE = 2;
+    const SUBSIDIO = 1;
+
     /**
      * variable auxiliar
      * cuantifica la cantidad de recursos que tiene un programa

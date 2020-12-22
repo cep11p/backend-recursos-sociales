@@ -6,6 +6,9 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Programa;
+use app\modules\api\Api;
+use app\modules\api\models\ApiUser;
+use yii\helpers\ArrayHelper;
 
 /**
 * ProgramaSearch represents the model behind the search form about `app\models\Programa`.
@@ -65,7 +68,60 @@ class ProgramaSearch extends Programa
         return $dataProvider;
     }
     
+    /**
+     * Se arma un listado de programas, este listado depende del rol que tenga el usuario
+     */
     public function busquedadGeneral($params)
+    {
+        $query = Programa::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params,'');
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'activo' => $this->activo,
+        ]);
+
+        $query->andFilterWhere(['like', 'nombre', $this->nombre]);
+        
+        $query->select([
+            'p.id',
+            'p.nombre',
+            'p.color',
+            'count(r.id) as recurso_cantidad',
+            'sum(r.monto) as monto'
+        ]);
+        $query->from(['programa p']);
+        $query->where($this->setCondicionUsuarioPrograma());
+        $query->leftJoin('recurso as r', 'p.id=r.programaid');
+        $query->groupBy(['p.nombre']);
+        
+        $coleccion_recurso = array();
+        foreach ($dataProvider->models as $value) {
+            $programa = $value->toArray();
+            $coleccion_recurso[] = $programa;
+        }
+        
+        return $coleccion_recurso;
+    }
+
+    /**
+     * Se muestran los programas con sus estadisticas
+     *
+     * @param [array] $params
+     * @return array
+     */
+    public function getProgramaDetalle($params)
     {
         $query = Programa::find();
 
@@ -101,6 +157,7 @@ class ProgramaSearch extends Programa
             '(SELECT count(id)  FROM `recurso` WHERE (NOT (`fecha_acreditacion` IS NULL)) AND (`fecha_baja` IS NULL) and programaid=r.programaid) as recurso_acreditado_cantidad',
         ]);
         $query->from(['programa p']);
+        $query->where($this->setCondicionUsuarioPrograma());
         $query->leftJoin('recurso as r', 'p.id=r.programaid');
         $query->groupBy(['p.nombre']);
         
@@ -118,7 +175,55 @@ class ProgramaSearch extends Programa
             $coleccion_recurso[] = $programa;
         }
         
-//        print_r($coleccion_recurso);die();
         return $coleccion_recurso;
+    }
+
+    /**
+     * Se filtra los programas según el rol que tenga un usuario
+     *
+     * @return array
+     */
+    public function setCondicionUsuarioPrograma(){
+        $condition =[];
+        // $roles = \Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->id);
+
+        #Usuario General
+        if(Yii::$app->user->can(ApiUser::USUARIO_GENERAL)){
+            //se muestran todos los programas
+            $condition = '1=1';
+        }
+
+        #Usuario Emprender
+        if(Yii::$app->user->can(ApiUser::USUARIO_EMPRENDER)){
+            $condition = ['p.id'=>Programa::EMPRENDER];
+        }
+
+        #Usuario Habitat
+        if(Yii::$app->user->can(ApiUser::USUARIO_HABITAT)){
+            $condition = ['p.id'=>Programa::HABITAT];
+        }
+        
+        #Usuario Micro Emprendimiento
+        if(Yii::$app->user->can(ApiUser::USUARIO_MICRO_EMPRENDIEMIENTO)){
+            $condition = ['p.id'=>Programa::MICRO_EMPRENDIMIENTO];
+        }
+
+        #Usuario Modulo Alimenticio
+        if(Yii::$app->user->can(ApiUser::USUARIO_MODULO_ALIMENTICIO)){
+            $condition = ['p.id'=>Programa::MODULO_ALIMENTICIO];
+        }
+
+        #Usuario Rio Negro Presente
+        if(Yii::$app->user->can(ApiUser::USUARIO_RIO_NEGRO_PRESENTE)){
+            $condition = ['p.id'=>Programa::RIO_NEGRO_PRESENTE];
+        }
+
+        #Usuario Subsidio
+        if(Yii::$app->user->can(ApiUser::USUARIO_SUBSIDIO)){
+            $condition = ['p.id'=>Programa::SUBSIDIO];
+        }
+        
+
+        return $condition;
     }
 }

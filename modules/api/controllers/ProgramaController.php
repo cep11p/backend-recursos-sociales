@@ -43,7 +43,7 @@ class ProgramaController extends ActiveController{
                 [
                     'allow' => true,
                     'actions' => ['index'],
-                    'roles' => ['consultar_prestacion'],
+                    'roles' => ['prestacion_ver'],
                 ],
                 [
                     'allow' => true,
@@ -64,13 +64,32 @@ class ProgramaController extends ActiveController{
         unset($actions['create']);
         unset($actions['update']);
         unset($actions['delete']);
+        unset($actions['index']);
         return $actions;
     
     }
     
     
-    
+    /**
+     * Se listan los programas con detalles estadisticos. Este listado depende del rol del usuario
+     *
+     * @return array
+     */
     public function actionDetalle() 
+    {
+        $searchModel = new \app\models\ProgramaSearch();
+        $params = \Yii::$app->request->queryParams;
+        $resultado = $searchModel->getProgramaDetalle($params);
+
+        return $resultado;
+    }
+
+    /**
+     * Se listan los programas. Este listado depende del rol del usuario
+     *
+     * @return array
+     */
+    public function actionIndex() 
     {
         $searchModel = new \app\models\ProgramaSearch();
         $params = \Yii::$app->request->queryParams;
@@ -78,41 +97,5 @@ class ProgramaController extends ActiveController{
 
         return $resultado;
     }
-    
-//    public function actionCreate()
-//    {
-//        $resultado['message']='Se guarda un programa';
-//        $param = Yii::$app->request->post();
-//        $transaction = Yii::$app->db->beginTransaction();
-//        $arrayErrors = array();
-//        try {
-//       
-//            die($resultado['message']);
-//           
-//        }catch (Exception $exc) {
-//            $transaction->rollBack();
-//            $mensaje =$exc->getMessage();
-//            throw new \yii\web\HttpException(500, $mensaje);
-//        }
-//
-//    }
-    
-//    public function actionUpdate($id)
-//    {
-//        $resultado['message']='Se guarda un programa';
-//        $param = Yii::$app->request->post();
-//        $transaction = Yii::$app->db->beginTransaction();
-//        $arrayErrors = array();
-//        try {
-//       
-//            die($resultado['message']);
-//           
-//        }catch (Exception $exc) {
-//            $transaction->rollBack();
-//            $mensaje =$exc->getMessage();
-//            throw new \yii\web\HttpException(500, $mensaje);
-//        }
-//
-//    }
-    
+        
 }
