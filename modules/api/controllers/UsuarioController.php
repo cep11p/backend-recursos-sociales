@@ -74,9 +74,16 @@ class UsuarioController extends ActiveController
         
         $token = \Firebase\JWT\JWT::encode($payload, \Yii::$app->params['JWT_SECRET']);
 
+        $rol = '';
+        $roles = \Yii::$app->authManager->getRolesByUser($usuario->id);
+        foreach($roles as $value){
+            $rol = $value->name;
+            break;
+        }
         return [
             'access_token' => $token,
-            'username' => $usuario->username
+            'username' => $usuario->username,
+            'rol' => $rol
         ];
     }
 
