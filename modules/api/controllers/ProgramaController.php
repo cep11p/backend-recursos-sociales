@@ -43,12 +43,12 @@ class ProgramaController extends ActiveController{
                 [
                     'allow' => true,
                     'actions' => ['index'],
-                    'roles' => ['prestacion_ver'],
+                    'roles' => ['usuario'],
                 ],
                 [
                     'allow' => true,
                     'actions' => ['view'],
-                    'roles' => ['consultar_prestacion'],
+                    'roles' => ['usuario'],
                 ]
             ]
         ];

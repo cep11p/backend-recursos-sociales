@@ -102,7 +102,7 @@ class ProgramaSearch extends Programa
             'sum(r.monto) as monto'
         ]);
         $query->from(['programa p']);
-        $query->where($this->setCondicionUsuarioPrograma());
+        $query->where($this->setCondicionPermisoProgramaVer());
         $query->leftJoin('recurso as r', 'p.id=r.programaid');
         $query->groupBy(['p.nombre']);
         
@@ -157,7 +157,7 @@ class ProgramaSearch extends Programa
             '(SELECT count(id)  FROM `recurso` WHERE (NOT (`fecha_acreditacion` IS NULL)) AND (`fecha_baja` IS NULL) and programaid=r.programaid) as recurso_acreditado_cantidad',
         ]);
         $query->from(['programa p']);
-        $query->where($this->setCondicionUsuarioPrograma());
+        $query->where($this->setCondicionPermisoProgramaVer());
         $query->leftJoin('recurso as r', 'p.id=r.programaid');
         $query->groupBy(['p.nombre']);
         
@@ -179,51 +179,20 @@ class ProgramaSearch extends Programa
     }
 
     /**
-     * Se filtra los programas según el rol que tenga un usuario
+     * Se filtra los programas según los permisos del usuario
      *
      * @return array
      */
-    public function setCondicionUsuarioPrograma(){
-        $condition =[];
-        // $roles = \Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->id);
+    public function setCondicionPermisoProgramaVer(){
+        $programaid = [];
+        $lista_programa = Programa::find()->asArray()->all();
 
-        #Usuario General
-        if(Yii::$app->user->can(ApiUser::USUARIO_GENERAL)){
-            //se muestran todos los programas
-            $condition = '1=1';
-        }
-
-        #Usuario Emprender
-        if(Yii::$app->user->can(ApiUser::USUARIO_EMPRENDER)){
-            $condition = ['p.id'=>Programa::EMPRENDER];
-        }
-
-        #Usuario Habitat
-        if(Yii::$app->user->can(ApiUser::USUARIO_HABITAT)){
-            $condition = ['p.id'=>Programa::HABITAT];
+        foreach ($lista_programa as $value) {
+            if(Yii::$app->user->can($value['id'].'_ver')){
+                $programaid[] = $value['id'];
+            }
         }
         
-        #Usuario Micro Emprendimiento
-        if(Yii::$app->user->can(ApiUser::USUARIO_MICRO_EMPRENDIEMIENTO)){
-            $condition = ['p.id'=>Programa::MICRO_EMPRENDIMIENTO];
-        }
-
-        #Usuario Modulo Alimenticio
-        if(Yii::$app->user->can(ApiUser::USUARIO_MODULO_ALIMENTICIO)){
-            $condition = ['p.id'=>Programa::MODULO_ALIMENTICIO];
-        }
-
-        #Usuario Rio Negro Presente
-        if(Yii::$app->user->can(ApiUser::USUARIO_RIO_NEGRO_PRESENTE)){
-            $condition = ['p.id'=>Programa::RIO_NEGRO_PRESENTE];
-        }
-
-        #Usuario Subsidio
-        if(Yii::$app->user->can(ApiUser::USUARIO_SUBSIDIO)){
-            $condition = ['p.id'=>Programa::SUBSIDIO];
-        }
-        
-
-        return $condition;
+        return ['p.id'=>$programaid];
     }
 }
