@@ -8,7 +8,7 @@ use Yii;
 use yii\base\Exception;
 
 use app\models\Recurso;
-
+use PHPUnit\Framework\Constraint\ExceptionCode;
 
 class RecursoController extends ActiveController{
     
@@ -44,27 +44,27 @@ class RecursoController extends ActiveController{
                 [
                     'allow' => true,
                     'actions' => ['index'],
-                    'roles' => ['consultar_prestacion'],
+                    'roles' => ['usuario'],
                 ],
                 [
                     'allow' => true,
                     'actions' => ['view'],
-                    'roles' => ['consultar_prestacion'],
+                    'roles' => ['usuario'],
                 ],
                 [
                     'allow' => true,
                     'actions' => ['create'],
-                    'roles' => ['crear_modificar_prestacion'],
+                    'roles' => ['usuario'],
                 ],
                 [
                     'allow' => true,
                     'actions' => ['baja'],
-                    'roles' => ['baja_prestacion'],
+                    'roles' => ['usuario'],
                 ],
                 [
                     'allow' => true,
                     'actions' => ['acreditar'],
-                    'roles' => ['acreditar_prestacion'],
+                    'roles' => ['usuario'],
                 ]
             ]
         ];
@@ -112,6 +112,10 @@ class RecursoController extends ActiveController{
        
             $model = new Recurso();
             $model->setAttributesCustom($param);
+
+            if(!Yii::$app->user->can($model->programaid.'_crear')){
+                throw new Exception('Falta de permisos');
+            }
             
             if(!$model->save()){
                 throw new Exception(json_encode($model->getErrors()));
