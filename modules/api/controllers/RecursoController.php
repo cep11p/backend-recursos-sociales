@@ -106,19 +106,20 @@ class RecursoController extends ActiveController{
     {
         $resultado['message']='Se guarda una prestacion';
         $param = Yii::$app->request->post();
+
+        #Chequeamos el permiso
+        if (!\Yii::$app->user->can('prestacion_crear', ['prestacion' => ['programaid'=>$param['programaid']]])) {
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+
         $transaction = Yii::$app->db->beginTransaction();
-        $arrayErrors = array();
         try {
        
             $model = new Recurso();
             $model->setAttributesCustom($param);
 
-            if(!Yii::$app->user->can($model->programaid.'_crear')){
-                throw new Exception('Falta de permisos');
-            }
-            
             if(!$model->save()){
-                throw new Exception(json_encode($model->getErrors()));
+                throw new \yii\web\HttpException(400,json_encode($model->getErrors()));
             }
             
             $model->setResponsableEntrega($param);
@@ -135,10 +136,11 @@ class RecursoController extends ActiveController{
             
             return  $resultado;
            
-        }catch (Exception $exc) {
+        }catch (\yii\web\HttpException $exc) {
             $transaction->rollBack();
             $mensaje =$exc->getMessage();
-            throw new \yii\web\HttpException(400, $mensaje);
+            $statuCode =$exc->statusCode;
+            throw new \yii\web\HttpException($statuCode, $mensaje);
         }
 
     }
@@ -146,31 +148,26 @@ class RecursoController extends ActiveController{
     public function actionView($id)
     {
         $resultado['message']='Se visualiza una prestacion';
-        $transaction = Yii::$app->db->beginTransaction();
-        try {
-            $model = Recurso::findOne(['id'=>$id]);            
-            if($model==NULL){
-                $msj = 'El recurso con el id '.$id.' no existe!';
-                throw new Exception($msj);
-            }
-            
-            $resultado = $model->toArray();
-            $resultado['localidad'] = $model->getLocalidad();
-            $resultado['persona'] = $model->getPersona();
-            $resultado['responsable_entrega'] = $model->getResponsableEntregaNombre().' ('.ucfirst($model->responsableEntrega->tipoResponsable->nombre).')';
-            
-            if(count($model->getAlumnos())!=0){
-                $resultado['alumno_lista'] = $model->getAlumnos();
-            }
-            
-            return $resultado;
-           
-        }catch (Exception $exc) {
-            $transaction->rollBack();
-            $mensaje =$exc->getMessage();
-            throw new \yii\web\HttpException(400, $mensaje);
+        $model = Recurso::findOne(['id'=>$id]);            
+        if($model==NULL){
+            throw new \yii\web\HttpException(400, 'El recurso con el id '.$id.' no existe!');
         }
 
+        #Chequeamos permiso
+        if(!Yii::$app->user->can('prestacion_ver',['prestacion' => ['programaid'=>$model->programaid]])){
+            throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
+        }
+        
+        $resultado = $model->toArray();
+        $resultado['localidad'] = $model->getLocalidad();
+        $resultado['persona'] = $model->getPersona();
+        $resultado['responsable_entrega'] = $model->getResponsableEntregaNombre().' ('.ucfirst($model->responsableEntrega->tipoResponsable->nombre).')';
+        
+        if(count($model->getAlumnos())!=0){
+            $resultado['alumno_lista'] = $model->getAlumnos();
+        }
+        
+        return $resultado;
     }
     
     /**
@@ -187,15 +184,21 @@ class RecursoController extends ActiveController{
         $transaction = Yii::$app->db->beginTransaction();
         try{
             $model = Recurso::findOne(['id'=>$id]);            
+            
             if($model==NULL){
                 $msj = 'El recurso con el id '.$id.' no existe!';
-                throw new Exception($msj);
+                throw new \yii\web\HttpException(400,$msj);
+            }
+
+            #Chequeamos Permiso
+            if (!Yii::$app->user->can('prestacion_baja',['prestacion' => ['programaid'=>$model->programaid]])) {
+                throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
             }
             
             $model->setScenario(Recurso::SCENARIO_BAJA);
             $model->setAttributesBaja($param);
             if(!$model->save()){
-                throw new Exception(json_encode($model->getErrors()));
+                throw new \yii\web\HttpException(400,json_encode($model->getErrors()));
             }
             
             $resultado['success']=true;
@@ -206,10 +209,11 @@ class RecursoController extends ActiveController{
             
             return $resultado;
            
-        }catch (Exception $exc) {
+        }catch (\yii\web\HttpException $exc) {
             $transaction->rollBack();
-            $mensaje =$exc->getMessage();
-            throw new \yii\web\HttpException(400, $mensaje);
+            $mensaje = $exc->getMessage();
+            $statuCode = $exc->statusCode;
+            throw new \yii\web\HttpException($statuCode, $mensaje);
         }
 
     }
@@ -224,14 +228,19 @@ class RecursoController extends ActiveController{
             $model = Recurso::findOne(['id'=>$id]);            
             if($model==NULL){
                 $msj = 'El recurso con el id '.$id.' no existe!';
-                throw new Exception($msj);
+                throw new \yii\web\HttpException(400,$msj);
+            }
+
+            #Chequeamos Permiso
+            if (!Yii::$app->user->can('prestacion_acreditar',['prestacion' => ['programaid'=>$model->programaid]])) {
+                throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
             }
             
             $model->setScenario(Recurso::SCENARIO_ACREDITACION);
             $model->setAttributesAcreditar($param);
             
             if(!$model->save()){
-                throw new Exception(json_encode($model->getErrors()));
+                throw new \yii\web\HttpException(400,json_encode($model->getErrors()));
             }
             
             $resultado['success']=true;
@@ -242,10 +251,11 @@ class RecursoController extends ActiveController{
             
             return $resultado;
            
-        }catch (Exception $exc) {
+        }catch (\yii\web\HttpException $exc) {
             $transaction->rollBack();
             $mensaje =$exc->getMessage();
-            throw new \yii\web\HttpException(400, $mensaje);
+            $statuCode = $exc->statusCode;
+            throw new \yii\web\HttpException($statuCode, $mensaje);
         }
 
     }

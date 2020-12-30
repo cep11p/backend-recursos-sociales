@@ -188,7 +188,7 @@ class ProgramaSearch extends Programa
         $lista_programa = Programa::find()->asArray()->all();
 
         foreach ($lista_programa as $value) {
-            if(Yii::$app->user->can($value['id'].'_ver')){
+            if(Yii::$app->user->can('prestacion_ver',['programa' => $value])){
                 $programaid[] = $value['id'];
             }
         }

@@ -6,7 +6,7 @@ use Yii;
 use \app\models\base\Recurso as BaseRecurso;
 use yii\helpers\ArrayHelper;
 
-use yii\base\Exception;
+use \yii\web\HttpException;
 
 /**
  * This is the model class for table "recurso".
@@ -109,7 +109,7 @@ class Recurso extends BaseRecurso
     /**
      * Realizamos el registro de un reponsable
      * @param array $param atributos de la tabla responsable
-     * @throws Exception
+     * @throws HttpException
      */
     public function setResponsableEntrega($param) {
         if(isset($this->programaid) && $this->programa->id == $this::PRESTACION_MODULO_ALIMENTAR_ID){
@@ -118,7 +118,7 @@ class Recurso extends BaseRecurso
             $model->recursoid = $this->id;
 
             if(!$model->save()){
-                throw new Exception(json_encode($model->getErrors()));
+                throw new HttpException(json_encode($model->getErrors()));
             }
         }
     }
@@ -188,16 +188,16 @@ class Recurso extends BaseRecurso
         /**
      * Se vinculan los alumnos(Persona) a la capacitación que brinda el programa Emprender, En otras palabras
      * se vinculan alumnos con el recurso_social
-     * @throws Exception
+     * @throws HttpException
      */
     public function vincularAlumnosAEmprender($param){
         if(!is_array($param['alumno_lista'])){
-            throw new Exception("La lista de alumnos es invalida");
+            throw new HttpException("La lista de alumnos es invalida");
         }
 
         foreach ($param['alumno_lista'] as $vAula) { 
             if(!isset($vAula['alumnoid'])){
-                throw new Exception("La lista de alumnos es invalida");
+                throw new HttpException("La lista de alumnos es invalida");
             }                   
 
             $aula = new Aula();
@@ -208,7 +208,7 @@ class Recurso extends BaseRecurso
 
             if(!$aula->save()){
                 $arrayErrors = $aula->getErrors();
-                throw new Exception(json_encode($arrayErrors));
+                throw new HttpException(json_encode($arrayErrors));
             }
         }
     }

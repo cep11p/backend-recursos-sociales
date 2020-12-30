@@ -225,6 +225,9 @@ class RecursoSearch extends Recurso
                 $query->where('0=1');
             }
         }
+
+        #Seteamos la condicion adecuada segun los permisos del usuario (Rbac + Rule)
+        $query->andWhere($this->setCondicionPermisoProgramaVer());
         
         #Criterio de recurso social por lista de persona.... lista de personaid
         if(count($lista_personaid)>0){
@@ -556,6 +559,24 @@ class RecursoSearch extends Recurso
         }       
         
         return $resultado;
+    }
+
+    /**
+     * Se filtra los programas según los permisos del usuario
+     *
+     * @return array
+     */
+    public function setCondicionPermisoProgramaVer(){
+        $programaid = [];
+        $lista_programa = Programa::find()->asArray()->all();
+
+        foreach ($lista_programa as $value) {
+            if(Yii::$app->user->can('prestacion_ver',['prestacion' => ['programaid'=>$value['id']]])){
+                $programaid[] = $value['id'];
+            }
+        }
+        
+        return ['recurso.programaid'=>$programaid];
     }
 
     /**
