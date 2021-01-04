@@ -153,8 +153,15 @@ $config = [
                         'POST login' => 'login',
                         'OPTIONS login' => 'options'
                     ],                       
-                     
-                ],   
+                ],  
+                [   #Permiso
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/permiso', 
+                ],
+                [   #Rol
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/rol', 
+                ],
                 
                 ##### Interoperabilidad con Registral #####
                 [   #persona
