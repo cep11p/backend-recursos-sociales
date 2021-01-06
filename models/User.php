@@ -4,6 +4,7 @@ namespace app\models;
 
 use dektrium\user\helpers\Password;
 use dektrium\user\models\User as ModelsUser;
+use Yii;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
 
@@ -40,6 +41,55 @@ class User extends ModelsUser
         $rows = $command->queryAll();
 
         return $rows;
+    }
+
+    public static function setAsignacion($params){
+        #Validamos que exista el usuario
+        if(User::findOne(['id'=>$params['usuarioid']])==NULL){
+            throw new \yii\web\HttpException(400, 'El usuario con el id '.$params['usuarioid'].' no existe!');
+        }
+
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+
+            #Asignamos el Rol
+            $auth_assignment = new AuthAssignment();
+            $auth_assignment->setAttributes(['item_name'=>$params['rol'],'user_id'=>strval($params['usuarioid'])]);
+            if(!$auth_assignment->save()){
+                throw new \yii\web\HttpException(400, json_encode($auth_assignment->errors));
+            }
+
+            #Asignamos los permisos
+            foreach ($params['lista_permiso'] as $value) {
+                $auth_assignment = new AuthAssignment();
+                $auth_assignment->setAttributes(['item_name'=>$value['name'],'user_id'=>strval($params['usuarioid'])]);
+                if(!$auth_assignment->save()){
+                    throw new \yii\web\HttpException(400, json_encode($auth_assignment->errors));
+                }
+            }
+
+            #Asociamos el programa (vinculacion de programa, permiso y usuario)
+            foreach ($params['lista_permiso'] as $value) {
+                $programaHasUsuario = new ProgramaHasUsuario();
+                $programaHasUsuario->setAttributes([
+                    'userid'=>$params['usuarioid'],
+                    'programaid'=>$params['programaid'],
+                    'permiso'=>$value['name']
+                ]);
+
+                if(!$programaHasUsuario->save()){
+                    throw new \yii\web\HttpException(400, json_encode($auth_assignment->errors));
+                }
+            }
+            $transaction->commit();
+
+            return true;
+        }catch (\yii\web\HttpException $exc) {
+            $transaction->rollBack();
+            $mensaje =$exc->getMessage();
+            $statuCode =$exc->statusCode;
+            throw new \yii\web\HttpException($statuCode, $mensaje);
+        }
     }
 
     public function getAsignaciones(){

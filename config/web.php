@@ -153,6 +153,7 @@ $config = [
                         'POST login' => 'login',
                         'OPTIONS login' => 'options',
                         'GET listar-asignacion/{id}' => 'listar-asignacion',
+                        'POST crear-asignacion' => 'crear-asignacion',
                     ],
                     'tokens' => ['{id}'=>'<id:\\w+>' ],                       
                 ],  

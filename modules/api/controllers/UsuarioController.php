@@ -80,6 +80,11 @@ class UsuarioController extends ActiveController
                     'allow' => true,
                     'actions' => ['listar-asignacion'],
                     'roles' => ['soporte'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['crear-asignacion'],
+                    'roles' => ['soporte'],
                 ]
             ]
         ];
@@ -127,6 +132,18 @@ class UsuarioController extends ActiveController
 
         return $resultado;
     }
+
+    public function actionCrearAsignacion(){
+        $params = Yii::$app->request->post();
+        $resultado['success'] = false;
+        if(User::setAsignacion($params)){
+            $resultado['success'] = true;
+            $resultado['mensaje'] = 'Asignaciones guardadas exitosamente!';
+        }
+
+        return $resultado;
+    }
+
 
     public function actionCreate(){
         $resultado['message']='Se crea un usuario';

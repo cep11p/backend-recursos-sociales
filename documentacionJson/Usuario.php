@@ -103,3 +103,18 @@
     }
 ]
 */
+
+/**** Crear Asiganaciones a usuarios*****
+* @url http://prestaciones-sociales.local/api/usuarios/crear-asignacion 
+* @method POST
+* @param arrayJson
+{
+	"usuarioid": 15,
+	"rol": "usuario",
+	"programaid": "2",
+	"lista_permiso":[
+		{"name":"prestacion_ver"},
+		{"name":"prestacion_crear"}
+    ]
+}
+**/
