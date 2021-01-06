@@ -60,6 +60,21 @@
 * @url http://prestaciones-sociales.local/api/usuarios/{$id} 
 * @method GET
 * @return arrayJson
+{
+    "id": 2,
+    "username": "admin",
+    "email": "admin@correo.com",
+    "password_hash": "$2y$10$MnF9LJCnya.NrXIQBN4YGuRIdIuGtOSsGqqZTpby9RnFp7Chb4qEm",
+    "auth_key": "maXx0ibz2Br9UEfP06TVcltr0uOiWl4B",
+    "confirmed_at": 1556894840,
+    "unconfirmed_email": null,
+    "blocked_at": null,
+    "registration_ip": "172.18.0.2",
+    "created_at": 1556894840,
+    "updated_at": 1607700159,
+    "flags": 0,
+    "last_login_at": 1609850883
+}
 */
 
 /****** Listar asignaciones del usuarios (programa, permiso, rol)*****
