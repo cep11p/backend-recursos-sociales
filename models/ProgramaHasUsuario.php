@@ -31,4 +31,14 @@ class ProgramaHasUsuario extends BaseProgramaHasUsuario
             ]
         );
     }
+
+    public function fields()
+    {
+        return ArrayHelper::merge(parent::fields(), [
+            'programa'=> function($model){
+                return $model->programa->nombre;
+            }
+        ]);
+        
+    }
 }

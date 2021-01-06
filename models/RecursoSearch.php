@@ -795,7 +795,7 @@ class RecursoSearch extends Recurso
     }
     
     public function obtenerParametrosLugar() {
-        $response = \Yii::$app->lugar->obtenerParametro($params);  
+        $response = \Yii::$app->lugar->obtenerParametro([]);  
         return $response;
     }
 

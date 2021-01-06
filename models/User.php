@@ -2,103 +2,93 @@
 
 namespace app\models;
 
-class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
+use dektrium\user\helpers\Password;
+use dektrium\user\models\User as ModelsUser;
+use yii\db\Query;
+use yii\helpers\ArrayHelper;
+
+/**
+ * This is the model class for table "user".
+ */
+class User extends ModelsUser
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
 
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function findIdentity($id)
+    public function behaviors()
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return ArrayHelper::merge(
+            parent::behaviors(),
+            [
+                # custom behaviors
+            ]
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
+    public function getProgramasAsociados(){
+        $query = new Query();
+        
+        $query->select([
+            'programa'=>'prog.nombre',
+            'programaid',
+        ]);
+
+        $query->from('programa_has_usuario phu1');
+        $query->leftJoin("programa as prog", "programaid=prog.id");
+        $query->where(['userid'=>$this->id]);
+        $query->groupBy('programa');
+        
+        $command = $query->createCommand();
+        $rows = $command->queryAll();
+
+        return $rows;
+    }
+
+    public function getAsignaciones(){
+        $lista_programa = $this->getProgramasAsociados();
+        // print_r($lista_programa);die();
+
+        $i=0;
+        foreach ($lista_programa as $value) {
+            $query = new Query();        
+            $query->select([
+                'permiso'
+            ]);
+            $query->from('programa_has_usuario');
+            $query->where([
+                'userid'=>$this->id,
+                'programaid'=>$value['programaid']
+            ]);
+            
+            $command = $query->createCommand();
+            $rows = $command->queryAll();
+            
+            $permisos = array();
+            foreach ($rows as $value) {
+                $permisos[] = $value['permiso'];
             }
+            $lista_programa[$i]['lista_permiso'] = $permisos;
+            $lista_programa[$i]['usuarioid'] = $this->id;
+            $i++;
         }
-
-        return null;
+                
+        return $lista_programa;
     }
 
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
+    public function setAttributesCustom($params)
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
+        $this->setAttributes($params);
+        
+        if(isset($params['password_hash'])){
+            $this->password_hash = Password::hash($params['password_hash']);
         }
-
-        return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
+    public function rules()
     {
-        return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAuthKey()
-    {
-        return $this->authKey;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->authKey === $authKey;
-    }
-
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
-     */
-    public function validatePassword($password)
-    {
-        return $this->password === $password;
+        return ArrayHelper::merge(
+            parent::rules(),
+            [
+                # custom validation rules
+            ]
+        );
     }
 }

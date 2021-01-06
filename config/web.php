@@ -151,8 +151,10 @@ $config = [
                     'controller' => 'api/usuario',   
                     'extraPatterns' => [
                         'POST login' => 'login',
-                        'OPTIONS login' => 'options'
-                    ],                       
+                        'OPTIONS login' => 'options',
+                        'GET listar-asignacion/{id}' => 'listar-asignacion',
+                    ],
+                    'tokens' => ['{id}'=>'<id:\\w+>' ],                       
                 ],  
                 [   #Permiso
                     'class' => 'yii\rest\UrlRule',
