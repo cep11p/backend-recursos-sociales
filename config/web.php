@@ -154,6 +154,7 @@ $config = [
                         'OPTIONS login' => 'options',
                         'GET listar-asignacion/{id}' => 'listar-asignacion',
                         'POST crear-asignacion' => 'crear-asignacion',
+                        'POST borrar-asignacion' => 'borrar-asignacion',
                     ],
                     'tokens' => ['{id}'=>'<id:\\w+>' ],                       
                 ],  

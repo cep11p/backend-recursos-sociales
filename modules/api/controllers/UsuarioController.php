@@ -85,6 +85,11 @@ class UsuarioController extends ActiveController
                     'allow' => true,
                     'actions' => ['crear-asignacion'],
                     'roles' => ['soporte'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['borrar-asignacion'],
+                    'roles' => ['soporte'],
                 ]
             ]
         ];
@@ -123,6 +128,12 @@ class UsuarioController extends ActiveController
         return $resultado;
     }
 
+    /**
+     * Listamos todos los permisos asignados a un usuario, Este listado esta agrupado por programa
+     *
+     * @param [int] $id
+     * @return void
+     */
     public function actionListarAsignacion($id){
         $model = User::findOne(['id'=>$id]);            
         if($model==NULL){
@@ -133,6 +144,11 @@ class UsuarioController extends ActiveController
         return $resultado;
     }
 
+    /**
+     * Se asignan permisos por programa a un usuario
+     *
+     * @return void
+     */
     public function actionCrearAsignacion(){
         $params = Yii::$app->request->post();
         $resultado['success'] = false;
@@ -144,6 +160,21 @@ class UsuarioController extends ActiveController
         return $resultado;
     }
 
+    /**
+     * Se borran los permisos por programa asignado a un usuario
+     *
+     * @return void
+     */
+    public function actionBorrarAsignacion(){
+        $params = Yii::$app->request->post();
+        $resultado['success'] = false;
+        if(User::borrarAsignaciones($params)){
+            $resultado['success'] = true;
+            $resultado['mensaje'] = 'Se borraron asignaciones correctamente!';
+        }
+
+        return $resultado;
+    }
 
     public function actionCreate(){
         $resultado['message']='Se crea un usuario';
@@ -155,6 +186,7 @@ class UsuarioController extends ActiveController
             /** @var User $user */
             $user = new User();
             $user->setScenario('create');
+            
             
             $user->setAttributesCustom($param);
             if(!$user->create()){
