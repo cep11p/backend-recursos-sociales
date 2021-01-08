@@ -4,6 +4,7 @@ namespace app\models;
 
 use dektrium\user\helpers\Password;
 use dektrium\user\models\User as ModelsUser;
+use phpDocumentor\Reflection\Types\Self_;
 use Yii;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
@@ -12,7 +13,16 @@ use yii\helpers\ArrayHelper;
  * This is the model class for table "user".
  */
 class User extends ModelsUser
-{
+{    
+    public function rules()
+    {
+        return ArrayHelper::merge(
+            parent::rules(),
+            [
+                [['personaid','localidadid'],'required','on'=>'create']
+            ]
+        );
+    }
 
     public function behaviors()
     {
@@ -158,37 +168,58 @@ class User extends ModelsUser
         }
     }
 
-    public function setAttributesCustom($params)
-    {
-        $this->setAttributes($params);
+    /**
+     * Se registra un usuario con su rol, perosonaid y localidadid
+     *
+     * @param [array] $params
+     * @return int id
+     */
+    static function registrarUsuario($params){
+        $params['User']=$params;
+        $id = '';
+        $user = new Self();
+        $user->scenario = 'create';
+
         
-        if(isset($params['password_hash'])){
-            $this->password_hash = Password::hash($params['password_hash']);
+        if ($user->load($params) && $user->create()) {
+            $id = $user->id;
+        }
+
+        if(!isset($params['rol'])){
+            $user->addError('rol','Falta asiganar un rol');
+        }
+
+        if($user->hasErrors()){
+            throw new \yii\web\HttpException(400, json_encode($user->errors));
+        }
+
+        $user->setRol($params['rol']);
+
+        return $id;
+    }
+
+    public function setRol($rol)
+    {
+        #Chequeamos si el rol existe
+        if(AuthItem::findOne(['name'=>$rol,'type'=>AuthItem::ROLE])==NULL){
+            throw new \yii\web\HttpException(400, json_encode(['rol'=>'El rol '.$rol.' no existe']));
         }
 
         ######### Asignamos el Rol ###########
         //Si el usuario tiene rol borramos y dsp lo recreamos
-        // if(AuthAssignment::findOne(['user_id'=>$params['usuarioid'], 'item_name'=>$params['rol']])!=NULL){
-        //     AuthAssignment::deleteAll(['user_id'=>$params['usuarioid'], 'item_name'=>$params['rol']]);
-        // }
-        
-        // $auth_assignment = new AuthAssignment();
-        // $auth_assignment->setAttributes(['item_name'=>$params['rol'],'user_id'=>strval($params['usuarioid'])]);
-        // if(!$auth_assignment->save()){
-        //     throw new \yii\web\HttpException(400, json_encode($auth_assignment->errors));
-        // }
+        if(AuthAssignment::findOne(['user_id'=>$this->id,'item_name'=>$rol])!=NULL){
+            AuthAssignment::deleteAll(['user_id'=>$this->id, 'item_name'=>$rol]);
+        }
+
+        $auth_assignment = new AuthAssignment();
+        $auth_assignment->setAttributes(['item_name'=>$rol,'user_id'=>strval($this->id)]);
+        if(!$auth_assignment->save()){
+            throw new \yii\web\HttpException(400, json_encode($auth_assignment->errors));
+        }
 
         ######### Fin de asignacion de Rol ###########
 
     }
 
-    public function rules()
-    {
-        return ArrayHelper::merge(
-            parent::rules(),
-            [
-                # custom validation rules
-            ]
-        );
-    }
+    
 }

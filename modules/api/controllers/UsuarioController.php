@@ -8,11 +8,13 @@ use Yii;
 use yii\web\Response;
 use dektrium\user\Finder;
 use dektrium\user\helpers\Password;
+use dektrium\user\models\User as ModelsUser;
 use dektrium\user\Module;
-
+use dektrium\user\traits\EventTrait;
 
 class UsuarioController extends ActiveController
 {
+        
     public $modelClass = 'app\models\User';
     
     /** @var Finder */
@@ -178,28 +180,15 @@ class UsuarioController extends ActiveController
 
     public function actionCreate(){
         $resultado['message']='Se crea un usuario';
-        $param = Yii::$app->request->post();
+        $params = Yii::$app->request->post();
 
         $transaction = Yii::$app->db->beginTransaction();
         try {
        
-            /** @var User $user */
-            $user = new User();
-            $user->setScenario('create');
-            
-            
-            $user->setAttributesCustom($param);
-            if(!$user->create()){
-                throw new \yii\web\HttpException(400,json_encode($user->getErrors()));
-            }
-            
+            $resultado['data']['id'] = User::registrarUsuario($params);
+
             $transaction->commit();
-            
-            $resultado['success']=true;
-            $resultado['data']['id']=$user->id;
-            
-            return  $resultado;
-           
+            return $resultado;
         }catch (\yii\web\HttpException $exc) {
             $transaction->rollBack();
             $mensaje =$exc->getMessage();
