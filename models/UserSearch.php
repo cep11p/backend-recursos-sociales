@@ -61,6 +61,7 @@ class UserSearch extends User
         }
         
         $query->andFilterWhere(['like', 'username', $this->username]);
+        $query->andFilterWhere(['=', 'baja', 0]);
 
         $coleccion= array();
         foreach ($dataProvider->getModels() as $value) {

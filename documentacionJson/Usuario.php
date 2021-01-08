@@ -130,3 +130,12 @@
     "usuarioid": 2
 }
 **/
+
+/**** Dar de baja un Usuarios*****
+* @url http://prestaciones-sociales.local/api/usuarios/baja/47 
+* @method POST
+* @param arrayJson
+{
+	"descripcion_baja":"Esto es una descripcion de baja de usuario"
+}
+**/

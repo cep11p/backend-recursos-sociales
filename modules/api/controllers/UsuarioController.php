@@ -75,6 +75,11 @@ class UsuarioController extends ActiveController
                 ],
                 [
                     'allow' => true,
+                    'actions' => ['baja'],
+                    'roles' => ['soporte'],
+                ],
+                [
+                    'allow' => true,
                     'actions' => ['login'],
                     'roles' => ['?'],
                 ],
@@ -130,6 +135,19 @@ class UsuarioController extends ActiveController
         return $resultado;
     }
 
+    public function actionBaja($id){
+        $params = Yii::$app->request->post();
+        
+        $model = User::findOne(['id'=>$id]);            
+        if($model==NULL){
+            throw new \yii\web\HttpException(400, 'El usuario con el id '.$id.' no existe!');
+        }
+        
+        $resultado = $model->setBaja($params['descripcion_baja']);
+        
+        return $resultado;
+    }
+
     /**
      * Listamos todos los permisos asignados a un usuario, Este listado esta agrupado por programa
      *
@@ -178,6 +196,11 @@ class UsuarioController extends ActiveController
         return $resultado;
     }
 
+    /**
+     * Se registra un usuario con rol, personaid y localidadid
+     *
+     * @return void
+     */
     public function actionCreate(){
         $resultado['message']='Se crea un usuario';
         $params = Yii::$app->request->post();

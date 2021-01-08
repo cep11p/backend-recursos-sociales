@@ -155,6 +155,7 @@ $config = [
                         'GET listar-asignacion/{id}' => 'listar-asignacion',
                         'POST crear-asignacion' => 'crear-asignacion',
                         'POST borrar-asignacion' => 'borrar-asignacion',
+                        'PUT baja/{id}' => 'baja',
                     ],
                     'tokens' => ['{id}'=>'<id:\\w+>' ],                       
                 ],  

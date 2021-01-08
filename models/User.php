@@ -14,12 +14,15 @@ use yii\helpers\ArrayHelper;
  */
 class User extends ModelsUser
 {    
+    public $personaid;
+    public $localidadid;
+
     public function rules()
     {
         return ArrayHelper::merge(
             parent::rules(),
             [
-                [['personaid','localidadid'],'required','on'=>'create']
+                [['personaid','localidadid'],'required','on'=>'create'],
             ]
         );
     }
@@ -219,6 +222,22 @@ class User extends ModelsUser
 
         ######### Fin de asignacion de Rol ###########
 
+    }
+
+    public function setBaja($descripcion_baja)
+    {
+        $resultado = false;
+        if(strlen($descripcion_baja)<10){
+            throw new \yii\web\HttpException(400, json_encode(['descripcion_baja'=>'La descripcion debe tener 10 caracteres como minimo']));
+        }
+
+        $this->baja = 1;
+        $this->descripcion_baja = $descripcion_baja;
+        if($this->save()){
+            $resultado = true;
+        }
+
+        return $resultado;
     }
 
     
