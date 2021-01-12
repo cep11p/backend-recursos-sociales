@@ -2,9 +2,7 @@
 
 namespace app\models;
 
-use dektrium\user\helpers\Password;
 use dektrium\user\models\User as ModelsUser;
-use phpDocumentor\Reflection\Types\Self_;
 use Yii;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
@@ -14,16 +12,11 @@ use yii\helpers\ArrayHelper;
  */
 class User extends ModelsUser
 {    
-    public $personaid;
-    public $localidadid;
-
     public function rules()
     {
         return ArrayHelper::merge(
             parent::rules(),
-            [
-                [['personaid','localidadid'],'required','on'=>'create'],
-            ]
+            []
         );
     }
 
@@ -178,24 +171,39 @@ class User extends ModelsUser
      * @return int id
      */
     static function registrarUsuario($params){
-        $params['User']=$params;
         $id = '';
         $user = new Self();
         $user->scenario = 'create';
 
-        
-        if ($user->load($params) && $user->create()) {
+        #Chequeamos si la persona tiene usuario
+        if(UserPersona::findOne(['personaid'=>$params['personaid']])!=NULL){
+            throw new \yii\web\HttpException(400, 'La persona ya tiene un usuario');
+        }
+        #Registramos el usuario
+        if ( $user->load(['User'=>$params]) && $user->create()) {
             $id = $user->id;
         }
 
+        #Chequeamos que venga el rol
         if(!isset($params['rol'])){
             $user->addError('rol','Falta asiganar un rol');
         }
 
+        #Chequeamos si se puede regitrar el usuario
         if($user->hasErrors()){
             throw new \yii\web\HttpException(400, json_encode($user->errors));
         }
 
+        #Vinculamos la persona
+        $userPersona = new UserPersona();
+        $userPersona->setAttributes($params);
+        $userPersona->userid = $id;
+
+        if(!$userPersona->save()){
+            throw new \yii\web\HttpException(400, json_encode($userPersona->errors));
+        }
+        
+        
         $user->setRol($params['rol']);
 
         return $id;
