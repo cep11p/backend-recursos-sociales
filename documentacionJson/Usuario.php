@@ -48,6 +48,14 @@
 * @url http://prestaciones-sociales.local/api/usuarios 
 * @method POST
 * @param arrayJson
+{
+	"username":"cep11p",
+	"password":"carlos",
+	"email":"cep11p@correo.com",
+	"personaid":1,
+	"localidadid":2626,
+	"rol":"admin"
+}
 **/
 
 /**** Para modificar*****
@@ -104,7 +112,7 @@
 ]
 */
 
-/**** Crear Asiganaciones a Usuarios*****
+/**** Crear Asignaciones a Usuarios*****
 * @url http://prestaciones-sociales.local/api/usuarios/crear-asignacion 
 * @method POST
 * @param arrayJson
@@ -117,7 +125,7 @@
     ]
 }
 
-/**** Borrar Asiganaciones a Usuarios*****
+/**** Borrar Asignaciones a Usuarios*****
 * @url http://prestaciones-sociales.local/api/usuarios/borrar-asignacion 
 * @method POST
 * @param arrayJson
@@ -133,7 +141,7 @@
 
 /**** Dar de baja un Usuarios*****
 * @url http://prestaciones-sociales.local/api/usuarios/baja/47 
-* @method POST
+* @method PUT
 * @param arrayJson
 {
 	"descripcion_baja":"Esto es una descripcion de baja de usuario"
