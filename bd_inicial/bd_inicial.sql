@@ -31,7 +31,7 @@ CREATE TABLE `audit_data` (
   PRIMARY KEY (`id`),
   KEY `fk_audit_data_entry_id` (`entry_id`),
   CONSTRAINT `fk_audit_data_entry_id` FOREIGN KEY (`entry_id`) REFERENCES `audit_entry` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18861 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=24451 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,6 @@ CREATE TABLE `audit_data` (
 
 LOCK TABLES `audit_data` WRITE;
 /*!40000 ALTER TABLE `audit_data` DISABLE KEYS */;
-INSERT INTO `audit_data` VALUES (18857,9225,'audit/request','xœuUÙŽ£8ý•O3	f_¢~`1	ê$¤ô,Š„p%H	0RÕ]êÛ@*ÕÕó‚|}ïrî²%Õ~%¶aODÎ˜dûõ±%`¤C]O¼ºÀÂ¢´Á‚0¼Ðâ{LºFn_hLGšº\"øƒ’éê¾£†(P±Ôe\'æŒª¾a—:½Ë»²®¸ ÙÂø{yªßÊR>pü!¯¯WTäà0Ñ««®­/ÜÚöðÖìýþw#O&w¨EWŒl¿Ž‰|Œ¡´¥çb6C\'ü	–”tOØ­‹oo	Ñx…17k4ún¶Š’”»7ØË¼oI‘:/Ñ%+ŽLaÚÃl\rœÂ´€\nUEêÓ‹ÉÒ¡Ü-\r†Ø%-D\nã\r;Rn_:Ü^9–Æ»[í²pf~ó+êPìI+^ê]DÜåbsn&×„kxwF}SõL›ësÉœw¨¿|cŠ÷ÛMäÃÑ}ÓÖÅxÜ9éŠ§f¼sEŽee?ÈwñMÁƒÈ?m]wâœÖ¹©	nÅ®Šš£Fæ–»eöþp‘æ\n\\ß0]-°\r\0_Õ€©˜¥ù45Ã·ø€žô›Õ@w\\E–ßF {Š\"CÅñd7\0®§*Šx¦«0Ã”ïÝŸþD½xC­øüü,ž»+§ž²–þÃtFœ+nË‰n«šdNÙ²)âEIVë¯knÅ¤‘©U4ÐLÕ<W®C’•#k:ïŠÔÔ¢°$ çŠª[ÇÜ\0²©«jaÈ(—T€ž\0Ð5M•ÁñˆÐ“ŠUFºŠ-\\\0çÒÐGl\\Y—†^eëýÒá\r!SQÓ8Ë®:rHp{+ó²^÷\'ÔN©±˜à_iìdî>\\û™wÉÔc¨AùË³ß¦»;Šá2Lè3ž»\"ÿ¯³ŸJÒµC?OK\'*	£í¸†.ä©yÑ6—ûfN¼L¦^žÍžËî<CÍ‘GÞ³_L\0í¦iÌ‘y¸ÆÂÓm3…“xq¸Kïcø ÔîÊÇÑy`3‘ÑX·ÉÚI¡ÿ€ýÈÛoà6Íâ(âƒR>EÃ/{˜¤Y\Zn`¬#‡\n[Òi(Š¤isYWS³ÆÄá|‘ÝC×¡ötc{J™ÖßÉ°ó~¹åËp°”3­Âdúl	Ó·ÈJÄ·ßÃ’ô¢èsßýgÉÛÁZ\'Š>Üýøtœô¡','2020-12-23 14:19:16'),(18858,9225,'audit/db','xœí˜ßOÛHÇßù+Vy$Jwg;—©Ê)MNÚ—J±±—Ö×ØálçD„øßom‡7‹ÔáÞC„ÄÞ]Ïgæ;³³	<âÝçžòz‰Éóà‹É{ýÀåÝÇ³ïDù÷s\n¯7}?ù„Þ]Fèt2ºú0ž¢w“È–Q\\ÌLZd+¿×=bÿ¶/`\'ñz«8þ]>]$IFž÷ÏÒd«r$íGXIJ	çÇ ˜\0©ûõ³±wÿ{¼ü¤¹\\ô«/0J‹VFqÂÁa“T\\V6ÉM›ÖÖ¨áhxz¹‡ìÏ·py.Ò¼È‚8-fi˜£óe’þp137&3ih¢Y\\ÏÍó·7¦ïUÔqz³È’ ˆé,¿š$x^ÄÁ|ödGŽN¦(÷þœœ]³¾™ÕãêËRåpûp4WvT¯¼0(‚ùâ\ZØÅ]×\'ßg<3õ|ŠÆe8OÆgÏ,²qX-uXtyº&Ù²d}ù™I¥+·¦Tþýô~x1t¯5@‘µì:ÈÍAeMµh:Çˆ½5ØSlííý\r¹îÿ°†kÈÓŒÌ·Í1P¦+E«ßŠþ­è_£è¶5Zãí\ZmÍAB©h‚7%Mˆ•ôùx:¼¸DçãËIs»@~¶XÆ?B~fì3ób–˜âë\"*¯„™	\nù‡èãÉèj8E5ÇÛpn‚ty»„öOGçå?À€ßxæÙg¾¸ºtÔÜ™ÐZàBÕ ävò\n	R(U¡’ÿêSLwDå˜âbU\ZjVºÉª±×;³…êrØhJ¥ú¨–{±º}’ÞÛ5r­Ï5-úcÐÀ±6sm5w\ZqL9œmÓHL(ÐZ¤¬{šV±)i€âíNÍÂ0¶Î8±	£øŽ0ÑuGQ¥¶ÓÉrH\\ï…DvÊÑ:”RáT—²7*Ý\0;‚Ø}ª£ˆPé(pÒ>I\\‚\0î¤uH˜m¨\\ \0¸FŸå–VÄóGïùõœ/G^Ûm„¬½O_ÍèÖŽ–;¤O\0³µ£ÇF\r;*æ6[ÜÄó8í*¤ÂÚÉCWÛˆ_ÁÓ:<\n´KRÀ«qšç\rwB—j—‰ 9wT!¢¥í³*£õëÝÖÓcWÅ!ÚvÇ¬4š6zCIœFÿüäaßÝ¹[‚Á¡y×\"¡ðÊ¦·v:á.yƒP7ä”ý„RL–-²ýmu|Ófo3ªj©ð×³ºµ«X1»¬æb-ðf·¦v¬ŒæÎfl7U^€\r€“E±ú8@U×,íãÂ(u¡hQX³e“;¢„ËlÞUTìÍPŸé¥}Ps…Ù»&itrJ{½«¿ÎN,Ió+‚éðùÑ2«¾NóäkÀ¶I‘˜AŸ˜d‘­lÏwç¤MQŒÕcEˆ# ø‹ÃbÈ­yÝ”2Ö9Jë°p†¹c§³­ª²îyxxøžô†P','2020-12-23 14:19:16'),(18859,9225,'audit/log','xœ½W[oÚH~Ï¯ñ‘ÒÔ3ãÛÃòM¨JE¡\n¤}©„{’x‹m:¶WAQþûÛàzX-ªÄÅŸsæûæ\\‘‹çL¸¢«,“*ëô¥ÀL<GÂ‚+^_d‚rÑ™}œ~CîÆct=ß}žÌÐ‡ÛégäË\"Œò…Jr½ñ;ýH`øØð! G°èl¢è{¸ü~Æ±LB!~JoJAÚæ–ëPŠ»$.Åö*m),ñü	VÞ¹¶=Þ)MïarˆèL×*‰’tó\'\nÒ$QA¥‰@ñ&û¹i–´\n\n¥‹,\r\"¹Z„Ë~¸Ld¬vêõnº‡ûÕ®Ha»È]fn{Ä*ó}àÜòà4‡ãáõüÁëGP\\ú,×2JòE‰îbïÁªˆ“_µºWZ%\n¹\\®ÔáÇ{êg•»¢ä>Õ±,ù,²àQÅr\'ž—çó†#CW3¤ƒ³OÓÑÄ¤õCmvÖ‹2tJqØM\'Ž^õm È\\®Ò4\0ã¦õéí«fï€êh†&e^MnÙJœW¦ÎKAÓI×LZH¶Ë”Ê£l©Tçûíãðvh¶5@! [ÊLõ*4•ÑÚu‰³-±7ßÂãî^žu±aù½TdÌ³[Í,b1×.ÚÛhŒ! G“ÙðvŽF“ù´YPÏ×i‘+ÿùZÁ–Y¾ˆUþ˜†åJ •ÌUèŸ£¯Wã»áõjïƒ•’I±î^ îõxTþØþ&ïEØ°\'fÝóÍÜ-Mõ¹ž+QpNq‹)w¹UÍ!ûT=Ktn uçÃFõ+}ç£:\0òÍúÍï·ŒkmÉ¢?\r6€™yðnûì2ü’2¸±ÛÔ±0¶íšÛ\'ã²#É„ËÓð ®MÚNŒ‚;Jnƒ?’”ˆÓ¡5úÃÃNÕÐH££q³?b­v<^óåƒÌN˜1vˆ]õ2b7‚yökÞG+hÚ§ñ€ãpf¢C°MªJFœ†Ì¡TVóúÀcØÚƒê[å1mLg6‚þKþ-³@GëüdÈ9¶8m\'PcI\rœþ‡ÓVZ§út˜Áf2¥ÄæU€ÐÆðæºGÆ»z‚à9I¬sB MMT8ß†M£m»Î‘T``^ˆ	£†®ìPÛbu°]Ù…ùãîËÍ0iŽ³áùa¡«ÉÕàKò²(X6æÆXÅ©Þ@‰}òPø°e¹»¸‹BàÂ~—%†?5ÐÏ*//ÿ\04Ý\0®','2020-12-23 14:19:16'),(18860,9225,'audit/profiling','xœíY]OÛH}çWŒòH”Î·gœÍ©Ê*MV¶/•càmbSÛYUü÷½c‡7Ãª1Š»HH<_çÜ{î;và3ÿkîK¿37ó4[vº±ïIKÊ»¹ÏýNÏM§ùäkA…TXp¢5%\ZÚ•–çÁ­É;ÝÀgØÿ\Zû¾IûCúÑ½IâäýŽÂ4ILXÄiâ£ù2ÿ2óïÒ¼èe&\\dy:ÉÓ0f“èº]\'ÁÜ<5T×-6o…»v•Ü§Ìï,ãøStýéôyb?…õl_faK¬<ÆˆÇT1¢¤†êcìûKiI8ï>Ú;†®eCè\\Ï][‡(¯CgàÏñûÑGôîj0@§£ÁÕ‡á½»}@Ó`ÅÅÄ$E¶œnZ”¬ÁšÏƒ$òý/SéÂŠºA))d·üù\nPÏ¶Ú\n” ‚:0yJx%&o“Ä\Z@õýÓË=¯ÏáâY\'ÅÄ:òh­a¶˜\'ß]ÌÌÉLšhR×3óróÚð½’uœÜ¤Ù<°žŸäá™OÝ+¥g9:£,Üûct>túl–O³/l0Úî°8\Z\rKå§ƒ^Á,½E=˜Üu}tñmäÁCÏÇhhÝy2<{a’UÃrªCÛÑeéŠÉ’ÕåYSn)íûñ}ÿ¢ïž«‡\"@väæ DSNZ¹ÎÑcoEìÙ·Ð¼¿&×ýïæpuye˜	‰Å†¢¦ŒëRÑê—¢)úç(ºiŽÖx3Gƒ¢õ¨U4Áë’&$}>÷/.ÑùðrTß.ÐÁ4K…™¡if`Í¼˜ÌMq—FöJ˜™ 0Ñôýu2¸êÑAÅãm83A²¸ß?Bû§ƒsûbŠßú†2D¸k±øß5ÇŠ¨y€½¾0.ªšJo3x¥G=©Ê}›ÿUwòT„¸¸*M+®µúJc¿s‰ê²_+¬R§¨’{±¼–ÞÛåJŸ+¶è·^`\Zþ9w6ò˜	\"¡ÐÝ`ãaÂ(«DÊÛgÓÈ7–\rex³R2œ¯\"N®“QbK2ÑuK^¡Jm†ððpµ¯UýÁ“Nu)h(‰è\Z¹%Ø§Zòó	Îƒ•´Ä–Åíiì•‹¥¸\"R;ØJ·´æA<{\"ò-#ïÎøpú£Ž¸†m„¬¬Ïvº±¡=†Ò\'ó•¡kÇFM·TÌ}–ÞÄ38µ·\0žÂÚÉ‡ÑêhNåÏàÓØ=Šj—¤(ç¼¢S?o¸ÚV¨m‚Â‘…ˆö Î*AëÝnji‰±+ã\rÕqu;ªVzÄ	úïàŸ ³ø¾hÏÜ’Lš§RàJ$Œîzc£á’7•’V9ã? “eiÖ¢½aRÇ6hæLUR»CÝØÔ”€˜]¨…\\	¼^­©-3£y€ˆm\'ËK\nprQ¼:0Õ6—æ~áŒ¹¨hYx½dó¶¤.²Y[^±#T8¥Õy€“–©4wŠä.§p¨°+&µJNi¿sõçÙ	0©ß\"÷/Ñ4Zdåí´iÏ>¶¡Šs\"ÙšVÏy æ{˜ö<QŒÕSFˆ£iOS*^í8\";¨h-ª¢”óÖ©4v‹àX8v:(U˜çñññ_uƒÛ','2020-12-23 14:19:16');
 /*!40000 ALTER TABLE `audit_data` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -64,7 +63,7 @@ CREATE TABLE `audit_entry` (
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`user_id`),
   KEY `idx_route` (`route`)
-) ENGINE=InnoDB AUTO_INCREMENT=9226 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10372 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,7 +72,6 @@ CREATE TABLE `audit_entry` (
 
 LOCK TABLES `audit_entry` WRITE;
 /*!40000 ALTER TABLE `audit_entry` DISABLE KEYS */;
-INSERT INTO `audit_entry` VALUES (9225,'2020-12-23 14:19:15',0,1.09204,NULL,'CLI',0,'audit/cleanup',7621008);
 /*!40000 ALTER TABLE `audit_entry` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,7 +164,7 @@ CREATE TABLE `audit_mail` (
   PRIMARY KEY (`id`),
   KEY `fk_audit_mail_entry_id` (`entry_id`),
   CONSTRAINT `fk_audit_mail_entry_id` FOREIGN KEY (`entry_id`) REFERENCES `audit_entry` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -235,6 +233,7 @@ CREATE TABLE `aula` (
 
 LOCK TABLES `aula` WRITE;
 /*!40000 ALTER TABLE `aula` DISABLE KEYS */;
+INSERT INTO `aula` VALUES (61,50),(61,51),(61,52),(61,53),(61,54),(61,55),(61,56),(61,57),(61,58),(61,59),(61,60),(61,61),(64,62),(64,63),(64,64),(64,65),(64,66),(64,67),(64,68),(64,69),(67,70),(67,71),(67,72),(67,73),(67,74),(67,75),(67,76),(67,77),(67,78),(70,79),(70,80),(70,81),(70,82),(70,83),(70,84),(70,85),(93,50),(93,51),(93,52),(93,53),(93,54),(93,55),(93,56),(93,57),(94,58),(94,59),(94,60),(94,61),(94,62),(94,63),(94,64),(94,65),(94,66),(94,67),(95,68),(95,69),(95,70),(95,71),(95,72),(95,73),(95,74),(95,75),(95,76),(96,77),(96,78),(96,79),(96,80),(96,81),(96,82),(96,83),(97,50),(97,51),(97,52),(97,53),(97,54),(97,84),(97,85),(98,55),(98,56),(98,57),(98,58),(98,59),(98,60),(98,61),(98,62),(98,63),(99,64),(99,65),(99,66),(99,67),(99,68),(99,69),(99,70),(99,71),(100,72),(100,73),(100,74),(100,75),(100,76),(100,77);
 /*!40000 ALTER TABLE `aula` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -261,7 +260,7 @@ CREATE TABLE `auth_assignment` (
 
 LOCK TABLES `auth_assignment` WRITE;
 /*!40000 ALTER TABLE `auth_assignment` DISABLE KEYS */;
-INSERT INTO `auth_assignment` VALUES ('1_ver','2',1608731960),('3_ver','2',1608731968),('usuario','2',1608732824);
+INSERT INTO `auth_assignment` VALUES ('admin','2',1610454491),('admin','47',1610117969),('prestacion_acreditar','2',1610454491),('prestacion_baja','2',1610454491),('prestacion_crear','15',1609951741),('prestacion_crear','2',1610031583),('prestacion_ver','15',1609951741),('prestacion_ver','2',1610031583),('usuario','15',1609951741);
 /*!40000 ALTER TABLE `auth_assignment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -293,7 +292,7 @@ CREATE TABLE `auth_item` (
 
 LOCK TABLES `auth_item` WRITE;
 /*!40000 ALTER TABLE `auth_item` DISABLE KEYS */;
-INSERT INTO `auth_item` VALUES ('1_acreditar',2,'Permite acreditar prestaciones de su programa',NULL,NULL,1608730687,NULL),('1_baja',2,'Permite dar de baja prestaciones de su programa',NULL,NULL,1608730687,NULL),('1_crear',2,'Permite crear una prestaciones de su programa',NULL,NULL,1608730687,NULL),('1_ver',2,'Permite ver prestaciones de su programa',NULL,NULL,1608730687,NULL),('2_acreditar',2,'Permite acreditar prestaciones de su programa',NULL,NULL,1608730687,NULL),('2_baja',2,'Permite dar de baja prestaciones de su programa',NULL,NULL,1608730687,NULL),('2_crear',2,'Permite crear una prestaciones de su programa',NULL,NULL,1608730687,NULL),('2_ver',2,'Permite ver prestaciones de su programa',NULL,NULL,1608730687,NULL),('3_acreditar',2,'Permite acreditar prestaciones de su programa',NULL,NULL,1608730687,NULL),('3_baja',2,'Permite dar de baja prestaciones de su programa',NULL,NULL,1608730687,NULL),('3_crear',2,'Permite crear una prestaciones de su programa',NULL,NULL,1608730687,NULL),('3_ver',2,'Permite ver prestaciones de su programa',NULL,NULL,1608730687,NULL),('4_acreditar',2,'Permite acreditar prestaciones de su programa',NULL,NULL,1608730687,NULL),('4_baja',2,'Permite dar de baja prestaciones de su programa',NULL,NULL,1608730687,NULL),('4_crear',2,'Permite crear una prestaciones de su programa',NULL,NULL,1608730687,NULL),('4_ver',2,'Permite ver prestaciones de su programa',NULL,NULL,1608730687,NULL),('5_acreditar',2,'Permite acreditar prestaciones de su programa',NULL,NULL,1608730687,NULL),('5_baja',2,'Permite dar de baja prestaciones de su programa',NULL,NULL,1608730687,NULL),('5_crear',2,'Permite crear una prestaciones de su programa',NULL,NULL,1608730687,NULL),('5_ver',2,'Permite ver prestaciones de su programa',NULL,NULL,1608730687,NULL),('6_acreditar',2,'Permite acreditar prestaciones de su programa',NULL,NULL,1608730687,NULL),('6_baja',2,'Permite dar de baja prestaciones de su programa',NULL,NULL,1608730687,NULL),('6_crear',2,'Permite crear una prestaciones de su programa',NULL,NULL,1608730687,NULL),('6_ver',2,'Permite ver prestaciones de su programa',NULL,NULL,1608730687,NULL),('admin',1,'Controla todo el sistema',NULL,NULL,1608216298,1608560794),('soporte',1,'Realiza operaciones de soporte',NULL,NULL,1608216343,1608560667),('usuario',1,'Puede efectuar funcionalidades administrativas',NULL,NULL,1608216429,1608726657);
+INSERT INTO `auth_item` VALUES ('admin',1,'',NULL,NULL,1609168922,1610453779),('persona_crear',2,'Permite registrar una persona',NULL,NULL,1609162941,1610454384),('prestacion_acreditar',2,'Permite acreditar prestaciones de su programa','prestacion_rule',NULL,1609162941,1610454397),('prestacion_baja',2,'Permite dar de baja prestaciones de su programa','prestacion_rule',NULL,1609162941,1610454413),('prestacion_crear',2,'Permite crear una prestaciones de su programa','prestacion_rule',NULL,1609162941,1610454431),('prestacion_ver',2,'Permite ver prestaciones de su programa','prestacion_rule',NULL,1609162941,1609343873),('soporte',1,'',NULL,NULL,1609244989,1609244989),('usuario',1,'',NULL,NULL,1609168970,1609168970);
 /*!40000 ALTER TABLE `auth_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -320,6 +319,7 @@ CREATE TABLE `auth_item_child` (
 
 LOCK TABLES `auth_item_child` WRITE;
 /*!40000 ALTER TABLE `auth_item_child` DISABLE KEYS */;
+INSERT INTO `auth_item_child` VALUES ('admin','soporte'),('admin','usuario'),('prestacion_acreditar','prestacion_ver'),('prestacion_baja','prestacion_ver'),('prestacion_crear','persona_crear'),('prestacion_crear','prestacion_ver');
 /*!40000 ALTER TABLE `auth_item_child` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -345,6 +345,7 @@ CREATE TABLE `auth_rule` (
 
 LOCK TABLES `auth_rule` WRITE;
 /*!40000 ALTER TABLE `auth_rule` DISABLE KEYS */;
+INSERT INTO `auth_rule` VALUES ('prestacion_rule','O:23:\"app\\rbac\\PrestacionRule\":3:{s:4:\"name\";s:15:\"prestacion_rule\";s:9:\"createdAt\";i:1609338654;s:9:\"updatedAt\";i:1609338654;}',1609338654,1609338654);
 /*!40000 ALTER TABLE `auth_rule` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -368,7 +369,7 @@ CREATE TABLE `migration` (
 
 LOCK TABLES `migration` WRITE;
 /*!40000 ALTER TABLE `migration` DISABLE KEYS */;
-INSERT INTO `migration` VALUES ('m000000_000000_base',1552672687),('m190724_153500_deleteProgramaHasTipoRecurso',1607700037),('m190730_144525_add_localidadid_to_recurso_social',1607700037),('m200411_221328_tipo_responsable',1607700037),('m200413_171649_responsable_entrega',1607700037),('m200413_181257_modulo_alimenticio',1607700037),('m200414_020356_programa_has_tipo_recurso',1607700037),('m200420_185346_fk_reponsable_to_tipo_responsable',1607700037),('m200421_071947_fix_table_responsable',1607700037),('m200421_230417_add_fecha_entrega_to_recurso',1607700037),('m200429_165019_programaColor',1607700037),('m201223_123304_permisos',1608730687);
+INSERT INTO `migration` VALUES ('m000000_000000_base',1552672687),('m190724_153500_deleteProgramaHasTipoRecurso',1607700037),('m190730_144525_add_localidadid_to_recurso_social',1607700037),('m200411_221328_tipo_responsable',1607700037),('m200413_171649_responsable_entrega',1607700037),('m200413_181257_modulo_alimenticio',1607700037),('m200414_020356_programa_has_tipo_recurso',1607700037),('m200420_185346_fk_reponsable_to_tipo_responsable',1607700037),('m200421_071947_fix_table_responsable',1607700037),('m200421_230417_add_fecha_entrega_to_recurso',1607700037),('m200429_165019_programaColor',1607700037),('m201223_123304_permisos',1609162941),('m201228_135012_programaHasUsuario',1609244609),('m210108_123238_user_campos_nuevos',1610109706),('m210108_152639_user_baja',1610119903);
 /*!40000 ALTER TABLE `migration` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -459,6 +460,37 @@ INSERT INTO `programa_has_tipo_recurso` VALUES (1,1),(1,2),(2,2),(2,3),(2,4),(3,
 UNLOCK TABLES;
 
 --
+-- Table structure for table `programa_has_usuario`
+--
+
+DROP TABLE IF EXISTS `programa_has_usuario`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `programa_has_usuario` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` int(11) DEFAULT NULL,
+  `programaid` int(11) DEFAULT NULL,
+  `permiso` varchar(64) DEFAULT NULL,
+  `create_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `fk_programa` (`programaid`),
+  KEY `fk_user` (`userid`),
+  CONSTRAINT `fk_programa` FOREIGN KEY (`programaid`) REFERENCES `programa` (`id`),
+  CONSTRAINT `fk_user` FOREIGN KEY (`userid`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `programa_has_usuario`
+--
+
+LOCK TABLES `programa_has_usuario` WRITE;
+/*!40000 ALTER TABLE `programa_has_usuario` DISABLE KEYS */;
+INSERT INTO `programa_has_usuario` VALUES (12,2,6,'prestacion_ver','2021-01-07 14:59:43'),(13,2,6,'prestacion_crear','2021-01-07 14:59:43');
+/*!40000 ALTER TABLE `programa_has_usuario` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `recurso`
 --
 
@@ -487,7 +519,7 @@ CREATE TABLE `recurso` (
   KEY `fk_recurso_tipo_recurso1_idx` (`tipo_recursoid`),
   CONSTRAINT `fk_recurso_programa1` FOREIGN KEY (`programaid`) REFERENCES `programa` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_recurso_tipo_recurso1` FOREIGN KEY (`tipo_recursoid`) REFERENCES `tipo_recurso` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -496,6 +528,7 @@ CREATE TABLE `recurso` (
 
 LOCK TABLES `recurso` WRITE;
 /*!40000 ALTER TABLE `recurso` DISABLE KEYS */;
+INSERT INTO `recurso` VALUES (1,'2016-01-30','2014-10-07',3212.23,'Observacion Fixture 1','Un proposito hecho con fixtures 1',3,1,1,NULL,'2014-11-07',NULL,2640,NULL,NULL,NULL),(2,'2019-01-06','2014-10-06',14500,'Se solicita un subcidio para pagar deudas personales','Pagar deudas',1,1,2,NULL,'2019-01-06',NULL,2539,NULL,NULL,NULL),(3,'2019-01-06','2014-10-05',13245.5,'Se solicita una ayuda alimentaria','Necesidad alimentaria',2,1,3,NULL,'2019-01-10',NULL,2576,NULL,NULL,NULL),(4,'2016-01-27','2014-10-04',9365.99,'Observacion Fixture 4','Busquedad laboral',3,2,4,NULL,'2014-11-04',NULL,2586,NULL,NULL,NULL),(5,'2016-01-26','2014-10-03',18123.7,'Observacion Fixture 5','Un proposito hecho con fixtures 5',1,2,5,NULL,'2014-11-03',NULL,2577,NULL,NULL,NULL),(6,'2016-01-25','2014-10-02',16456.9,'Observacion Fixture 6','Un proposito hecho con fixtures 6',2,3,6,NULL,'2014-11-02',NULL,2599,NULL,NULL,NULL),(7,'2016-01-24','2014-10-01',15789.64,'Observacion Fixture 7','Un proposito hecho con fixtures 7',3,1,7,NULL,'2014-11-01',NULL,2587,NULL,NULL,NULL),(8,'2016-01-23','2016-05-01',14456,'Observacion Fixture 8','Un proposito hecho con fixtures 8',1,2,8,NULL,'2016-05-10',NULL,2600,NULL,NULL,NULL),(9,'2016-01-22','2016-05-30',19789.8,'Observacion Fixture 9','Un proposito hecho con fixtures 9',2,3,9,NULL,'2016-06-30',NULL,2626,NULL,NULL,NULL),(10,'2016-01-21','2016-05-29',23123.12,'Observacion Fixture 10','Un proposito hecho con fixtures 10',3,1,10,NULL,'2016-06-29',NULL,3976,NULL,NULL,NULL),(11,'2016-01-20','2016-05-28',16789.6,'Observacion Fixture 11','Un proposito hecho con fixtures 11',1,2,1,NULL,'2016-06-28',NULL,2640,NULL,NULL,NULL),(12,'2016-01-19','2016-05-27',65412,'Observacion Fixture 12','Un proposito hecho con fixtures 12',2,3,2,NULL,'2016-06-27',NULL,2539,NULL,NULL,NULL),(13,'2016-01-18','2016-05-26',15000,'Observacion Fixture 13','Un proposito hecho con fixtures 13',3,1,3,NULL,'2016-06-26',NULL,2576,NULL,NULL,NULL),(14,'2016-01-17','2016-05-25',32123.23,'Observacion Fixture 14','Un proposito hecho con fixtures 14',1,2,4,NULL,'2016-06-25',NULL,2586,NULL,NULL,NULL),(15,'2016-01-16','2016-05-24',3212.23,'Observacion Fixture 15','Un proposito hecho con fixtures 15',2,3,5,NULL,'2016-06-24',NULL,2577,NULL,NULL,NULL),(16,'2016-01-15','2016-05-23',20000.16,'Observacion Fixture 16','Un proposito hecho con fixtures 16',3,1,6,NULL,'2016-06-23',NULL,2640,NULL,NULL,NULL),(17,'2016-01-14','2016-05-22',13245.5,'Observacion Fixture 17','Un proposito hecho con fixtures 17',1,2,7,NULL,'2016-06-22',NULL,2539,NULL,NULL,NULL),(18,'2016-01-13','2016-05-21',9365.99,'Observacion Fixture 18','Un proposito hecho con fixtures 18',2,3,8,NULL,'2016-06-21',NULL,2576,NULL,NULL,NULL),(19,'2016-01-12','2016-05-20',18123.7,'Observacion Fixture 19','Un proposito hecho con fixtures 19',3,1,9,NULL,'2016-06-20',NULL,2586,NULL,NULL,NULL),(20,'2016-01-11','2016-05-19',16456.9,'Observacion Fixture 20','Un proposito hecho con fixtures 20',1,2,10,'2016-06-19','2016-06-19','Esto es un argumento de baja',2577,NULL,NULL,NULL),(21,'2016-01-10','2016-05-18',15789.64,'Observacion Fixture 21','Un proposito hecho con fixtures 21',2,3,1,'2016-06-18',NULL,'Esto es un argumento de baja',2599,NULL,NULL,NULL),(22,'2016-01-09','2016-05-17',14456,'Observacion Fixture 22','Un proposito hecho con fixtures 22',3,1,2,'2016-06-17',NULL,'Esto es un argumento de baja',2587,NULL,NULL,NULL),(23,'2016-01-08','2016-05-16',19789.8,'Observacion Fixture 23','Un proposito hecho con fixtures 23',1,2,3,'2016-06-16',NULL,'Esto es un argumento de baja',2600,NULL,NULL,NULL),(24,'2016-01-07','2016-05-15',23123.12,'Observacion Fixture 24','Un proposito hecho con fixtures 24',2,3,4,'2016-06-15','2016-06-15','Esto es un argumento de baja',2626,NULL,NULL,NULL),(25,'2016-01-06','2016-05-14',16789.6,'Observacion Fixture 25','Un proposito hecho con fixtures 25',3,1,5,'2016-06-14',NULL,'Esto es un argumento de baja',3976,NULL,NULL,NULL),(26,'2016-01-05','2016-05-13',65412,'Observacion Fixture 26','Un proposito hecho con fixtures 26',1,2,6,'2016-06-13',NULL,'Esto es un argumento de baja',2640,NULL,NULL,NULL),(27,'2016-01-04','2016-05-12',15000,'Observacion Fixture 27','Un proposito hecho con fixtures 27',2,3,7,'2016-06-12',NULL,'Esto es un argumento de baja',2539,NULL,NULL,NULL),(28,'2016-01-03','2016-05-11',32123.23,'Observacion Fixture 28','Un proposito hecho con fixtures 28',3,1,8,'2016-06-11','2016-06-11','Esto es un argumento de baja',2576,NULL,NULL,NULL),(29,'2016-01-02','2016-05-10',3212.23,'Observacion Fixture 29','Un proposito hecho con fixtures 29',1,2,9,'2016-06-10',NULL,'Esto es un argumento de baja',2586,NULL,NULL,NULL),(30,'2016-01-01','2016-05-09',20000.16,'Observacion Fixture 30','Un proposito hecho con fixtures 30',2,3,10,'2016-05-10','2016-05-10','Esto es un argumento de baja',2577,NULL,NULL,NULL),(31,'2017-12-10','2016-05-08',13245.5,'Observacion Fixture 31','Un proposito hecho con fixtures 31',3,1,1,'2018-01-09','2016-05-09','Esto es un argumento de baja',2640,NULL,NULL,NULL),(32,'2017-12-09','2016-05-07',9365.99,'Observacion Fixture 32','Un proposito hecho con fixtures 32',1,2,2,'2018-01-08',NULL,'Esto es un argumento de baja',2539,NULL,NULL,NULL),(33,'2017-12-08','2016-05-06',18123.7,'Observacion Fixture 33','Un proposito hecho con fixtures 33',2,3,3,'2018-01-07','2016-05-07','Esto es un argumento de baja',2576,NULL,NULL,NULL),(34,'2017-12-07','2016-05-05',16456.9,'Observacion Fixture 34','Un proposito hecho con fixtures 34',3,1,4,'2018-01-06','2016-05-06','Esto es un argumento de baja',2586,NULL,NULL,NULL),(35,'2017-12-06','2016-05-04',15789.64,'Observacion Fixture 35','Un proposito hecho con fixtures 35',1,2,5,'2018-01-05',NULL,'Esto es un argumento de baja',2577,NULL,NULL,NULL),(36,'2017-12-05','2016-05-03',14456,'Observacion Fixture 36','Un proposito hecho con fixtures 36',2,3,6,'2018-01-04','2016-05-04','Esto es un argumento de baja',2599,NULL,NULL,NULL),(37,'2017-12-04','2016-05-02',9365.99,'Observacion Fixture 37','Un proposito hecho con fixtures 37',3,2,11,'2018-01-03',NULL,'Esto es un argumento de baja',2587,NULL,NULL,NULL),(38,'2017-12-03','2016-05-01',18123.7,'Observacion Fixture 38','Un proposito hecho con fixtures 38',1,3,12,'2018-01-02',NULL,'Esto es un argumento de baja',2600,NULL,NULL,NULL),(39,'2017-12-02','2018-05-12',16456.9,'Observacion Fixture 39','Un proposito hecho con fixtures 39',2,1,13,'2018-01-15',NULL,'Esto es un argumento de baja',2626,NULL,NULL,NULL),(40,'2017-12-01','2018-05-11',15789.64,'Observacion Fixture 40','Un proposito hecho con fixtures 40',3,2,14,'2018-01-14','2018-05-14','Esto es un argumento de baja',3976,NULL,NULL,NULL),(41,'2017-11-30','2018-05-10',14456,'Observacion Fixture 41','Un proposito hecho con fixtures 41',1,3,15,'2018-01-13','2018-05-13','Esto es un argumento de baja',2640,NULL,NULL,NULL),(42,'2017-11-29','2018-05-09',19789.8,'Observacion Fixture 42','Un proposito hecho con fixtures 42',2,1,16,'2018-01-12','2018-05-12','Esto es un argumento de baja',2539,NULL,NULL,NULL),(43,'2017-11-28','2018-05-08',23123.12,'Observacion Fixture 43','Un proposito hecho con fixtures 43',3,2,17,'2018-01-11','2018-05-11','Esto es un argumento de baja',2576,NULL,NULL,NULL),(44,'2017-11-27','2018-05-07',16789.6,'Observacion Fixture 44','Un proposito hecho con fixtures 44',1,3,18,'2018-01-10','2018-05-10','Esto es un argumento de baja',2586,NULL,NULL,NULL),(45,'2017-11-26','2018-05-06',65412,'Observacion Fixture 45','Un proposito hecho con fixtures 45',2,1,19,'2018-01-09','2018-05-09','Esto es un argumento de baja',2577,NULL,NULL,NULL),(46,'2017-11-25','2018-05-05',15000,'Observacion Fixture 46','Un proposito hecho con fixtures 46',3,2,20,'2018-01-08','2018-05-08','Esto es un argumento de baja',2640,NULL,NULL,NULL),(47,'2017-11-24','2018-05-04',32123.23,'Observacion Fixture 47','Un proposito hecho con fixtures 47',1,3,21,NULL,'2018-05-07',NULL,2539,NULL,NULL,NULL),(48,'2017-11-23','2018-05-03',3212.23,'Observacion Fixture 48','Un proposito hecho con fixtures 48',2,1,22,NULL,'2018-05-06',NULL,2576,NULL,NULL,NULL),(49,'2017-11-22','2018-05-02',20000.16,'Observacion Fixture 49','Un proposito hecho con fixtures 49',3,2,23,NULL,'2018-05-05',NULL,2586,NULL,NULL,NULL),(50,'2017-11-21','2018-05-01',13245.5,'Observacion Fixture 50','Un proposito hecho con fixtures 50',1,3,24,NULL,'2018-05-04',NULL,2577,NULL,NULL,NULL),(51,'2017-11-20','2018-09-10',9365.99,'Observacion Fixture 51','Un proposito hecho con fixtures 51',2,1,25,NULL,'2018-09-15',NULL,2599,NULL,NULL,NULL),(52,'2017-11-19','2018-09-09',18123.7,'Observacion Fixture 52','Un proposito hecho con fixtures 52',3,2,26,NULL,'2018-09-14',NULL,2587,NULL,NULL,NULL),(53,'2017-11-18','2018-09-08',16456.9,'Observacion Fixture 53','Un proposito hecho con fixtures 53',1,3,27,NULL,'2018-09-13',NULL,2600,NULL,NULL,NULL),(54,'2017-11-17','2018-09-07',15789.64,'Observacion Fixture 54','Un proposito hecho con fixtures 54',2,2,1,NULL,'2018-09-12',NULL,2626,NULL,NULL,NULL),(55,'2017-11-16','2018-09-06',14456,'Observacion Fixture 55','Un proposito hecho con fixtures 55',3,3,2,NULL,'2018-09-11',NULL,3976,NULL,NULL,NULL),(56,'2017-11-15','2018-09-05',9365.99,'Observacion Fixture 56','Un proposito hecho con fixtures 56',1,1,3,NULL,'2018-09-10',NULL,2640,NULL,NULL,NULL),(57,'2017-11-14','2018-09-04',18123.7,'Observacion Fixture 57','Un proposito hecho con fixtures 57',2,2,4,NULL,'2018-09-09',NULL,2539,NULL,NULL,NULL),(58,'2017-11-13','2018-09-03',16456.9,'Observacion Fixture 58','Un proposito hecho con fixtures 58',3,3,5,NULL,'2018-09-08',NULL,2576,NULL,NULL,NULL),(59,'2017-11-12','2018-09-02',15789.64,'Observacion Fixture 59','Un proposito hecho con fixtures 59',1,1,6,NULL,'2018-09-07',NULL,2586,NULL,NULL,NULL),(60,'2017-11-11','2018-05-08',14456,'Observacion Fixture 60','Un proposito hecho con fixtures 60',2,2,11,NULL,NULL,NULL,2577,NULL,NULL,NULL),(61,'2017-11-10','2018-05-07',19789.8,'Observacion Fixture 61','Un proposito hecho con fixtures 61',3,3,12,NULL,NULL,NULL,2640,NULL,NULL,NULL),(62,'2018-03-30','2018-05-06',23123.12,'Observacion Fixture 62','Un proposito hecho con fixtures 62',1,1,13,NULL,NULL,NULL,2539,NULL,NULL,NULL),(63,'2018-03-29','2018-05-05',16789.6,'Observacion Fixture 63','Un proposito hecho con fixtures 63',2,2,14,NULL,NULL,NULL,2576,NULL,NULL,NULL),(64,'2018-03-28','2018-05-04',65412,'Observacion Fixture 64','Un proposito hecho con fixtures 64',3,3,15,NULL,NULL,NULL,2586,NULL,NULL,NULL),(65,'2018-03-27','2018-05-03',15000,'Observacion Fixture 65','Un proposito hecho con fixtures 65',1,1,16,NULL,NULL,NULL,2577,NULL,NULL,NULL),(66,'2018-03-26','2018-05-02',32123.23,'Observacion Fixture 66','Un proposito hecho con fixtures 66',2,2,17,NULL,NULL,NULL,2599,NULL,NULL,NULL),(67,'2018-03-25','2018-05-01',3212.23,'Observacion Fixture 67','Un proposito hecho con fixtures 67',3,3,18,NULL,NULL,NULL,2587,NULL,NULL,NULL),(68,'2018-03-24','2018-09-10',20000.16,'Observacion Fixture 68','Un proposito hecho con fixtures 68',1,1,19,NULL,NULL,NULL,2600,NULL,NULL,NULL),(69,'2018-03-23','2018-09-09',13245.5,'Observacion Fixture 69','Un proposito hecho con fixtures 69',2,2,20,NULL,NULL,NULL,2626,NULL,NULL,NULL),(70,'2018-03-22','2018-09-08',9365.99,'Observacion Fixture 70','Un proposito hecho con fixtures 70',3,3,21,NULL,NULL,NULL,3976,NULL,NULL,NULL),(71,'2018-03-21','2018-09-07',18123.7,'Observacion Fixture 71','Un proposito hecho con fixtures 71',1,2,22,NULL,NULL,NULL,2640,NULL,NULL,NULL),(72,'2019-01-06','2019-01-06',14500,'Se solicita un subcidio para pagar deudas personales','Pagar deudas',1,1,36,NULL,'2019-01-06',NULL,2539,NULL,NULL,NULL),(73,'2019-01-06','2019-01-06',13245.5,'Se solicita una ayuda alimentaria','Necesidad alimentaria',2,1,37,NULL,'2019-01-10',NULL,2576,NULL,NULL,NULL),(74,'2019-01-07','2019-01-07',5500,'La persona esta desocupada','Busquedad laboral',3,2,38,NULL,'2019-01-07',NULL,2586,NULL,NULL,NULL),(75,'2019-01-07','2019-01-07',15000,'Cuota 1 â€“ Mejora habitacional','AmpliaciÃ³n de vivienda',1,3,39,NULL,'2019-01-07',NULL,2577,NULL,NULL,NULL),(76,'2019-01-07','2019-01-07',16456.5,'Ayuda econÃ³mica','Necesidad alimentaria',2,1,40,NULL,'2019-01-07',NULL,2640,NULL,NULL,NULL),(77,'2019-01-07','2019-01-07',6000,'Taller de ceramica','Busquedad laboral',3,2,41,NULL,'2019-01-07',NULL,2539,NULL,NULL,NULL),(78,'2019-01-07','2019-01-07',14456,'Cuota 3 â€“ Mejora habitacional','AmpliaciÃ³n de vivienda',1,3,42,NULL,'2019-01-07',NULL,2576,NULL,NULL,NULL),(79,'2019-01-06','2019-01-06',13789.8,'Cuota 1 â€“ Mejora habitacional','AmpliaciÃ³n de vivienda',1,3,43,NULL,'2019-01-06',NULL,2586,NULL,NULL,NULL),(80,'2019-01-05','2019-01-05',12123.12,'Cuota 1 â€“ Mejora habitacional','AmpliaciÃ³n de vivienda',1,3,44,NULL,'2019-01-05',NULL,2577,NULL,NULL,NULL),(81,'2019-01-04','2019-01-04',11789.6,'Cuota 1 â€“ Mejora habitacional','AmpliaciÃ³n de vivienda',1,3,45,NULL,'2019-01-04',NULL,2599,NULL,NULL,NULL),(82,'2019-01-03','2019-01-03',6412,'Cuota 1 â€“ Mejora habitacional','AmpliaciÃ³n de vivienda',1,3,46,NULL,'2019-01-03',NULL,2587,NULL,NULL,NULL),(83,'2019-01-02','2019-01-02',15000,'Cuota 1 â€“ Mejora habitacional','AmpliaciÃ³n de vivienda',1,3,47,NULL,'2019-01-02',NULL,2600,NULL,NULL,NULL),(84,'2019-05-25','2019-05-25',9365.99,'Se solicita una ayuda alimentaria','Necesidad alimentaria',1,1,48,NULL,'2019-05-25',NULL,2626,NULL,NULL,NULL),(85,'2019-05-24','2019-05-24',12233,'Se solicita una ayuda alimentaria','Necesidad alimentaria',1,1,49,NULL,'2019-05-24',NULL,3976,NULL,NULL,NULL),(86,'2019-05-23','2019-05-23',13234,'Se solicita una ayuda econÃ³mica','Gastos por salud',1,1,50,NULL,'2019-05-23',NULL,2640,NULL,NULL,NULL),(87,'2019-05-22','2019-05-22',14235,'Se solicita una ayuda econÃ³mica','Gastos por salud',1,1,36,NULL,'2019-05-22',NULL,2539,NULL,NULL,NULL),(88,'2019-05-21','2019-05-21',11236,'Se solicita una ayuda econÃ³mica','Gastos por salud',1,1,37,NULL,'2019-05-21',NULL,2576,NULL,NULL,NULL),(89,'2019-05-20','2019-05-20',15237,'Se solicita una ayuda econÃ³mica','Gastos por salud',1,1,38,NULL,'2019-05-20',NULL,2586,NULL,NULL,NULL),(90,'2019-05-19','2019-03-19',12000,'Se solicita una ayuda econÃ³mica','Gastos por salud',1,1,39,'2019-05-19','2019-05-19','El beneficiario no cumple con las condiciones necesarias',2577,NULL,NULL,NULL),(91,'2019-05-18','2019-05-18',9239,'Se solicita una ayuda econÃ³mica','Gastos por salud',1,1,40,'2019-05-18','2019-05-18','El beneficiario no cumple con las condiciones necesarias',2640,NULL,NULL,NULL),(92,'2019-05-17','2019-06-17',7240,'Se solicita una ayuda econÃ³mica','Gastos por salud',1,1,41,'2019-05-17','2019-05-17','El beneficiario no cumple con las condiciones necesarias',2539,NULL,NULL,NULL),(93,'2019-01-07','2019-01-07',5500,'La persona esta desocupada','Busquedad laboral',3,2,42,'2019-01-07','2019-01-07','El beneficiario no cumple con las condiciones necesarias',2576,NULL,NULL,NULL),(94,'2019-05-19','2019-05-19',6000,'La persona esta desocupada','Busquedad laboral',3,2,43,NULL,'2019-05-19',NULL,2586,NULL,NULL,NULL),(95,'2019-03-18','2019-03-18',4569,'La persona esta desocupada','Busquedad laboral',3,2,44,NULL,NULL,NULL,2577,NULL,NULL,NULL),(96,'2019-05-17','2019-05-17',5321,'La persona esta desocupada','Busquedad laboral',3,2,45,NULL,NULL,NULL,2599,NULL,NULL,NULL),(97,'2019-06-16','2019-06-16',3000,'La persona esta desocupada','Busquedad laboral',3,2,46,NULL,NULL,NULL,2587,NULL,NULL,NULL),(98,'2019-01-06','2019-01-06',4563,'La persona esta desocupada','Busquedad laboral',3,2,47,NULL,NULL,NULL,2600,NULL,NULL,NULL),(99,'2019-05-18','2019-05-18',4570,'La persona esta desocupada','Busquedad laboral',3,2,48,NULL,NULL,NULL,2626,NULL,NULL,NULL),(100,'2019-03-17','2019-03-17',5322,'La persona esta desocupada','Busquedad laboral',3,2,49,NULL,NULL,NULL,3976,NULL,NULL,NULL),(101,'2019-01-06','2019-01-06',13789.8,'Cuota 1 â€“ Mejora habitacional','AmpliaciÃ³n de vivienda',5,3,50,NULL,NULL,NULL,2640,NULL,NULL,NULL),(102,'2019-01-07','2019-01-07',12233,'Cuota 1 â€“ Mejora habitacional','AmpliaciÃ³n de vivienda',5,3,36,NULL,NULL,NULL,2539,NULL,NULL,NULL),(103,'2019-05-19','2019-05-19',13234,'Cuota 1 â€“ Mejora habitacional','AmpliaciÃ³n de vivienda',5,3,37,NULL,NULL,NULL,2576,NULL,NULL,NULL),(104,'2019-03-18','2019-03-18',14235,'Cuota 2 â€“ Mejora habitacional','AmpliaciÃ³n de vivienda',5,3,38,NULL,NULL,NULL,2586,NULL,NULL,NULL),(105,'2019-02-17','2019-02-17',11236,'Cuota 3 â€“ Mejora habitacional','AmpliaciÃ³n de vivienda',5,3,39,NULL,NULL,NULL,2577,NULL,NULL,NULL),(106,'2019-06-16','2019-06-16',20000,'Cuota 4 â€“ Mejora habitacional','RefacciÃ³n de vivienda',5,3,40,NULL,'2019-06-16',NULL,2640,NULL,NULL,NULL),(107,'2019-01-06','2019-01-06',19500,'Cuota 5 â€“ Mejora habitacional','RefacciÃ³n de vivienda',5,3,41,NULL,'2019-01-06',NULL,2539,NULL,NULL,NULL),(108,'2019-05-18','2019-05-18',17000,'Cuota 6 â€“ Mejora habitacional','RefacciÃ³n de vivienda',5,3,42,NULL,'2019-05-18',NULL,2576,NULL,NULL,NULL),(109,'2019-03-17','2019-03-17',20000,'Cuota 3 â€“ Mejora habitacional','RefacciÃ³n de vivienda',5,3,43,NULL,'2019-03-17',NULL,2586,NULL,NULL,NULL),(110,'2019-01-06','2019-01-06',19500,'Cuota 3 â€“ Mejora habitacional','RefacciÃ³n de vivienda',5,3,44,NULL,'2019-01-06',NULL,2577,NULL,NULL,NULL),(111,'2019-04-06','2019-04-06',13245.5,'Se solicita una ayuda alimentaria','Necesidad alimentaria',2,1,45,NULL,'2019-01-10',NULL,2599,NULL,NULL,NULL),(112,'2019-02-17','2019-02-17',12233,'Se solicita una ayuda alimentaria','Necesidad alimentaria',2,1,46,NULL,'2019-04-06',NULL,2587,NULL,NULL,NULL),(113,'2019-06-16','2019-06-16',13234,'Se solicita una ayuda alimentaria','Necesidad alimentaria',2,1,47,NULL,NULL,NULL,2600,NULL,NULL,NULL),(114,'2019-01-06','2019-01-06',14235,'Se solicita una ayuda alimentaria','Necesidad alimentaria',2,1,48,NULL,NULL,NULL,2626,NULL,NULL,NULL),(115,'2019-05-18','2019-05-18',11236,'Se solicita una ayuda alimentaria','Necesidad alimentaria',2,1,49,NULL,NULL,NULL,3976,NULL,NULL,NULL),(116,'2019-03-17','2019-03-17',12233,'Se solicita una ayuda alimentaria','Necesidad alimentaria',2,1,50,NULL,NULL,NULL,2640,NULL,NULL,NULL),(117,'2019-01-06','2019-01-06',13234,'Se solicita una ayuda alimentaria','Necesidad alimentaria',2,1,36,NULL,'2019-03-17',NULL,2539,NULL,NULL,NULL),(118,'2019-01-06','2020-01-02',0,NULL,'Necesidad alimentaria',6,4,36,NULL,NULL,NULL,2539,1,4,NULL);
 /*!40000 ALTER TABLE `recurso` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -514,7 +547,7 @@ CREATE TABLE `responsable_entrega` (
   KEY `fk_tipo_responsableid` (`tipo_responsableid`),
   CONSTRAINT `fk_recurso` FOREIGN KEY (`recursoid`) REFERENCES `recurso` (`id`),
   CONSTRAINT `fk_tipo_responsableid` FOREIGN KEY (`tipo_responsableid`) REFERENCES `tipo_responsable` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -523,6 +556,7 @@ CREATE TABLE `responsable_entrega` (
 
 LOCK TABLES `responsable_entrega` WRITE;
 /*!40000 ALTER TABLE `responsable_entrega` DISABLE KEYS */;
+INSERT INTO `responsable_entrega` VALUES (2,1,2);
 /*!40000 ALTER TABLE `responsable_entrega` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -655,10 +689,14 @@ CREATE TABLE `user` (
   `updated_at` int(11) NOT NULL,
   `flags` int(11) NOT NULL DEFAULT 0,
   `last_login_at` int(11) DEFAULT NULL,
+  `personaid` int(11) DEFAULT NULL,
+  `localidadid` int(11) DEFAULT NULL,
+  `baja` tinyint(3) DEFAULT 0,
+  `descripcion_baja` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_unique_username` (`username`),
   UNIQUE KEY `user_unique_email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -667,7 +705,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (2,'admin','admin@correo.com','$2y$10$MnF9LJCnya.NrXIQBN4YGuRIdIuGtOSsGqqZTpby9RnFp7Chb4qEm','maXx0ibz2Br9UEfP06TVcltr0uOiWl4B',1556894840,NULL,NULL,'172.18.0.2',1556894840,1607700159,0,1608214173);
+INSERT INTO `user` VALUES (2,'admin','admin@correo.com','$2y$10$MnF9LJCnya.NrXIQBN4YGuRIdIuGtOSsGqqZTpby9RnFp7Chb4qEm','maXx0ibz2Br9UEfP06TVcltr0uOiWl4B',1556894840,NULL,NULL,'172.18.0.2',1556894840,1607700159,0,1610453141,0,0,0,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -680,4 +718,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-23 14:20:22
+-- Dump completed on 2021-01-12 12:28:56
