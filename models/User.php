@@ -179,6 +179,12 @@ class User extends ModelsUser
         if(UserPersona::findOne(['personaid'=>$params['personaid']])!=NULL){
             throw new \yii\web\HttpException(400, 'La persona ya tiene un usuario');
         }
+
+        #Chequeamos si la contraseña esta vacia
+        if(!isset($params['password']) || empty($params['password'])){
+            throw new \yii\web\HttpException(400, json_encode(['password'=>'La contraseña no debe estar vacia.']));
+        }
+
         #Registramos el usuario
         if ( $user->load(['User'=>$params]) && $user->create()) {
             $id = $user->id;
