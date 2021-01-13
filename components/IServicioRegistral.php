@@ -29,6 +29,8 @@ interface IServicioRegistral {
     
     public function buscarPersonaPorNroDocumento($nrodocumento);
     
+    public function buscarPersonaPorCuil($cuil);
+    
     public function buscarPersonaPorId($id);
     
     

@@ -156,8 +156,9 @@ $config = [
                         'POST crear-asignacion' => 'crear-asignacion',
                         'POST borrar-asignacion' => 'borrar-asignacion',
                         'PUT baja/{id}' => 'baja',
+                        'GET buscar-persona-por-cuil/{cuil}' => 'buscar-persona-por-cuil',
                     ],
-                    'tokens' => ['{id}'=>'<id:\\w+>' ],                       
+                    'tokens' => ['{id}'=>'<id:\\w+>', '{cuil}'=>'<cuil:\\w+>'],                       
                 ],  
                 [   #Permiso
                     'class' => 'yii\rest\UrlRule',

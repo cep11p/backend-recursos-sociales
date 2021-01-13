@@ -147,3 +147,38 @@
 	"descripcion_baja":"Esto es una descripcion de baja de usuario"
 }
 **/
+
+/**** Para buscar un persona con usuario*****
+* Se busca una persona con usuario, si no se encuentra el usuario, solo se devuelve la persona, sino vacio 
+* @url http://prestaciones-sociales.local/api/usuarios/buscar-persona-por-cuil/20068512669
+* @method GET
+* @param arrayJson
+{
+    "success": true,
+    "resultado": {
+        "id": 1,
+        "nro_documento": "23851266",
+        "cuil": "20068512669",
+        "nombre": "Victoria Margarita",
+        "apellido": "González",
+        "usuario": {
+            "id": 2,
+            "username": "admin",
+            "email": "admin@correo.com",
+            "auth_key": "maXx0ibz2Br9UEfP06TVcltr0uOiWl4B",
+            "confirmed_at": 1556894840,
+            "unconfirmed_email": null,
+            "blocked_at": null,
+            "registration_ip": "172.18.0.2",
+            "created_at": 1556894840,
+            "updated_at": 1607700159,
+            "flags": 0,
+            "last_login_at": 1610453141,
+            "baja": 0,
+            "descripcion_baja": null,
+            "localidadid": 2626,
+            "personaid": 1
+        }
+    }
+}
+**/

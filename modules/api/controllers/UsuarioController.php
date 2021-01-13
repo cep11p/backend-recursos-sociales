@@ -2,15 +2,14 @@
 
 namespace app\modules\api\controllers;
 
+use app\models\UserPersona;
 use app\models\User;
 use yii\rest\ActiveController;
 use Yii;
 use yii\web\Response;
 use dektrium\user\Finder;
 use dektrium\user\helpers\Password;
-use dektrium\user\models\User as ModelsUser;
 use dektrium\user\Module;
-use dektrium\user\traits\EventTrait;
 
 class UsuarioController extends ActiveController
 {
@@ -96,6 +95,11 @@ class UsuarioController extends ActiveController
                 [
                     'allow' => true,
                     'actions' => ['borrar-asignacion'],
+                    'roles' => ['soporte'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' => ['buscar-persona-por-cuil'],
                     'roles' => ['soporte'],
                 ]
             ]
@@ -218,6 +222,27 @@ class UsuarioController extends ActiveController
             $statuCode =$exc->statusCode;
             throw new \yii\web\HttpException($statuCode, $mensaje);
         }
+    }
+
+    /**
+     * Esta funcionalidad realiza la busqueda de una persona, si la persona tiene un usuario le vinculamos el usuario, 
+     * sino tiene un usuario solo se devolvera la persona, en todo caso si no se encuenta ninguna 
+     * de las dos cosas se devuelve success=false
+     *
+     * @param [int] $cuil
+     * @return array
+     */
+    public function actionBuscarPersonaPorCuil($cuil){
+
+        $data = User::buscarPersonaPorCuil($cuil);
+        if($data!=false){
+            $resultado['success'] = true;
+            $resultado['resultado'] = $data;
+        }else{
+            $resultado['success'] = false;
+        }        
+
+        return $resultado;
     }
     
         /**
