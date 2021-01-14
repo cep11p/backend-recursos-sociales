@@ -10,6 +10,7 @@ use yii\web\Response;
 use dektrium\user\Finder;
 use dektrium\user\helpers\Password;
 use dektrium\user\Module;
+use yii\helpers\ArrayHelper;
 
 class UsuarioController extends ActiveController
 {
@@ -134,7 +135,8 @@ class UsuarioController extends ActiveController
             throw new \yii\web\HttpException(400, 'El usuario con el id '.$id.' no existe!');
         }
         
-        $resultado = $model->toArray();
+        $resultado = ArrayHelper::merge($model->toArray(),$model->userPersona->persona);
+        $resultado['localidad'] = $model->userPersona->localidad;
         
         return $resultado;
     }

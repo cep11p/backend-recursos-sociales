@@ -280,5 +280,37 @@ class User extends ModelsUser
         return $data;
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserPersona()
+    {
+        return $this->hasOne(UserPersona::className(), ['userid' => 'id']);
+    }
+
+    public function fields()
+    {
+        $fields = ArrayHelper::merge(parent::fields(), [
+            "personaid" => function () {
+                return $this->userPersona->personaid;
+            },
+            "fecha_baja" => function () {
+                return ($this->userPersona->fecha_baja)?$this->userPersona->fecha_baja:'';
+            },
+            "baja" => function () {
+                return ($this->userPersona->fecha_baja)?true:false;
+            },
+            "descripcion_baja" => function () {
+                return ($this->userPersona->descripcion_baja)?$this->userPersona->descripcion_baja:'';
+            },
+            "localidadid" => function () {
+                return $this->userPersona->localidadid;
+            }
+
+        ]);
+        unset($fields['password_hash'],$fields['auth_key']);
+
+        return $fields;
+    }
     
 }

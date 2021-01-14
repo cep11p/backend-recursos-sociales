@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\VinculoInteroperableHelp;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -61,12 +62,13 @@ class UserSearch extends User
         }
         
         $query->andFilterWhere(['like', 'username', $this->username]);
-        $query->andFilterWhere(['=', 'baja', (isset($params['baja']))?$params['baja']:0]);
 
         $coleccion= array();
         foreach ($dataProvider->getModels() as $value) {
             $coleccion[] = $value->toArray();
         }
+
+        $coleccion = VinculoInteroperableHelp::vincularDatosPersona($coleccion,['apellido','nombre','nro_documento','cuil']);
         
         $paginas = ceil($dataProvider->totalCount/$pagesize);           
         $data['pagesize']=$pagesize;            

@@ -12,9 +12,9 @@ class m210108_152639_user_baja extends Migration
      */
     public function safeUp()
     {
-        $table = 'user';
+        $table = 'user_persona';
 
-        $this->addColumn($table,'baja',$this->tinyInteger()->defaultValue(0));
+        $this->addColumn($table,'fecha_baja',$this->date());
         $this->addColumn($table,'descripcion_baja',$this->string(100));
     }
 

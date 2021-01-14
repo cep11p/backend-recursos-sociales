@@ -9,9 +9,49 @@
 namespace app\components;
 use yii\helpers\ArrayHelper;
 use app\models\LugarForm;
+use app\models\PersonaForm;
 
 class VinculoInteroperableHelp extends \yii\base\Component{
     
+    /**
+     * Interopera con el sistema registral para obtener datos de persona y vincularlas
+     *
+     * @param array $lista Lista de entidades que tiene como atributo personaid
+     * @param array $atributos coleccion de atributos a vincular
+     * @param String $campoNombre nombre del campo donde se vincularan todos o algunos atributos
+     * @return void
+     */
+    static function vincularDatosPersona($lista = [], $atributos = [], $campoNombre = '') {
+        #Obtenemos los datos a vincular
+        $ids='';
+        $personaForm = new PersonaForm();
+        foreach ($lista as $ent) {
+            $ids .= (empty($ids))?$ent['personaid']:','.$ent['personaid'];
+        }
+        
+        $coleccionPersona = $personaForm->buscarPersonaEnRegistral(array("ids"=>$ids,"pagesize"=>count($lista)));
+
+        #Vinculamos los datos
+        $i=0;
+        foreach ($lista as $ent) {
+            foreach ($coleccionPersona as $persona) {
+                if(isset($ent['personaid']) && isset($persona['id']) && $ent['personaid']==$persona['id']){        
+                    if(count($atributos)>0){
+                        foreach ($atributos as $value) {
+                            #si camponombre exite le metemos cada atributo sino lo metemos en la raiz del array
+                            ($campoNombre != '') ? $lista[$i][$campoNombre][$value] = $persona[$value] : $lista[$i][$value] = $persona[$value];
+                        }
+                    }else{
+                        ($campoNombre != '') ? $lista[$i][$campoNombre] = $persona : $lista[$i] = ArrayHelper::merge($lista[$i], $persona);
+                    }
+                }
+            }
+            $i++;
+        }
+
+        return $lista;
+    }
+
     /**
      * Se vinculan las personas a los recursos
      * @param type $coleccion_recurso
