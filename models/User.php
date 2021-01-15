@@ -279,9 +279,13 @@ class User extends ModelsUser
             throw new \yii\web\HttpException(400, json_encode(['descripcion_baja'=>'La descripcion debe tener 10 caracteres como minimo']));
         }
 
-        $this->baja = 1;
-        $this->descripcion_baja = $descripcion_baja;
-        if($this->save()){
+        $userPersona = UserPersona::findOne(['userid'=>$this->id]);
+        if($userPersona==null){
+            throw new \yii\web\HttpException(400, 'No se encuentra la integridad del usuario');
+        }
+        $userPersona->fecha_baja = date('Y-m-d');
+        $userPersona->descripcion_baja = $descripcion_baja;
+        if($userPersona->save()){
             $resultado = true;
         }
 

@@ -148,13 +148,16 @@ class UsuarioController extends ActiveController
 
     public function actionBaja($id){
         $params = Yii::$app->request->post();
-        
+        $resultado['message'] = 'Se inhabilita un usuario correctamente.';
+
         $model = User::findOne(['id'=>$id]);            
         if($model==NULL){
             throw new \yii\web\HttpException(400, 'El usuario con el id '.$id.' no existe!');
         }
         
-        $resultado = $model->setBaja($params['descripcion_baja']);
+        if(!$model->setBaja($params['descripcion_baja'])){
+            $resultado['message'] = 'No se pudo inhabilitar el usuario correctamente';
+        }
         
         return $resultado;
     }
@@ -289,6 +292,10 @@ class UsuarioController extends ActiveController
         
         if(!($usuario !== null && Password::validate($parametros['password_hash'],$usuario->password_hash))){
             throw new \yii\web\HttpException(401, 'usuario o contraseña inválido');
+        }
+
+        if(UserPersona::findOne(['userid'=>$usuario->id])->fecha_baja != null){
+            throw new \yii\web\HttpException(401, 'El usuario se encuentra inhabilitado');
         }
         
         $payload = [
