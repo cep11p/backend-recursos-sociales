@@ -291,6 +291,15 @@ class User extends ModelsUser
     public function fields()
     {
         $fields = ArrayHelper::merge(parent::fields(), [
+            "confirmed_at" => function () {
+                return date('Y-m-d',$this->confirmed_at);
+            },
+            "created_at" => function () {
+                return date('Y-m-d',$this->created_at);
+            },
+            "updated_at" => function () {
+                return date('Y-m-d',$this->updated_at);
+            },
             "personaid" => function () {
                 return $this->userPersona->personaid;
             },

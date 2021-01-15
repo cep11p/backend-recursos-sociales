@@ -60,9 +60,15 @@ class UserSearch extends User
             // $query->where('0=1');
             return $dataProvider;
         }
+
+        $query->leftJoin("auth_assignment as assig", "id=assig.user_id");
+        $query->leftJoin("auth_item as item", "name=assig.item_name");
+        
+        #Filtramos a los usarios con rol admin
+        $query->andFilterWhere(['=', 'item.type', 1]);
+        $query->andFilterWhere(['!=', 'assig.item_name', 'admin']);
         
         $query->andFilterWhere(['like', 'username', $this->username]);
-
         $coleccion= array();
         foreach ($dataProvider->getModels() as $value) {
             $coleccion[] = $value->toArray();
