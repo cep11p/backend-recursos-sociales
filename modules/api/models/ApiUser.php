@@ -13,9 +13,4 @@ use dektrium\user\models\User;
 class ApiUser extends User {
 
     use \msheng\JWT\UserTrait;
-
-    const ADMIN = 'admin';
-    const SOPORTE = 'soporte';
-    const USUARIO = 'general';
-
 }

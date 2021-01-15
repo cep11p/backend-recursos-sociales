@@ -62,6 +62,13 @@
 * @url http://prestaciones-sociales.local/api/usuarios/{$id} 
 * @method PUT
 * @param arrayJson
+{
+    "username": "andres",
+    "email": "uncorreo1@correo.com",
+    "descripcion_baja": "",
+    "password": "newpass"
+    "localidadid": 2626
+}
 **/
 
 /****** Para visualizar*****

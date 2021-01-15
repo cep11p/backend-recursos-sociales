@@ -12,6 +12,10 @@ use yii\helpers\ArrayHelper;
  */
 class User extends ModelsUser
 {    
+    const ADMIN = 'admin';
+    const SOPORTE = 'soporte';
+    const USUARIO = 'usuario';
+
     public function rules()
     {
         return ArrayHelper::merge(
@@ -215,6 +219,35 @@ class User extends ModelsUser
         return $id;
     }
 
+    public function modificarUsuario($params){
+        $id = '';
+        $this->scenario = 'update';
+
+        #Registramos el usuario
+        if ( $this->load(['User'=>$params]) && $this->save()) {
+            $id = $this->id;
+        }
+
+        #Chequeamos si al modificar usuario hay errores
+        if($this->hasErrors()){
+            throw new \yii\web\HttpException(400, json_encode($this->errors));
+        }
+
+        #Vinculamos la persona
+        $userPersona = UserPersona::findOne(['userid'=>$id]);
+        $userPersona->setAttributes($params);
+
+        if(!$userPersona->save()){
+            throw new \yii\web\HttpException(400, json_encode($userPersona->errors));
+        }
+
+        if(isset($params['rol']) && (Yii::$app->user->can('admin'))){
+            $this->setRol($params['rol']);
+        }
+
+        return $id;
+    }
+
     public function setRol($rol)
     {
         #Chequeamos si el rol existe
@@ -224,9 +257,10 @@ class User extends ModelsUser
 
         ######### Asignamos el Rol ###########
         //Si el usuario tiene rol borramos y dsp lo recreamos
-        if(AuthAssignment::findOne(['user_id'=>$this->id,'item_name'=>$rol])!=NULL){
-            AuthAssignment::deleteAll(['user_id'=>$this->id, 'item_name'=>$rol]);
-        }
+        AuthAssignment::deleteAll(['user_id'=>$this->id, 'item_name'=>User::USUARIO]);
+        AuthAssignment::deleteAll(['user_id'=>$this->id, 'item_name'=>User::SOPORTE]);
+        AuthAssignment::deleteAll(['user_id'=>$this->id, 'item_name'=>User::ADMIN]);
+        
 
         $auth_assignment = new AuthAssignment();
         $auth_assignment->setAttributes(['item_name'=>$rol,'user_id'=>strval($this->id)]);
