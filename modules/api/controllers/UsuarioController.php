@@ -293,11 +293,11 @@ class UsuarioController extends ActiveController
         if(!($usuario !== null && Password::validate($parametros['password_hash'],$usuario->password_hash))){
             throw new \yii\web\HttpException(401, 'usuario o contraseña inválido');
         }
-
-        if(UserPersona::findOne(['userid'=>$usuario->id])->fecha_baja != null){
+        $userPersona = UserPersona::findOne(['userid'=>$usuario->id]);
+        if($userPersona->fecha_baja != null){
             throw new \yii\web\HttpException(401, 'El usuario se encuentra inhabilitado');
         }
-        
+        // print_r($userPersona->personaid);die();
         $payload = [
             'exp'=>time()+3600*8,
             'usuario'=>$usuario->username,
@@ -312,11 +312,15 @@ class UsuarioController extends ActiveController
             $rol = $value->name;
             break;
         }
-        return [
+        $resultado = ArrayHelper::merge($userPersona->persona, 
+        [
             'access_token' => $token,
             'username' => $usuario->username,
             'rol' => $rol
-        ];
+        ]);
+
+
+        return $resultado;
     }
 
     
