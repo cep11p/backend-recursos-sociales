@@ -102,7 +102,12 @@ class ProgramaSearch extends Programa
             'sum(r.monto) as monto'
         ]);
         $query->from(['programa p']);
-        $query->where($this->setCondicionPermisoProgramaVer());
+        if(Yii::$app->user->can('admin') || Yii::$app->user->can('soporte')){
+            $query->where('1+1');
+        }else{
+            $query->where($this->setCondicionPermisoProgramaVer());
+        }
+
         $query->leftJoin('recurso as r', 'p.id=r.programaid');
         $query->groupBy(['p.nombre']);
         
@@ -179,7 +184,7 @@ class ProgramaSearch extends Programa
     }
 
     /**
-     * Se filtra los programas según los permisos del usuario
+     * Se filtra los programas para el permiso "prestacion_ver"
      *
      * @return array
      */
@@ -188,10 +193,12 @@ class ProgramaSearch extends Programa
         $lista_programa = Programa::find()->asArray()->all();
 
         foreach ($lista_programa as $value) {
-            if(Yii::$app->user->can('prestacion_ver',['programa' => $value])){
+            $rule = array('prestacion'=>['programaid'=>$value['id']]);
+            if(Yii::$app->user->can('prestacion_ver',$rule)){
                 $programaid[] = $value['id'];
             }
         }
+
         
         return ['p.id'=>$programaid];
     }

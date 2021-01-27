@@ -41,7 +41,7 @@ class TipoRedSocialController extends ActiveController{
                 [
                     'allow' => true,
                     'actions' => ['index'],
-                    'roles' => ['consultar_persona'],
+                    'roles' => ['usuario'],
                 ],
             ]
         ];

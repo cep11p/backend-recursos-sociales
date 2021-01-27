@@ -47,6 +47,11 @@ class ProgramaController extends ActiveController{
                 ],
                 [
                     'allow' => true,
+                    'actions' => ['detalle'],
+                    'roles' => ['usuario'],
+                ],
+                [
+                    'allow' => true,
                     'actions' => ['view'],
                     'roles' => ['usuario'],
                 ]

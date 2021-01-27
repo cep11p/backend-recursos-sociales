@@ -43,7 +43,7 @@ class TipoRecursoController extends ActiveController{
                 [
                     'allow' => true,
                     'actions' => ['index'],
-                    'roles' => ['consultar_prestacion'],
+                    'roles' => ['usuario'],
                 ],
             ]
         ];

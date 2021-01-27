@@ -146,10 +146,6 @@
 * @param arrayJson
 {
     "programaid": "1",
-    "lista_permiso": [
-        "prestacion_crear",
-        "prestacion_ver"
-    ],
     "usuarioid": 2
 }
 **/
@@ -164,7 +160,7 @@
 **/
 
 /**** Para buscar un persona con usuario*****
-* Se busca una persona con usuario, si no se encuentra el usuario, solo se devuelve la persona, sino vacio 
+* Se busca una persona con usuario, si no se encuentra el usuario, solo se devuelve la persona, si no se encuentra una persona se devuelve vacio
 * @url http://prestaciones-sociales.local/api/usuarios/buscar-persona-por-cuil/20068512669
 * @method GET
 * @param arrayJson

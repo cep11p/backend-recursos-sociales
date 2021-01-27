@@ -52,6 +52,19 @@ class User extends ModelsUser
 
         return $rows;
     }
+    
+    static function limpiarPermisos($params){
+        #Borramos los permisos (auth_assigment)
+        AuthAssignment::deleteAll([
+            'user_id'=>$params['usuarioid']
+            ]);
+
+        #Borramos la regla (programa_has_usuario)
+        ProgramaHasUsuario::deleteAll([
+            'userid'=>$params['usuarioid'],
+            'programaid'=>$params['programaid']
+        ]);
+    }
 
     public static function setAsignacion($params){
         #Validamos que exista el usuario
@@ -61,13 +74,16 @@ class User extends ModelsUser
 
         $transaction = Yii::$app->db->beginTransaction();
         try {
-
+            SELF::limpiarPermisos($params);
+            
             #Asignamos los permisos
             foreach ($params['lista_permiso'] as $value) {
-                $auth_assignment = new AuthAssignment();
-                $auth_assignment->setAttributes(['item_name'=>$value['name'],'user_id'=>strval($params['usuarioid'])]);
-                if(!$auth_assignment->save()){
-                    throw new \yii\web\HttpException(400, json_encode($auth_assignment->errors));
+                if((AuthAssignment::findOne(['item_name'=>$value['name'], 'user_id'=>strval($params['usuarioid'])])) === NULL){
+                    $auth_assignment = new AuthAssignment();
+                    $auth_assignment->setAttributes(['item_name'=>$value['name'],'user_id'=>strval($params['usuarioid'])]);
+                    if(!$auth_assignment->save()){
+                        throw new \yii\web\HttpException(400, json_encode($auth_assignment->errors));
+                    }
                 }
             }
 
@@ -141,22 +157,7 @@ class User extends ModelsUser
         $transaction = Yii::$app->db->beginTransaction();
         try {
 
-            #Borramos los permisos (auth_assigment)
-            foreach ($params['lista_permiso'] as $value) {
-                AuthAssignment::deleteAll([
-                    'user_id'=>$params['usuarioid'],
-                    'item_name'=>$value,
-                    ]);
-            }
-
-            #Borramos la regla (programa_has_usuario)
-            foreach ($params['lista_permiso'] as $value) {
-                ProgramaHasUsuario::deleteAll([
-                    'userid'=>$params['usuarioid'],
-                    'programaid'=>$params['programaid'],
-                    'permiso'=>$value
-                ]);
-            }
+            SELF::limpiarPermisos($params);
             $transaction->commit();
 
             return true;
@@ -180,22 +181,22 @@ class User extends ModelsUser
         $user->scenario = 'create';
 
         #Chequeamos si la persona tiene usuario
-        if(UserPersona::findOne(['personaid'=>$params['personaid']])!=NULL){
+        if(!empty($params['personaid']) && UserPersona::findOne(['personaid'=>$params['personaid']])!=NULL){
             throw new \yii\web\HttpException(400, 'La persona ya tiene un usuario');
         }
 
         #Chequeamos si la contraseña esta vacia
-        if(!isset($params['password']) || empty($params['password'])){
+        if(!isset($params['usuario']['password']) || empty($params['usuario']['password'])){
             throw new \yii\web\HttpException(400, json_encode(['password'=>'La contraseña no debe estar vacia.']));
         }
 
         #Registramos el usuario
-        if ( $user->load(['User'=>$params]) && $user->create()) {
+        if ( $user->load(['User'=>$params['usuario']]) && $user->create()) {
             $id = $user->id;
         }
 
         #Chequeamos que venga el rol
-        if(!isset($params['rol'])){
+        if(!isset($params['usuario']['rol'])){
             $user->addError('rol','Falta asiganar un rol');
         }
 
@@ -204,9 +205,14 @@ class User extends ModelsUser
             throw new \yii\web\HttpException(400, json_encode($user->errors));
         }
 
+        #Registamos Nueva Persona
+        if(!isset($params['personaid']) || empty($params['personaid'])){
+            $params['usuario']['personaid'] = $user->registrarPersona($params);
+        }
+
         #Vinculamos la persona
         $userPersona = new UserPersona();
-        $userPersona->setAttributes($params);
+        $userPersona->setAttributes($params['usuario']);
         $userPersona->userid = $id;
 
         if(!$userPersona->save()){
@@ -214,9 +220,35 @@ class User extends ModelsUser
         }
         
         
-        $user->setRol($params['rol']);
+        $user->setRol($params['usuario']['rol']);
 
         return $id;
+    }
+
+    /**
+     * Se registrar los datos personales de un usuario en sistema registral(Interoperabilidad)
+     *
+     * @param [array] $params
+     * @return [int] $personaid
+     */
+    private function registrarPersona($params){
+        $errors = [];
+        if(!isset($params['nro_documento']) || empty($params['nro_documento'])){
+            $errors['nro_documento'] = 'Se requiere nro de documento'; 
+        }
+        if(!isset($params['cuil']) || empty($params['cuil'])){
+            $errors['cuil'] = 'Se requiere cuil'; 
+        }
+        if(!isset($params['apellido']) || empty($params['apellido'])){
+            $errors['apellido'] = 'Se requiere apellido'; 
+        }
+        if(!isset($params['nombre']) || empty($params['nombre'])){
+            $errors['nombre'] = 'Se requiere nombre'; 
+        }
+
+        $personaid = intval(\Yii::$app->registral->crearPersona($params));
+
+        return $personaid;
     }
 
     public function modificarUsuario($params){

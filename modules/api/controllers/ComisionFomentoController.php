@@ -41,7 +41,7 @@ class ComisionFomentoController extends ActiveController{
                 [
                     'allow' => true,
                     'actions' => ['index'],
-                    'roles' => ['consultar_persona'],
+                    'roles' => ['usuario'],
                 ],
             ]
         ];

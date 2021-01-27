@@ -48,7 +48,6 @@ class PersonaForm extends Model
     
     
     public function save(){
-        
         $resultado = false;
         if($this->validate()){
             $resultado = true;
@@ -59,6 +58,8 @@ class PersonaForm extends Model
                 $personaid = intval(\Yii::$app->registral->crearPersona($this->toArray()));
                 $this->id = $personaid;
             }
+        }else{
+            throw new \yii\web\HttpException(400, json_encode($this->errors));
         }
         
         return $resultado;

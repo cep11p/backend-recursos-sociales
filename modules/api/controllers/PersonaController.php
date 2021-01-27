@@ -43,32 +43,32 @@ class PersonaController extends ActiveController{
                 [
                     'allow' => true,
                     'actions' => ['index'],
-                    'roles' => ['prestacion_ver'],
+                    'roles' => ['usuario'],
                 ],
                 [
                     'allow' => true,
                     'actions' => ['view'],
-                    'roles' => ['prestacion_ver'],
+                    'roles' => ['usuario'],
                 ],
                 [
                     'allow' => true,
                     'actions' => ['create'],
-                    'roles' => ['prestacion_crear'],
+                    'roles' => ['usuario'],
                 ],
                 [
                     'allow' => true,
                     'actions' => ['update'],
-                    'roles' => ['prestacion_crear'],
+                    'roles' => ['usuario'],
                 ],
                 [
                     'allow' => true,
                     'actions' => ['contacto'],
-                    'roles' => ['prestacion_crear'],
+                    'roles' => ['usuario'],
                 ],
                 [
                     'allow' => true,
                     'actions' => ['buscar-por-documento'],
-                    'roles' => ['prestacion_ver'],
+                    'roles' => ['usuario'],
                 ],
             ]
         ];

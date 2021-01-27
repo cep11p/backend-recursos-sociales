@@ -1,4 +1,4 @@
-FROM php:5.6.18-apache
+FROM php_yii_ds:latest
 
 COPY --chown=www-data:www-data . /var/www/html
 
@@ -6,3 +6,4 @@ RUN mkdir -p /var/www/html/runtime/sessions /var/www/html/web/assets /var/www/ht
 RUN touch /var/www/html/runtime/logs/app.log
 RUN chown www-data:www-data /var/www/html/runtime/sessions /var/www/html/runtime/cache /var/www/html/web/assets /var/www/html/_files /var/www/html/runtime/logs/app.log /queue
 
+WORKDIR /var/www/html

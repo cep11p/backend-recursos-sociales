@@ -46,7 +46,7 @@ class ExportController extends ActiveController{
                 [
                     'allow' => true,
                     'actions' => ['exportar-prestaciones-xls'],
-                    'roles' => ['exportar_prestacion'],
+                    'roles' => ['usuario'],
                 ],
             ]
         ];
