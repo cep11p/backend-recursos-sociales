@@ -53,6 +53,40 @@ class VinculoInteroperableHelp extends \yii\base\Component{
     }
 
     /**
+     * Interopera con el sistema lugar para obtener los datos de localidad y vincularla
+     *
+     * @param array $lista
+     * @return void
+     */
+    static function vincularDatosLocalidad($lista = []) {
+        $campoid = 'localidadid';
+        #Obtenemos los datos a vincular
+        $lugarForm = new LugarForm();
+        $ids='';
+        $pagesize = count($lista); 
+        foreach ($lista as $valor) {
+            #si esta seteada la localidad
+            if(isset($valor[$campoid])){
+                $ids .= (empty($ids))?$valor[$campoid]:','.$valor[$campoid];
+            }
+        }
+        
+        $coleccion = $lugarForm->buscarLocalidadEnSistemaLugar(array("ids"=>$ids,"pagesize"=>$pagesize));
+        #Vinculamos los datos
+        $i=0;
+        foreach ($lista as $ent) {
+            foreach ($coleccion as $col) {
+                if(isset($ent[$campoid]) && isset($col['id']) && $ent[$campoid]==$col['id']){        
+                    $lista[$i]['localidad'] = $col['nombre'];
+                }
+            }
+            $i++;
+        }
+        
+        return $lista;
+    }
+
+    /**
      * Se vinculan las personas a los recursos
      * @param type $coleccion_recurso
      * @param type $coleccion_personaid

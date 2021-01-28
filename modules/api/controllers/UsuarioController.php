@@ -2,6 +2,7 @@
 
 namespace app\modules\api\controllers;
 
+use app\components\VinculoInteroperableHelp;
 use app\models\UserPersona;
 use app\models\User;
 use yii\rest\ActiveController;
@@ -130,6 +131,8 @@ class UsuarioController extends ActiveController
         $searchModel = new \app\models\UserSearch();
         $params = \Yii::$app->request->queryParams;
         $resultado = $searchModel->search($params);
+
+        $resultado['resultado'] = VinculoInteroperableHelp::vincularDatosLocalidad($resultado['resultado']);
 
         return $resultado;
     }
