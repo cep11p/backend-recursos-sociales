@@ -146,6 +146,10 @@
 * @param arrayJson
 {
     "programaid": "1",
+    "lista_permiso": [
+        "prestacion_crear",
+        "prestacion_ver"
+    ],
     "usuarioid": 2
 }
 **/

@@ -54,10 +54,43 @@ class User extends ModelsUser
     }
     
     static function limpiarPermisos($params){
+
+        #Chequeamos que exista el usuario
+        if(!isset($params['usuarioid']) || empty($params['usuarioid'])){
+            throw new \yii\web\HttpException(400, json_encode(['error'=>['Falta el usuario']]));
+        }
+
+        #Chequeamos la lista de permisos
+        if(!isset($params['lista_permiso']) || empty($params['lista_permiso'])){
+            throw new \yii\web\HttpException(400, json_encode(['error'=>['Falta la lista de permisos']]));
+        }
+
+        #Chequeamos el programa
+        if(!isset($params['programaid']) || empty($params['programaid'])){
+            throw new \yii\web\HttpException(400, json_encode(['error'=>['Falta el programa']]));
+        }
+
+
+        #Buscamos el permiso distinto a borrar
+        $permisos = ProgramaHasUsuario::find()->select('permiso')->where(['userid'=>$params['usuarioid']])->andWhere(['!=','programaid',$params['programaid']])->distinct()->asArray()->all();
+        
+        $i=0;
+        foreach ($params['lista_permiso'] as $permiso_borrar) {
+            foreach ($permisos as $permiso_bd) {
+                if($permiso_borrar == $permiso_bd['permiso']){
+                    unset($params['lista_permiso'][$i]);
+                }
+            }
+            $i++;
+        }
+        
         #Borramos los permisos (auth_assigment)
-        AuthAssignment::deleteAll([
-            'user_id'=>$params['usuarioid']
+        if(!empty($params['lista_permiso'])){
+            AuthAssignment::deleteAll([
+                'user_id'=>$params['usuarioid'],
+                'item_name'=>$params['lista_permiso']
             ]);
+        }
 
         #Borramos la regla (programa_has_usuario)
         ProgramaHasUsuario::deleteAll([
@@ -75,7 +108,7 @@ class User extends ModelsUser
         $transaction = Yii::$app->db->beginTransaction();
         try {
             SELF::limpiarPermisos($params);
-            
+
             #Asignamos los permisos
             foreach ($params['lista_permiso'] as $value) {
                 if((AuthAssignment::findOne(['item_name'=>$value['name'], 'user_id'=>strval($params['usuarioid'])])) === NULL){

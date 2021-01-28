@@ -64,7 +64,7 @@ class UserSearch extends User
         $query->leftJoin("auth_assignment as assig", "id=assig.user_id");
         $query->leftJoin("auth_item as item", "name=assig.item_name");
         
-        #Filtramos a los usarios con rol admin
+        #Filtramos a los usarios distintos con rol admin
         $query->andFilterWhere(['=', 'item.type', 1]);
         $query->andFilterWhere(['!=', 'assig.item_name', 'admin']);
         
