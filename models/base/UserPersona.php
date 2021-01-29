@@ -12,6 +12,9 @@ use Yii;
  * @property integer $userid
  * @property integer $personaid
  * @property integer $localidadid
+ * @property string $fecha_baja
+ * @property string $descripcion_baja
+ * @property string $last_login_ip
  *
  * @property \app\models\User $user
  * @property string $aliasModel
@@ -37,6 +40,9 @@ abstract class UserPersona extends \yii\db\ActiveRecord
         return [
             [['personaid', 'localidadid'], 'required'],
             [['personaid', 'localidadid'], 'integer'],
+            [['fecha_baja'], 'safe'],
+            [['descripcion_baja'], 'string'],
+            [['last_login_ip'], 'string', 'max' => 20],
             [['userid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['userid' => 'id']]
         ];
     }
@@ -50,6 +56,9 @@ abstract class UserPersona extends \yii\db\ActiveRecord
             'userid' => 'Userid',
             'personaid' => 'Personaid',
             'localidadid' => 'Localidadid',
+            'fecha_baja' => 'Fecha Baja',
+            'descripcion_baja' => 'Descripcion Baja',
+            'last_login_ip' => 'Last Login Ip',
         ];
     }
 

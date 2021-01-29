@@ -151,15 +151,23 @@ class UsuarioController extends ActiveController
 
     public function actionBaja($id){
         $params = Yii::$app->request->post();
-        $resultado['message'] = 'Se inhabilita un usuario correctamente.';
 
+        
         $model = User::findOne(['id'=>$id]);            
         if($model==NULL){
             throw new \yii\web\HttpException(400, 'El usuario con el id '.$id.' no existe!');
         }
         
-        if(!$model->setBaja($params['descripcion_baja'])){
-            $resultado['message'] = 'No se pudo inhabilitar el usuario correctamente';
+        if($params['baja']===true){
+            $resultado['message'] = 'Se inhabilita el usuario correctamente.';
+            if(!$model->setBaja($params)){
+                $resultado['message'] = 'No se pudo inhabilitar el usuario correctamente';
+            }
+        }else if($params['baja']===false){
+            $resultado['message'] = 'Se Habilita el usuario correctamente.';
+            if(!$model->unSetBaja($params)){
+                $resultado['message'] = 'No se pudo habilitar el usuario correctamente';
+            }
         }
         
         return $resultado;
@@ -300,12 +308,26 @@ class UsuarioController extends ActiveController
         if($userPersona->fecha_baja != null){
             throw new \yii\web\HttpException(401, 'El usuario se encuentra inhabilitado');
         }
-        // print_r($userPersona->personaid);die();
+
         $payload = [
             'exp'=>time()+3600*8,
             'usuario'=>$usuario->username,
             'uid' => $usuario->id  
         ];
+
+        #Registramos el horario de ingreso
+        $usuario->last_login_at = time();
+        $usuario->save();
+
+        #Registramos la ip del ingreso
+        $userPersona = UserPersona::findOne(['userid'=>$usuario->id]);
+
+        if($userPersona == null){
+            throw new \yii\web\HttpException(401, 'El usuario '.$usuario->id.' tiene una inconsitencia con la tabla user_persona');
+        }
+
+        $userPersona->last_login_ip = Yii::$app->getRequest()->getUserIP();
+        $userPersona->save();
         
         $token = \Firebase\JWT\JWT::encode($payload, \Yii::$app->params['JWT_SECRET']);
 

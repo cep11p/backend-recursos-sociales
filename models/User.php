@@ -337,19 +337,40 @@ class User extends ModelsUser
 
     }
 
-    public function setBaja($descripcion_baja)
+    public function setBaja($params)
     {
         $resultado = false;
-        if(strlen($descripcion_baja)<10){
-            throw new \yii\web\HttpException(400, json_encode(['descripcion_baja'=>'La descripcion debe tener 10 caracteres como minimo']));
-        }
 
         $userPersona = UserPersona::findOne(['userid'=>$this->id]);
         if($userPersona==null){
             throw new \yii\web\HttpException(400, 'No se encuentra la integridad del usuario');
         }
+
+        if(strlen($params['descripcion_baja'])<15){
+            throw new \yii\web\HttpException(400, json_encode(['error'=>['La descripcion debe tener 10 caracteres como minimo']]));
+        }
         $userPersona->fecha_baja = date('Y-m-d');
-        $userPersona->descripcion_baja = $descripcion_baja;
+        $userPersona->descripcion_baja = $params['descripcion_baja'];
+
+        if($userPersona->save()){
+            $resultado = true;
+        }
+
+        return $resultado;
+    }
+
+    public function unSetBaja($params)
+    {
+        $resultado = false;
+
+        $userPersona = UserPersona::findOne(['userid'=>$this->id]);
+        if($userPersona==null){
+            throw new \yii\web\HttpException(400, 'No se encuentra la integridad del usuario');
+        }
+        
+        $userPersona->fecha_baja = null;
+        $userPersona->descripcion_baja = null;
+        
         if($userPersona->save()){
             $resultado = true;
         }
@@ -402,6 +423,12 @@ class User extends ModelsUser
             },
             "updated_at" => function () {
                 return date('Y-m-d',$this->updated_at);
+            },
+            "last_login_at" => function () {
+                return date('Y-m-d H:i:s',$this->last_login_at);
+            },
+            "last_login_ip" => function () {
+                return $this->userPersona->last_login_ip;
             },
             "personaid" => function () {
                 return $this->userPersona->personaid;
