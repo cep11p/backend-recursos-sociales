@@ -68,7 +68,13 @@ class AuthItemSearch extends AuthItem
 
         $coleccion = array();
         foreach ($dataProvider->models as $value) {
-            $coleccion[] = $value->toArray();
+            #Chequeamos si el usuario es admin para mostrar el rol admin
+            if($value->name == 'admin' && !(Yii::$app->user->can('admin'))){
+                continue;
+            }else{
+                $coleccion[] = $value->toArray();
+            }
+            
         }
         
         return $coleccion;
