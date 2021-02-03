@@ -74,7 +74,6 @@ class AuthItemSearch extends AuthItem
             }else{
                 $coleccion[] = $value->toArray();
             }
-            
         }
         
         return $coleccion;

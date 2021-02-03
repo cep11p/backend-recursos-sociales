@@ -2,7 +2,9 @@
 
 /**** Para mostrar listado ****/
 /**
-* @url http://prestaciones-sociales.local/api/usuarios
+* @url http://prestaciones-sociales.local/api/usuarios?[@urlparam]&[@urlparam]
+* @urlparam sort=-create_at
+* @urlparam sort=-last_login_at
 * @method GET
 * @arrayReturn
 {

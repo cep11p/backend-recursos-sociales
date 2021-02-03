@@ -7,6 +7,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\User;
+use DateTime;
 
 /**
 * UserSearch represents the model behind the search form about `app\models\User`.
@@ -43,6 +44,7 @@ class UserSearch extends User
     public function search($params)
     {
         $query = User::find();
+        $localidadid = (isset($params['localidadid']) && !empty($params['localidadid']))?$params['localidadid']:'';
 
         $pagesize = (!isset($params['pagesize']) || !is_numeric($params['pagesize']) || $params['pagesize']==0)?20:intval($params['pagesize']);
         $dataProvider = new ActiveDataProvider([
@@ -61,14 +63,47 @@ class UserSearch extends User
             return $dataProvider;
         }
 
+        #global search #global param
+        $personaForm = new PersonaForm();
+        if(isset($params['global_param']) && !empty($params['global_param'])){
+            $persona_params["global_param"] = $params['global_param'];
+        }
+                
+        $lista_personaid = array();
+        if (isset($persona_params)) {
+            #Filtramos persona
+            $coleccion_persona = $personaForm->buscarPersonaEnRegistral($persona_params);
+            $lista_personaid = VinculoInteroperableHelp::obtenerListaIds($coleccion_persona,'id');
+            if (count($lista_personaid) < 1) {
+                $query->where('0=1');
+            }
+        }
+         #Criterio para buscar por persona
+         if(count($lista_personaid)>0){
+            $query->andWhere(array('in', 'user_persona.personaid', $lista_personaid));
+        }
+
         $query->leftJoin("auth_assignment as assig", "id=assig.user_id");
         $query->leftJoin("auth_item as item", "name=assig.item_name");
+        $query->leftJoin("user_persona", "id=user_persona.userid");
         
         #Filtramos a los usarios distintos con rol admin
         $query->andFilterWhere(['=', 'item.type', 1]);
         $query->andFilterWhere(['!=', 'assig.item_name', 'admin']);
         
         $query->andFilterWhere(['like', 'username', $this->username]);
+        $query->andFilterWhere(['user_persona.localidadid'=>$localidadid]);
+
+        #### Filtro por rango de fecha (create_at)####
+        if(isset($params['fecha_ingreso_desde']) && isset($params['fecha_ingreso_hasta'])){
+            $query->andWhere(['between', 'last_login_at', DateTime::createFromFormat('Y-m-d', $params['fecha_ingreso_desde'])->getTimestamp(), DateTime::createFromFormat('Y-m-d', $params['fecha_ingreso_hasta'])->getTimestamp()]);
+        }else if(isset($params['fecha_ingreso_desde'])){
+            $query->andWhere(['between', 'last_login_at', DateTime::createFromFormat('Y-m-d', $params['fecha_ingreso_desde'])->getTimestamp(), DateTime::createFromFormat('Y-m-d', date('Y-m-d'))->getTimestamp()]);
+        }else if(isset($params['fecha_ingreso_hasta'])){
+            $query->andWhere(['between', 'last_login_at', '1970-01-01',  DateTime::createFromFormat('Y-m-d', $params['fecha_ingreso_hasta'])->getTimestamp()]);
+        }
+        
+        // print_r($query->createCommand()->sql);die();
         $coleccion= array();
         foreach ($dataProvider->getModels() as $value) {
             $coleccion[] = $value->toArray();

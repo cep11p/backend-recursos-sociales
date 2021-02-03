@@ -12,6 +12,21 @@ use app\models\LugarForm;
 use app\models\PersonaForm;
 
 class VinculoInteroperableHelp extends \yii\base\Component{
+
+    /**
+     * Se obtiene una lista de ids de alguna coleccion
+     * @param array $coleccion lista de personas
+     * @return array
+     */
+    static function obtenerListaIds($coleccion = array(),$key = '') {
+        
+        $lista_ids = array();
+        foreach ($coleccion as $col) {
+            $lista_ids[] = $col[$key];
+        }
+        
+        return $lista_ids;    
+    }
     
     /**
      * Interopera con el sistema registral para obtener datos de persona y vincularlas

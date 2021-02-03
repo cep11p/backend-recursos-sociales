@@ -412,6 +412,23 @@ class User extends ModelsUser
         return $this->hasOne(UserPersona::className(), ['userid' => 'id']);
     }
 
+    public function getRol(){
+        $query = new Query();
+        $query->select('name as rol')->from('auth_item');
+
+        $query->leftJoin('auth_assignment','auth_assignment.item_name = auth_item.name');
+        $query->leftJoin('user','user.id = auth_assignment.user_id');
+
+        $query->where(['auth_item.type'=>AuthItem::ROLE, 'user.id'=>$this->id]);
+
+        $command = $query->createCommand();
+        $rows = $command->queryAll();
+        
+        $resultado = (isset($rows[0]['rol']))?$rows[0]['rol']:'';
+
+        return $resultado;
+    }
+
     public function fields()
     {
         $fields = ArrayHelper::merge(parent::fields(), [
@@ -444,9 +461,11 @@ class User extends ModelsUser
             },
             "localidadid" => function () {
                 return $this->userPersona->localidadid;
-            }
+            },
+            "rol"
 
         ]);
+        
         unset($fields['password_hash'],$fields['auth_key']);
 
         return $fields;
