@@ -133,6 +133,7 @@ class UsuarioController extends ActiveController
         $resultado = $searchModel->search($params);
 
         $resultado['resultado'] = VinculoInteroperableHelp::vincularDatosLocalidad($resultado['resultado']);
+        $resultado['resultado'] = VinculoInteroperableHelp::vincularDatosPersona($resultado['resultado'],['nombre','apellido','nro_documento','cuil']);
 
         return $resultado;
     }

@@ -4,10 +4,6 @@ namespace app\modules\api\controllers;
 use yii\rest\ActiveController;
 use yii\web\Response;
 
-use Yii;
-use yii\base\Exception;
-
-use app\models\Programa;
 
 class ProgramaController extends ActiveController{
     
@@ -43,7 +39,7 @@ class ProgramaController extends ActiveController{
                 [
                     'allow' => true,
                     'actions' => ['index'],
-                    'roles' => ['usuario'],
+                    'roles' => ['usuario','soporte'],
                 ],
                 [
                     'allow' => true,
@@ -62,7 +58,7 @@ class ProgramaController extends ActiveController{
 
         return $behaviors;
     }
-    
+
     public function actions()
     {
         $actions = parent::actions();

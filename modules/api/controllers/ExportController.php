@@ -7,10 +7,7 @@ use yii\web\Response;
 use Yii;
 use yii\base\Exception;
 
-use app\models\Recurso;
-
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\Writer\Pdf;
 
 class ExportController extends ActiveController{
     

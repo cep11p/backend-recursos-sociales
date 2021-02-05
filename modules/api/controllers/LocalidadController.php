@@ -5,7 +5,6 @@ use yii\rest\ActiveController;
 use yii\web\Response;
 
 use Yii;
-use yii\base\Exception;
 
 
 class LocalidadController extends ActiveController{
@@ -42,13 +41,11 @@ class LocalidadController extends ActiveController{
                 [
                     'allow' => true,
                     'actions' => ['index'],
-                    'roles' => ['usuario'],
+                    'roles' => ['usuario','soporte'],
                 ],
             ]
         ];
-
-
-
+        
         return $behaviors;
     }
     
