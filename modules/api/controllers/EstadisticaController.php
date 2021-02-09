@@ -44,11 +44,6 @@ class EstadisticaController extends ActiveController{
                     'allow' => true,
                     'actions' => ['index'],
                     'roles' => ['usuario'],
-                ],
-                [
-                    'allow' => true,
-                    'actions' => ['view'],
-                    'roles' => ['consultar_prestacion'],
                 ]
             ]
         ];
