@@ -300,15 +300,41 @@ class PersonaForm extends Model
         $response = \Yii::$app->registral->buscarPersona($param); 
         
         if(isset($response['estado']) && $response['estado']==true){
-            
             foreach ($response['resultado'] as $persona) {                
                 unset($persona['hogar']);
+                if(count($persona['lugar'])<1){
+                    unset($persona['lugar']);
+                }
                 
                 $resultado[] = $persona;
             }
         }
         
         return $resultado;
+    }
+
+    public function buscarPersonaEnRegistralConPaginacion($param){
+        $response = \Yii::$app->registral->buscarPersona($param); 
+        
+        if(isset($response['estado']) && $response['estado']==true){
+            $i=0;
+            foreach ($response['resultado'] as $persona) {                
+                unset($persona['hogar']);
+                
+                if(count($persona['lugar'])<1){
+                    unset($persona['lugar']);
+                }
+                $response['resultado'][$i] = $persona;
+                $i++;
+            }
+        }else{
+            $response['success']=false;
+            $response['total_filtrado']=0;            
+            $response['resultado']=[];
+            $response['message']="No se encontró ninguna persona!";   
+        }
+        
+        return $response;
     }
     
     /**

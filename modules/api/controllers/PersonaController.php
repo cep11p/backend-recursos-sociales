@@ -95,26 +95,12 @@ class PersonaController extends ActiveController{
      */
     public function actionIndex()
     {
-        $resultado['estado']=false;
         $param = Yii::$app->request->queryParams;
         
+        $persona = new PersonaForm();
+        $resultado = $persona->buscarPersonaEnRegistralConPaginacion($param);
         
-        $resultado = \Yii::$app->registral->buscarPersona($param);
-        
-        if($resultado['estado']!=true){
-            $data['success']=false;
-            $data['total_filtrado']=0;            
-            $data['resultado']=[];
-            $data['message']="No se encontró ninguna persona!";   
-        }else{
-            $data['success']=true;            
-            $data['total_filtrado']=$resultado['total_filtrado'];
-            $data['pages']=$resultado['pages'];
-            $data['pagesize']=$resultado['pagesize'];
-            $data['resultado']=$resultado['resultado'];
-        }
-        
-        return $data;
+        return $resultado;
 
     }
     
