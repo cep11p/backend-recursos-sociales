@@ -11,6 +11,7 @@ services:
     environment:
       DB_HOST: 'recurso_social_db'
       DB_NAME: 'recursosocial'
+      DB_PASS: ${DB_PASS}
     labels:
      - "traefik.backend=recurso-social"
      - "traefik.frontend.rule=Host:prestaciones-sociales.local"
@@ -25,11 +26,10 @@ services:
       - backend
     image: mariadb:10.4
     environment:
-     MYSQL_ROOT_PASSWORD: root
+     MYSQL_ROOT_PASSWORD: ${DB_PASS}
      MYSQL_ROOT_HOST: '%'
     volumes:
-     - /app/desarrollo-social/recurso-social/dbdata:/var/lib/mysql
-     - ../bd_inicial:/docker-entrypoint-initdb.d
+     - /var/app/gestor-prestaciones-sociales/dbdata:/var/lib/mysql
 
 ##### PROXY
 
