@@ -50,13 +50,39 @@
 * @url http://prestaciones-sociales.local/api/usuarios 
 * @method POST
 * @param arrayJson
+#Persona existente
 {
-	"username":"cep11p",
-	"password":"carlos",
-	"email":"cep11p@correo.com",
-	"personaid":1,
-	"localidadid":2626,
-	"rol":"admin"
+    apellido: "Chucho"
+    cuil: "12123456782"
+    cuil_fin: "2"
+    cuil_prin: "12"
+    nombre: "pepe"
+    nro_documento: "12345678"
+    usuario:{
+        "username":"cep11p",
+        "password":"carlos",
+        "email":"cep11p@correo.com",
+        "personaid":1,
+        "localidadid":2626,
+        "rol":"admin"
+    }
+}
+#Persona no existente
+{
+    apellido: "Chucho"
+    cuil: "12123456782"
+    cuil_fin: "2"
+    cuil_prin: "12"
+    nombre: "pepe"
+    nro_documento: "12345678"
+    usuario:{
+        "username":"cep11p",
+        "password":"carlos",
+        "email":"cep11p@correo.com",
+        "personaid":"",
+        "localidadid":2626,
+        "rol":"admin"
+    }
 }
 **/
 

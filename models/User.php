@@ -214,7 +214,7 @@ class User extends ModelsUser
         $user->scenario = 'create';
 
         #Chequeamos si la persona tiene usuario
-        if(!empty($params['personaid']) && UserPersona::findOne(['personaid'=>$params['personaid']])!=NULL){
+        if(!empty($params['usuario']['personaid']) && UserPersona::findOne(['personaid'=>$params['usuario']['personaid']])!=NULL){
             throw new \yii\web\HttpException(400, 'La persona ya tiene un usuario');
         }
 
@@ -233,13 +233,13 @@ class User extends ModelsUser
             $user->addError('rol','Falta asiganar un rol');
         }
 
-        #Chequeamos si se puede regitrar el usuario
+        #Chequeamos si se pudo regitrar el usuario
         if($user->hasErrors()){
             throw new \yii\web\HttpException(400, json_encode($user->errors));
         }
 
         #Registamos Nueva Persona
-        if(!isset($params['personaid']) || empty($params['personaid'])){
+        if(!isset($params['usuario']['personaid']) || empty($params['usuario']['personaid'])){
             $params['usuario']['personaid'] = $user->registrarPersona($params);
         }
 
