@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Recurso;
+use app\rbac\PermisoPrograma;
 
 /**
 * RecursoSearch represents the model behind the search form about `app\models\Recurso`.
@@ -227,7 +228,7 @@ class RecursoSearch extends Recurso
         }
 
         #Seteamos la condicion adecuada segun los permisos del usuario (Rbac + Rule)
-        $query->andWhere($this->setCondicionPermisoProgramaVer());
+        $query->andWhere(PermisoPrograma::setCondicionPermisoProgramaVer());
         
         #Criterio de recurso social por lista de persona.... lista de personaid
         if(count($lista_personaid)>0){
@@ -415,6 +416,9 @@ class RecursoSearch extends Recurso
         if(isset($params['sort']) && $params['sort']=='recurso_cantidad'){
             $query->orderBy('recurso_cantidad asc');
         }
+
+        #Seteamos la condicion adecuada segun los permisos del usuario (Rbac + Rule)
+        $query->andWhere(PermisoPrograma::setCondicionPermisoProgramaVer('r1'));
         
         return $query;
     }
@@ -506,6 +510,9 @@ class RecursoSearch extends Recurso
             'fecha_alta'=>SORT_DESC
             ]);
         
+        #Seteamos la condicion adecuada segun los permisos del usuario (Rbac + Rule)
+        $query->andWhere(PermisoPrograma::setCondicionPermisoProgramaVer());
+
         #### preparamos los datos del beneficiario para mostrar ####
         $personaForm = new PersonaForm();
         $resultado = $personaForm->obtenerPersonaConLugarYEstudios($this->personaid);
@@ -559,24 +566,6 @@ class RecursoSearch extends Recurso
         }       
         
         return $resultado;
-    }
-
-    /**
-     * Se filtra los programas según los permisos del usuario
-     *
-     * @return array
-     */
-    public function setCondicionPermisoProgramaVer(){
-        $programaid = [];
-        $lista_programa = Programa::find()->asArray()->all();
-
-        foreach ($lista_programa as $value) {
-            if(Yii::$app->user->can('prestacion_ver',['prestacion' => ['programaid'=>$value['id']]])){
-                $programaid[] = $value['id'];
-            }
-        }
-        
-        return ['recurso.programaid'=>$programaid];
     }
 
     /**

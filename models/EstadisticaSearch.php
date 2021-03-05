@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use app\rbac\PermisoPrograma as PermisoPrograma;
+
 /**
 * ProgramaSearch represents the model behind the search form about `app\models\Programa`.
 */
@@ -26,7 +28,10 @@ class EstadisticaSearch
         $query->leftJoin('recurso as r', 'p.id=r.programaid');
         $query->where(['r.localidadid'=>$localidadid]);
         $query->groupBy(['p.nombre','r.localidadid']);
-        
+
+        #Seteamos la condicion adecuada segun los permisos del usuario (Rbac + Rule)
+        $query->andWhere(PermisoPrograma::setCondicionPermisoProgramaVer('r'));
+    
         $command = $query->createCommand();
         $rows = $command->queryAll();
         
@@ -110,6 +115,9 @@ class EstadisticaSearch
         $query->groupBy(['r.localidadid']);
         $query->orderBy(['monto'=> SORT_DESC]);
         $query->limit($rango);
+
+        #Seteamos la condicion adecuada segun los permisos del usuario (Rbac + Rule)
+        $query->andWhere(PermisoPrograma::setCondicionPermisoProgramaVer('r'));
         
         $command = $query->createCommand();
         $rows = $command->queryAll();
