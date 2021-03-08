@@ -225,3 +225,31 @@
     }
 }
 **/
+
+/**** Login *****
+ * Autenticacion de usuario
+ * @url http://prestaciones-sociales.local/api/usuarios/login
+ * @method POST
+ * {
+        "username":"admin",
+        "password_hash":"123456789"
+    }
+ * @return mixed
+    {
+        "nombre": "Isabel Sofía",
+        "apellido": "Rodríguez",
+        "nro_documento": "32054238",
+        "cuil": "20320542389",
+        "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTUyMzYxNzQsInVzdWFyaW8iOiJhZG1pbiIsInVpZCI6Mn0.4d7j-fconqv0ZL2dcXn17VRHBaHAPwjyRAhWnrvXR7c",
+        "username": "admin",
+        "programaids": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+        ],
+        "rol": "admin"
+    }
+ */
