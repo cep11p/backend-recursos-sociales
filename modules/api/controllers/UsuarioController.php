@@ -346,6 +346,10 @@ class UsuarioController extends ActiveController
             $programaids[] = intval($value['programaid']);
         }
 
+        if(count($programaids)<1){
+            throw new \yii\web\HttpException(401, 'El usuario no tiene ningun programa asignado');
+        }
+
         $resultado = ArrayHelper::merge($userPersona->persona, 
         [
             'access_token' => $token,

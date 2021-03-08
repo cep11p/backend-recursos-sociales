@@ -396,15 +396,24 @@ class RecursoSearch extends Recurso
             $query->andWhere(array('in', 'personaid', $lista_personaid));
         }
         ############# FIN DEl CRITERIO DE PERSONA ############
+
+        #Obtenemos la lista de programaid de un usuario
+        $programa_ids = '';
+        foreach (PermisoPrograma::setCondicionPermisoProgramaVer() as $mix) {
+            foreach ($mix as  $value) {
+                $programa_ids .= (empty($programa_ids))?$value:','.$value;
+            }
+        }
+
         
         $query->select([
             'personaid',
             'count(monto) as recurso_cantidad',
             'sum(monto) as monto',
-            '(SELECT sum(monto) FROM `recurso` WHERE (NOT (`fecha_acreditacion` IS NULL)) AND (`fecha_baja` IS NULL) and personaid=r1.personaid) as monto_acreditado',
-            '(SELECT sum(monto) FROM `recurso` WHERE (NOT (`fecha_baja` IS NULL)) and personaid=r1.personaid) as monto_baja',
-            '(SELECT count(id) AS `recurso_baja_cantidad` FROM `recurso` WHERE NOT (`fecha_baja` IS NULL) and personaid=r1.personaid) as recurso_baja_cantidad',
-            '(SELECT count(id) AS `recurso_acreditado_cantidad` FROM `recurso` WHERE (NOT (`fecha_acreditacion` IS NULL)) AND (`fecha_baja` IS NULL) and personaid=r1.personaid) as recurso_acreditado_cantidad',
+            '(SELECT sum(monto) FROM `recurso` WHERE (NOT (`fecha_acreditacion` IS NULL)) AND (`fecha_baja` IS NULL) and personaid=r1.personaid and programaid in ('.$programa_ids.')) as monto_acreditado',
+            '(SELECT sum(monto) FROM `recurso` WHERE (NOT (`fecha_baja` IS NULL)) and personaid=r1.personaid and programaid in ('.$programa_ids.')) as monto_baja',
+            '(SELECT count(id) AS `recurso_baja_cantidad` FROM `recurso` WHERE NOT (`fecha_baja` IS NULL) and personaid=r1.personaid and programaid in ('.$programa_ids.')) as recurso_baja_cantidad',
+            '(SELECT count(id) AS `recurso_acreditado_cantidad` FROM `recurso` WHERE (NOT (`fecha_acreditacion` IS NULL)) AND (`fecha_baja` IS NULL) and personaid=r1.personaid and programaid in ('.$programa_ids.')) as recurso_acreditado_cantidad',
             ]);
         $query->from(['recurso r1']);
         $query->groupBy(['personaid']);
@@ -419,7 +428,7 @@ class RecursoSearch extends Recurso
 
         #Seteamos la condicion adecuada segun los permisos del usuario (Rbac + Rule)
         $query->andWhere(PermisoPrograma::setCondicionPermisoProgramaVer('r1'));
-        
+
         return $query;
     }
     
@@ -460,7 +469,7 @@ class RecursoSearch extends Recurso
             unset($recurso['tipo_recurso']);
             $coleccion_recurso[] = $recurso;
         }
-        
+
         if(count($coleccion_recurso)>0){
             $coleccion_persona = $this->obtenerPersonaVinculada($coleccion_recurso);
             $coleccion_recurso = $this->vincularPersona($coleccion_recurso, $coleccion_persona);
