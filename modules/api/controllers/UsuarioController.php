@@ -3,6 +3,7 @@
 namespace app\modules\api\controllers;
 
 use app\components\VinculoInteroperableHelp;
+use app\models\ProgramaHasUsuario;
 use app\models\UserPersona;
 use app\models\User;
 use yii\rest\ActiveController;
@@ -338,10 +339,18 @@ class UsuarioController extends ActiveController
             $rol = $value->name;
             break;
         }
+
+        $programas = ProgramaHasUsuario::find()->select('programaid')->distinct('programaid')->where(['userid'=>$usuario->id])->asArray()->all();
+        $programaids = [];
+        foreach ($programas as $value) {
+            $programaids[] = intval($value['programaid']);
+        }
+
         $resultado = ArrayHelper::merge($userPersona->persona, 
         [
             'access_token' => $token,
             'username' => $usuario->username,
+            'programaids' => $programaids,
             'rol' => $rol
         ]);
 
