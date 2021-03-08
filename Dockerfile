@@ -1,4 +1,4 @@
-FROM php_yii_ds:latest
+FROM cep11p/php_yii_ds:1.0
 
 COPY --chown=www-data:www-data . /var/www/html
 
