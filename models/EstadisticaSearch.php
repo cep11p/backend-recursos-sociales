@@ -100,16 +100,24 @@ class EstadisticaSearch
     {
         $rango = ($rango <2 || $rango>10)?10:$rango;
         $query = new \yii\db\Query();
+
+        #Obtenemos la lista de programaid de un usuario
+        $programa_ids = '';
+        foreach (PermisoPrograma::setCondicionPermisoProgramaVer() as $mix) {
+            foreach ($mix as  $value) {
+                $programa_ids .= (empty($programa_ids))?$value:','.$value;
+            }
+        }
         
         $query->select([
             'r.localidadid', 
             'count(r.id) as recurso_cantidad', 
             'sum(r.monto) as monto', 
             'count(distinct(r.personaid)) as beneficiario_cantidad', 
-                '(SELECT sum(monto) FROM `recurso` WHERE (NOT (`fecha_acreditacion` IS NULL)) AND (`fecha_baja` IS NULL) and localidadid=r.localidadid) as monto_acreditado', 
-		'(SELECT sum(monto) FROM `recurso` WHERE (NOT (`fecha_baja` IS NULL)) and localidadid=r.localidadid) as monto_baja', 
-		'(SELECT count(id) FROM `recurso` WHERE NOT (`fecha_baja` IS NULL) and localidadid=r.localidadid) as recurso_baja_cantidad', 
-		'(SELECT count(id) FROM `recurso` WHERE (NOT (`fecha_acreditacion` IS NULL)) AND (`fecha_baja` IS NULL) and localidadid=r.localidadid) as recurso_acreditado_cantidad'
+                '(SELECT sum(monto) FROM `recurso` WHERE (NOT (`fecha_acreditacion` IS NULL)) AND (`fecha_baja` IS NULL) and localidadid=r.localidadid and programaid in ('.$programa_ids.')) as monto_acreditado', 
+                '(SELECT sum(monto) FROM `recurso` WHERE (NOT (`fecha_baja` IS NULL)) and localidadid=r.localidadid and programaid in ('.$programa_ids.')) as monto_baja', 
+                '(SELECT count(id) FROM `recurso` WHERE NOT (`fecha_baja` IS NULL) and localidadid=r.localidadid and programaid in ('.$programa_ids.')) as recurso_baja_cantidad', 
+                '(SELECT count(id) FROM `recurso` WHERE (NOT (`fecha_acreditacion` IS NULL)) AND (`fecha_baja` IS NULL) and localidadid=r.localidadid and programaid in ('.$programa_ids.')) as recurso_acreditado_cantidad'
         ]);
         $query->from(['recurso r']);
         $query->groupBy(['r.localidadid']);
