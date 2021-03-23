@@ -257,7 +257,7 @@ $config = [
             'userFilterCallback' => ['app\components\ServicioUsuarios', 'userFilterCallback'],
             'accessIps'=>null,
             'accessUsers'=>null,
-            'accessRoles'=>null
+            'accessRoles'=>['admin','soporte']
         ],
         
         'api' => [
