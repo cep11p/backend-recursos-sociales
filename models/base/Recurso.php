@@ -25,6 +25,10 @@ use Yii;
  * @property integer $responsable_entregaid
  * @property integer $cant_modulo
  * @property string $fecha_entrega
+ * @property integer $cuota
+ * @property double $monto_acreditado
+ * @property double $monto_mensual
+ * @property double $fecha_final
  *
  * @property \app\models\Aula[] $aulas
  * @property \app\models\Programa $programa
@@ -53,9 +57,9 @@ abstract class Recurso extends \yii\db\ActiveRecord
         return [
             [['fecha_inicial', 'fecha_alta', 'monto', 'programaid', 'tipo_recursoid', 'personaid'], 'required'],
             [['fecha_inicial', 'fecha_alta', 'fecha_baja', 'fecha_acreditacion', 'fecha_entrega'], 'safe'],
-            [['monto'], 'number'],
+            [['monto', 'monto_acreditado', 'monto_mensual', 'fecha_final'], 'number'],
             [['observacion', 'proposito', 'descripcion_baja'], 'string'],
-            [['programaid', 'tipo_recursoid', 'personaid', 'localidadid', 'responsable_entregaid', 'cant_modulo'], 'integer'],
+            [['programaid', 'tipo_recursoid', 'personaid', 'localidadid', 'responsable_entregaid', 'cant_modulo', 'cuota'], 'integer'],
             [['programaid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Programa::className(), 'targetAttribute' => ['programaid' => 'id']],
             [['tipo_recursoid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\TipoRecurso::className(), 'targetAttribute' => ['tipo_recursoid' => 'id']]
         ];
@@ -83,6 +87,10 @@ abstract class Recurso extends \yii\db\ActiveRecord
             'responsable_entregaid' => 'Responsable Entregaid',
             'cant_modulo' => 'Cant Modulo',
             'fecha_entrega' => 'Fecha Entrega',
+            'cuota' => 'Cuota',
+            'monto_acreditado' => 'Monto Acreditado',
+            'monto_mensual' => 'Monto Mensual',
+            'fecha_final' => 'Fecha Final',
         ];
     }
 
@@ -97,6 +105,7 @@ abstract class Recurso extends \yii\db\ActiveRecord
             'personaid' => 'Este atributo hace referencia a una persona del sistema Registral',
             'localidadid' => 'Este atributo hace referencia al sistema Lugar (interoperabilidad)',
             'fecha_entrega' => 'Este atributo nos indica la fecha de entrega de la prestacion',
+            'fecha_final' => 'Nos indica cuando finaliza una prestacion tallerista',
         ]);
     }
 

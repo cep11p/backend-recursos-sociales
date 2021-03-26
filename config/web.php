@@ -243,13 +243,6 @@ $config = [
         ],
         'rbac' => 'dektrium\rbac\RbacWebModule',
         
-//        "audit"=>[
-//            "class"=>"bedezign\yii2\audit\Audit",
-//            "ignoreActions" =>['audit/*', 'debug/*'],
-//            'accessIps'=>null,
-//            'accessUsers'=>null,
-//            'accessRoles'=>null
-//        ],
         "audit"=>[
             "class"=>"bedezign\yii2\audit\Audit",
             "ignoreActions" =>['audit/*', 'debug/*'],
