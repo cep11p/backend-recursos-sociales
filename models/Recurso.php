@@ -371,7 +371,7 @@ class Recurso extends BaseRecurso
             #Flags para injectar botones
             'acreditacion'=> function($model){
                 $resultado = false;
-                if(isset($model->fecha_acreditacion)){
+                if($model->getMontoResto() == 0){
                     $resultado = true;
                 }
                 return $resultado;
