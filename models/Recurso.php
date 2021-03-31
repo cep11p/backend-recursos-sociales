@@ -173,8 +173,34 @@ class Recurso extends BaseRecurso
     }
     
     public function setAttributesAcreditar($values) {
+
+        #Chequeamos que el monto sea mayor a 0
+        if(!isset($values['monto']) || empty($values['monto']) || $values['monto']==0){
+            throw new \yii\web\HttpException(400,'El monto debe ser mayor a 0 para acreditar');
+        }
+
+        #Chequeamos que el monto de cuota no sea mayor al monto de prestacion
+        if(($this->getMontoAcreaditado() + $values['monto'])>$this->monto){
+            throw new \yii\web\HttpException(400,'El monto de la cuota supera al monto de la prestacion ($'.$this->monto.') monto_restante:($'.$this->getMontoResto().')');
+        }
+
+        #Chequeamos que la prestacion no esté paga
+        if($this->monto_acreditado == $this->monto){
+            throw new \yii\web\HttpException(400,'La prestacion ya esta totalmente acreditada');
+        }
+
+        # Ultima fecha de acreditacion
         if(isset($values['fecha_acreditacion'])){
             $this->fecha_acreditacion = $values['fecha_acreditacion']; 
+        }
+
+        $cuota = new Cuota();
+        $cuota->monto = $values['monto'];
+        $cuota->recursoid = $this->id;
+        $cuota->fecha_pago = $this->fecha_acreditacion;
+
+        if(!$cuota->save()){
+            throw new \yii\web\HttpException(400,json_encode($cuota->getErrors()));
         }
     }
     

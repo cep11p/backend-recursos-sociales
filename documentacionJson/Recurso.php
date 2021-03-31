@@ -431,6 +431,7 @@
  * @method PUT
  * @param
     {
-        "fecha_acreditacion": "2014-10-06"
+        "monto":5000,
+	    "fecha_acreditacion":"2021-03-31"
     }
  */
