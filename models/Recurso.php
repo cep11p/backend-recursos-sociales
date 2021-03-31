@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use \app\models\base\Recurso as BaseRecurso;
+use yii\db\Query;
 use yii\helpers\ArrayHelper;
 
 use \yii\web\HttpException;
@@ -301,6 +302,51 @@ class Recurso extends BaseRecurso
         
         return $resultado;       
     }
+
+    /**
+     * Se calcula el el monto acreditado
+     *
+     * @return void
+     */
+    public function getMontoAcreaditado(){
+        $query = new Query();
+        $query->select('sum(monto) as monto_acreditado');
+        $query->from('cuota');
+        $query->where(['recursoid'=>$this->id]);
+
+        $row = $query->createCommand()->queryAll();
+        $resultado = ($row[0]['monto_acreditado']=='')?0:$row[0]['monto_acreditado'];
+
+        return $resultado;
+    }
+
+    /**
+     * Se calcula el monto restante a pagar
+     *
+     * @return int
+     */
+    public function getMontoResto(){
+        $resultado = $this->monto - $this->getMontoAcreaditado();
+
+        return $resultado;
+    }
+
+    /**
+     * Se obtiene la cantidad de cuotas pagas
+     *
+     * @return int void
+     */
+    public function getCantCuota(){
+        $query = new Query();
+        $query->select('count(id) as cant_cuota');
+        $query->from('cuota');
+        $query->where(['recursoid'=>$this->id]);
+
+        $row = $query->createCommand()->queryAll();
+        $resultado = ($row[0]['cant_cuota']=='')?0:$row[0]['cant_cuota'];
+
+        return intval($resultado);
+    }
     
     public function fields()
     {
@@ -329,6 +375,21 @@ class Recurso extends BaseRecurso
                     $resultado = true;
                 }
                 return $resultado;
+            },
+
+            #Monto acreditado
+            'monto_acreditado'=> function($model){
+                return $model->getMontoAcreaditado();
+            },
+
+            #Monto restante
+            'monto_resto'=> function($model){
+                return $model->getMontoResto();
+            },
+
+            #Cuotas pagas
+            'cant_cuota'=> function($model){
+                return $model->getCantCuota();
             },
         ]);
         
