@@ -391,6 +391,11 @@ class Recurso extends BaseRecurso
             'cant_cuota'=> function($model){
                 return $model->getCantCuota();
             },
+
+            #Cuotas pagas
+            'cuota'=> function($model){
+                return ($model->cuota)?true:false;
+            },
         ]);
         
     }
