@@ -14,9 +14,8 @@ class m210326_141916_recurso_new_attributes extends Migration
     {
         $table = 'recurso';
         $this->addColumn($table, 'cuota', $this->boolean());
-        $this->addColumn($table, 'monto_acreditado', $this->double());
         $this->addColumn($table, 'monto_mensual', $this->double());
-        $this->addColumn($table, 'fecha_final', $this->double());
+        $this->addColumn($table, 'fecha_final', $this->date());
         $this->addCommentOnColumn($table, 'fecha_final', 'Nos indica cuando finaliza una prestacion tallerista');
 
     }

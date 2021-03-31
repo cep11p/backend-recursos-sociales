@@ -28,9 +28,10 @@ use Yii;
  * @property integer $cuota
  * @property double $monto_acreditado
  * @property double $monto_mensual
- * @property double $fecha_final
+ * @property string $fecha_final
  *
  * @property \app\models\Aula[] $aulas
+ * @property \app\models\Cuota[] $cuotas
  * @property \app\models\Programa $programa
  * @property \app\models\TipoRecurso $tipoRecurso
  * @property \app\models\ResponsableEntrega $responsableEntrega
@@ -56,8 +57,8 @@ abstract class Recurso extends \yii\db\ActiveRecord
     {
         return [
             [['fecha_inicial', 'fecha_alta', 'monto', 'programaid', 'tipo_recursoid', 'personaid'], 'required'],
-            [['fecha_inicial', 'fecha_alta', 'fecha_baja', 'fecha_acreditacion', 'fecha_entrega'], 'safe'],
-            [['monto', 'monto_acreditado', 'monto_mensual', 'fecha_final'], 'number'],
+            [['fecha_inicial', 'fecha_alta', 'fecha_baja', 'fecha_acreditacion', 'fecha_entrega', 'fecha_final'], 'safe'],
+            [['monto', 'monto_acreditado', 'monto_mensual'], 'number'],
             [['observacion', 'proposito', 'descripcion_baja'], 'string'],
             [['programaid', 'tipo_recursoid', 'personaid', 'localidadid', 'responsable_entregaid', 'cant_modulo', 'cuota'], 'integer'],
             [['programaid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Programa::className(), 'targetAttribute' => ['programaid' => 'id']],
@@ -115,6 +116,14 @@ abstract class Recurso extends \yii\db\ActiveRecord
     public function getAulas()
     {
         return $this->hasMany(\app\models\Aula::className(), ['recursoid' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCuotas()
+    {
+        return $this->hasMany(\app\models\Cuota::className(), ['recursoid' => 'id']);
     }
 
     /**

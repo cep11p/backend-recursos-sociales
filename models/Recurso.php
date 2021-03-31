@@ -91,7 +91,8 @@ class Recurso extends BaseRecurso
                 ['fecha_acreditacion', 'validarFechaAcreditacion'],
                 ['personaid', 'existePersonaEnRegistral'],
                 ['localidadid', 'existeLocalidadEnLugar'],
-                ['personaid', 'compare','compareValue'=>0,'operator'=>'!=','message' => 'No se pudo registrar la persona correctamente en el Sistema Registral.']
+                ['personaid', 'compare','compareValue'=>0,'operator'=>'!=','message' => 'No se pudo registrar la persona correctamente en el Sistema Registral.'],
+                ['monto_mensual', 'compare','compareAttribute'=>'monto','operator'=>'<','message' => 'El monto mensual no debe ser mayo al monto total','type' => 'number']
             ]
         );
     }
