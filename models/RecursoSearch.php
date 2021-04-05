@@ -7,6 +7,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Recurso;
 use app\rbac\PermisoPrograma;
+use yii\db\Query;
 
 /**
 * RecursoSearch represents the model behind the search form about `app\models\Recurso`.
@@ -79,16 +80,12 @@ class RecursoSearch extends Recurso
      * @return double
      */
     public function sumarMontoAcreditado($params){
-        $query = $this->createQuery($params);
+        $query = new Query();
         
         $query->select([
                 'monto_acreditado'=>'sum(monto)'
             ]);
-        $query->andWhere([
-                'not', ['fecha_acreditacion' => null]
-            ]);
-        
-        $query->andWhere(['fecha_baja' => null]);
+        $query->from('cuota');
         
         $command = $query->createCommand();
         $rows = $command->queryAll();
@@ -139,7 +136,7 @@ class RecursoSearch extends Recurso
         
         $resultado = ($rows[0]['monto_general']=='')?0:$rows[0]['monto_general'];
                 
-        return doubleval($resultado);        
+        return doubleval($resultado) - $this->sumarMontoAcreditado($params);;        
     }
     
     /**
@@ -317,10 +314,7 @@ class RecursoSearch extends Recurso
         }
 
         $monto_acreditado = $this->sumarMontoAcreditado($params);
-        $monto_baja = $this->sumarMontoBaja($params);
-        $monto_sin_acreditar = $this->sumarMontoSinAcreditar($params)-$monto_baja-$monto_acreditado;
-        $recurso_acreditado_cantidad = $this->contarRecursoAcreditado($params);
-        $recurso_baja_cantidad = $this->contarRecursoBaja($params);
+        $monto_sin_acreditar = $this->sumarMontoSinAcreditar($params);
         
         /*** Se obtiene datos de otros sistemas ***/
         if(count($coleccion_recurso)>0){
@@ -339,10 +333,7 @@ class RecursoSearch extends Recurso
         $data['pages']=$paginas;            
         $data['total_filtrado']=$dataProvider->totalCount;
         $data['monto_acreditado']=(isset($monto_acreditado))?$monto_acreditado:0;
-        $data['monto_baja']=(isset($monto_baja))?$monto_baja:0;
         $data['monto_sin_acreditar']=(isset($monto_sin_acreditar))?$monto_sin_acreditar:0;
-        $data['recurso_acreditado_cantidad']=(isset($recurso_acreditado_cantidad))?$recurso_acreditado_cantidad:0;
-        $data['recurso_baja_cantidad']=(isset($recurso_baja_cantidad))?$recurso_baja_cantidad:0;
         $data['resultado']=$coleccion_recurso;
         
         return $data;
