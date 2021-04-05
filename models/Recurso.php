@@ -332,7 +332,7 @@ class Recurso extends BaseRecurso
     /**
      * Se calcula el el monto acreditado
      *
-     * @return void
+     * @return array
      */
     public function getMontoAcreaditado(){
         $query = new Query();
