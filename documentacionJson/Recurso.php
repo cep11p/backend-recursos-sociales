@@ -19,13 +19,10 @@
 
 {
     "pagesize": 20,
-    "pages": 4,
-    "total_filtrado": 71,
-    "monto_acreditado": 32247.37,
-    "monto_baja": 36457.06,
-    "monto_sin_acreditar": 1275179.09,
-    "recurso_acreditado_cantidad": 3,
-    "recurso_baja_cantidad": 2,
+    "pages": 1,
+    "total_filtrado": 6,
+    "monto_acreditado": 21000,
+    "monto_sin_acreditar": 97000,
     "resultado": [
         {
             "id": 14,
