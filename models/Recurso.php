@@ -106,6 +106,11 @@ class Recurso extends BaseRecurso
             $this->fecha_alta = (!empty($this->fecha_alta))?\DateTime::createFromFormat('Y-m-d', $this->fecha_alta)->format('Y-m-d'): date('Y-m-d');
             $this->fecha_acreditacion = $this->fecha_alta;
         }
+
+        #si cuota = False
+        if($this->cuota==0){
+            $this->monto_mensual=0;
+        }
     }
     
     /**
@@ -181,7 +186,7 @@ class Recurso extends BaseRecurso
 
         #Chequeamos que el monto de cuota no sea mayor al monto de prestacion
         if(($this->getMontoAcreaditado() + $values['monto'])>$this->monto){
-            throw new \yii\web\HttpException(400,'El monto de la cuota supera al monto de la prestacion ($'.$this->monto.') monto_restante:($'.$this->getMontoResto().')');
+            throw new \yii\web\HttpException(400,'El monto de la cuota supera al monto de la prestacion ($'.$this->monto.') monto restante:($'.$this->getMontoResto().')');
         }
 
         #Chequeamos que la prestacion no esté paga
@@ -195,7 +200,8 @@ class Recurso extends BaseRecurso
         }
 
         $cuota = new Cuota();
-        $cuota->monto = $values['monto'];
+        #Si cuota es falso, pagamos el monto total (sin cuotas)
+        $cuota->monto = ($this->cuota==0)?$this->monto:$values['monto'];
         $cuota->recursoid = $this->id;
         $cuota->fecha_pago = $this->fecha_acreditacion;
 
