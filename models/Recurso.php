@@ -197,7 +197,7 @@ class Recurso extends BaseRecurso
         #Si cuota es falso, pagamos el monto total de un solo pago(sin cuotas)
         $cuota->monto = ($this->cuota==0)?$this->monto:$values['monto'];
         $cuota->recursoid = $this->id;
-        $cuota->fecha_pago = $this->fecha_acreditacion;
+        $cuota->fecha_pago = (isset($values['fecha_pago']) || !empty($values['fecha_pago']))?$values['fecha_pago']:date('Y-m-d');
 
         if(!$cuota->save()){
             throw new \yii\web\HttpException(400,json_encode($cuota->getErrors()));

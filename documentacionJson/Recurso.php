@@ -428,7 +428,7 @@
  * @method PUT
  * @param
     {
-        "monto":5000,
-	    "fecha_acreditacion":"2021-03-31"
+        "monto":4000,
+	    "fecha_pago":"2021-04-05"
     }
  */
