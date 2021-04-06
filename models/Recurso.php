@@ -85,7 +85,6 @@ class Recurso extends BaseRecurso
                 [['localidadid'], 'required','message' =>'No hay localidad asignada a la prestación'],
                 [['cant_modulo','personaid'], 'required', 'on' => self::PRESTACION_MODULO_ALIMENTAR],
                 [['descripcion_baja', 'fecha_baja'], 'required', 'on' => self::SCENARIO_BAJA],
-                [['fecha_acreditacion'], 'required', 'on' => self::SCENARIO_ACREDITACION],
                 [['fecha_baja','fecha_acreditacion','fecha_inicial','fecha_alta'], 'date', 'format' => 'php:Y-m-d'],
                 ['fecha_baja', 'validarFechaBaja'],
                 ['fecha_alta', 'validarFechaAlta'],
@@ -194,13 +193,8 @@ class Recurso extends BaseRecurso
             throw new \yii\web\HttpException(400,'La prestacion ya esta totalmente acreditada');
         }
 
-        # Ultima fecha de acreditacion
-        if(isset($values['fecha_acreditacion'])){
-            $this->fecha_acreditacion = $values['fecha_acreditacion']; 
-        }
-
         $cuota = new Cuota();
-        #Si cuota es falso, pagamos el monto total (sin cuotas)
+        #Si cuota es falso, pagamos el monto total de un solo pago(sin cuotas)
         $cuota->monto = ($this->cuota==0)?$this->monto:$values['monto'];
         $cuota->recursoid = $this->id;
         $cuota->fecha_pago = $this->fecha_acreditacion;
@@ -208,6 +202,32 @@ class Recurso extends BaseRecurso
         if(!$cuota->save()){
             throw new \yii\web\HttpException(400,json_encode($cuota->getErrors()));
         }
+
+        if($this->monto == $this->sumarCuotasDeUnaPrestacion()){
+            $this->fecha_acreditacion = date('Y-m-d');
+        }
+    }
+
+    /**
+     * Se suma el monto de todas las cuotas de una prestacion
+     *
+     * @return double
+     */
+    public function sumarCuotasDeUnaPrestacion(){
+        $query = new Query();
+        
+        $query->select([
+                'monto_acreditado'=>'sum(c.monto)'
+            ]);
+        $query->from('cuota as c');
+        $query->leftJoin('recurso r','r.id=c.recursoid');
+        $query->where(['r.id'=>$this->id]);
+
+        $command = $query->createCommand();
+        $rows = $command->queryAll();
+        
+        $resultado = ($rows[0]['monto_acreditado']=='')?0:$rows[0]['monto_acreditado'];
+        return doubleval($resultado);       
     }
     
     public function setAttributesBaja($values) {

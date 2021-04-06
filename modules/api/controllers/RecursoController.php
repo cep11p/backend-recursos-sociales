@@ -236,7 +236,6 @@ class RecursoController extends ActiveController{
                 throw new \yii\web\HttpException(403, 'No se tienen permisos necesarios para ejecutar esta acción');
             }
             
-            $model->setScenario(Recurso::SCENARIO_ACREDITACION);
             $model->setAttributesAcreditar($param);
             
             if(!$model->save()){

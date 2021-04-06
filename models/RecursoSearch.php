@@ -79,7 +79,7 @@ class RecursoSearch extends Recurso
      * @param array $params criterio de filtrado
      * @return double
      */
-    public function sumarMontoAcreditado($params){
+    public function sumarMontoAcreditado(){
         $query = new Query();
         
         $query->select([
@@ -95,6 +95,7 @@ class RecursoSearch extends Recurso
         return doubleval($resultado);       
     }
     
+
     /**
      * Sumamos el monto baja general
      * @param array $params criterio de filtrado
