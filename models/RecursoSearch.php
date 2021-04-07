@@ -125,7 +125,7 @@ class RecursoSearch extends Recurso
      * @param array $params criterio de filtrado
      * @return double
      */
-    public function sumarMontoSinAcreditar($params){
+    public function sumarMontoSinAcreditar($params = array()){
         $query = $this->createQuery($params);
         
         $query->select([
@@ -136,8 +136,8 @@ class RecursoSearch extends Recurso
         $rows = $command->queryAll();
         
         $resultado = ($rows[0]['monto_general']=='')?0:$rows[0]['monto_general'];
-                
-        return doubleval($resultado) - $this->sumarMontoAcreditado($params);;        
+
+        return doubleval($resultado) - $this->sumarMontoAcreditado($params);       
     }
     
     /**
@@ -402,7 +402,7 @@ class RecursoSearch extends Recurso
             'personaid',
             'count(monto) as recurso_cantidad',
             'sum(monto) as monto',
-            '(SELECT sum(monto) FROM `recurso` WHERE (NOT (`fecha_acreditacion` IS NULL)) AND (`fecha_baja` IS NULL) and personaid=r1.personaid and programaid in ('.$programa_ids.')) as monto_acreditado',
+            '(SELECT sum(c2.monto) FROM `cuota` as c2 LEFT JOIN recurso r2 on c2.recursoid = r2.id WHERE r1.personaid=r2.personaid and r2.programaid in ('.$programa_ids.')) as monto_acreditado',
             '(SELECT sum(monto) FROM `recurso` WHERE (NOT (`fecha_baja` IS NULL)) and personaid=r1.personaid and programaid in ('.$programa_ids.')) as monto_baja',
             '(SELECT count(id) AS `recurso_baja_cantidad` FROM `recurso` WHERE NOT (`fecha_baja` IS NULL) and personaid=r1.personaid and programaid in ('.$programa_ids.')) as recurso_baja_cantidad',
             '(SELECT count(id) AS `recurso_acreditado_cantidad` FROM `recurso` WHERE (NOT (`fecha_acreditacion` IS NULL)) AND (`fecha_baja` IS NULL) and personaid=r1.personaid and programaid in ('.$programa_ids.')) as recurso_acreditado_cantidad',
@@ -421,7 +421,10 @@ class RecursoSearch extends Recurso
         #Seteamos la condicion adecuada segun los permisos del usuario (Rbac + Rule)
         $query->andWhere(PermisoPrograma::setCondicionPermisoProgramaVer('r1'));
 
+
+        // print_r($query->createCommand()->queryAll());die();
         return $query;
+
     }
     
     /**
@@ -440,26 +443,25 @@ class RecursoSearch extends Recurso
                 'page' => (isset($params['page']) && is_numeric($params['page']))?$params['page']:0
             ],
         ]);
+
         
         $monto_acreditado = $this->sumarMontoAcreditado([]);
         $monto_baja = $this->sumarMontoBaja([]);
-        $monto_sin_acreditar = $this->sumarMontoSinAcreditar([])-$monto_baja-$monto_acreditado;
+        $monto_sin_acreditar = $this->sumarMontoSinAcreditar()-$monto_baja;
         $recurso_acreditado_cantidad = $this->contarRecursoAcreditado([]);
         $recurso_baja_cantidad = $this->contarRecursoBaja([]);
         
+        $rows = $query->createCommand()->queryAll();
         $coleccion_recurso = array();
-        foreach ($dataProvider->models as $value) {
-            $recurso = $value->toArray();
-            $recurso['monto_acreditado'] = ($value['monto_acreditado']!=null)? doubleval($value['monto_acreditado']):0;
-            $recurso['monto_baja'] = ($value['monto_baja']!=null)? doubleval($value['monto_baja']):0;            
-            $recurso['monto_sin_acreditar'] = $value['monto']-$recurso['monto_acreditado']-$recurso['monto_baja'];   
-            $recurso['recurso_cantidad'] = intval($value['recurso_cantidad']);
-            $recurso['recurso_baja_cantidad'] = intval($value['recurso_baja_cantidad']);
-            $recurso['recurso_acreditado_cantidad'] = intval($value['recurso_acreditado_cantidad']);
-            $recurso['recurso_sin_acreditar_cantidad'] = $recurso['recurso_cantidad']-$recurso['recurso_baja_cantidad']-$recurso['recurso_acreditado_cantidad'];
-            unset($recurso['programa']);
-            unset($recurso['tipo_recurso']);
-            $coleccion_recurso[] = $recurso;
+        foreach ($rows as $value) {
+            $value['monto_acreditado'] = ($value['monto_acreditado']!=null)? doubleval($value['monto_acreditado']):0;
+            $value['monto_baja'] = ($value['monto_baja']!=null)? doubleval($value['monto_baja']):0;            
+            $value['monto_sin_acreditar'] = $value['monto']-$value['monto_acreditado']-$value['monto_baja'];   
+            $value['recurso_cantidad'] = intval($value['recurso_cantidad']);
+            $value['recurso_baja_cantidad'] = intval($value['recurso_baja_cantidad']);
+            $value['recurso_acreditado_cantidad'] = intval($value['recurso_acreditado_cantidad']);
+            $value['recurso_sin_acreditar_cantidad'] = $value['recurso_cantidad']-$value['recurso_baja_cantidad']-$value['recurso_acreditado_cantidad'];
+            $coleccion_recurso[] = $value;
         }
 
         if(count($coleccion_recurso)>0){
