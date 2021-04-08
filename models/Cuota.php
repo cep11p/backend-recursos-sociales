@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use \app\models\base\Cuota as BaseCuota;
+use DateTime;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -30,5 +31,15 @@ class Cuota extends BaseCuota
                 # custom validation rules
             ]
         );
+    }
+
+    public function fields()
+    {
+        return ArrayHelper::merge(parent::fields(), [
+            'borrar'=> function($model){
+                return time() < strtotime('+24 hour', DateTime::createFromFormat('Y-m-d H:i:s', $this->create_at)->getTimestamp());
+            }
+        ]);
+        
     }
 }

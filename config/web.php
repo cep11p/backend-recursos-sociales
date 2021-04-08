@@ -115,6 +115,10 @@ $config = [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/beneficiario', 
                 ],
+                [   #cuota
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/cuota', 
+                ],
                 [   #Programa
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/programa', 

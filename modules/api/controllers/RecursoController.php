@@ -159,7 +159,7 @@ class RecursoController extends ActiveController{
         }
         
         $resultado = $model->toArray();
-        $resultado['lista_cuota'] = $model->getCuotas()->asArray()->all();
+        $resultado['lista_cuota'] = $model->cuotas;
         $resultado['localidad'] = $model->getLocalidad();
         $resultado['persona'] = $model->getPersona();
         $resultado['responsable_entrega'] = $model->getResponsableEntregaNombre().' ('.ucfirst($model->responsableEntrega->tipoResponsable->nombre).')';
