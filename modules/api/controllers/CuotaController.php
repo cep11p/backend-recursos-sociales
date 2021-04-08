@@ -57,10 +57,20 @@ class CuotaController extends ActiveController{
         unset($actions['view']);
         unset($actions['create']);
         unset($actions['update']);
+        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
         return $actions;
     
     }
     
+    public function prepareDataProvider() 
+    {
+        $searchModel = new \app\models\CuotaSearch();
+        $params = \Yii::$app->request->queryParams;
+        $resultado = $searchModel->search($params);
+
+        return $resultado;
+    }
+
     /**
      * Se Listan todos los roles
      * @return array()
