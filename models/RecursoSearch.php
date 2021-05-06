@@ -79,17 +79,47 @@ class RecursoSearch extends Recurso
      * @param array $params criterio de filtrado
      * @return double
      */
-    public function sumarMontoAcreditado(){
+    public function sumarMontoAcreditado($params){
         $query = new Query();
         
         $query->select([
-                'monto_acreditado'=>'sum(monto)'
+                'monto_acreditado'=>'sum(c.monto)'
             ]);
-        $query->from('cuota');
-        
+        $query->from('cuota c');
+        $query->leftJoin('recurso r','r.id=c.recursoid');
+
+        #### Filtro por rango de fecha ####
+        if(isset($params['fecha_alta_desde']) && isset($params['fecha_alta_hasta'])){
+            $query->andWhere(['between', 'c.fecha_pago', $params['fecha_alta_desde'], $params['fecha_alta_hasta']]);
+        }else if(isset($params['fecha_alta_desde'])){
+            $query->andWhere(['between', 'c.fecha_pago', $params['fecha_alta_desde'], date('Y-m-d')]);
+        }else if(isset($params['fecha_alta_hasta'])){
+            $query->andWhere(['between', 'c.fecha_pago', '1970-01-01', $params['fecha_alta_hasta']]);
+        }else if(!isset($params['fecha_alta_desde']) && !isset($params['fecha_alta_hasta'])){
+            if(isset($params['mes']) && !empty($params['mes'])){
+                $params['fecha_alta_hasta'] = date('Y').'-'.$params['mes'].'-01';
+            }else{
+                $params['fecha_alta_hasta'] = date('Y').'-06-01';
+            }
+            $params['fecha_alta_desde'] = date('Y-m-d',strtotime($params['fecha_alta_hasta'].' -1 year'));
+
+            $query->andWhere(['between', 'c.fecha_pago', $params['fecha_alta_desde'], $params['fecha_alta_hasta']]);
+        }
+
+        ##Chequeamos el estado
+        switch ($params['estado']) {
+            case 'baja':
+                $query->andWhere(['not', ['r.fecha_baja' => null]]);
+                break;
+            case 'acreditado':                
+                break;
+            case 'sin-acreditar':
+                break;
+            default :     
+        }
         $command = $query->createCommand();
         $rows = $command->queryAll();
-        
+
         $resultado = ($rows[0]['monto_acreditado']=='')?0:$rows[0]['monto_acreditado'];
                 
         return doubleval($resultado);       
@@ -129,15 +159,30 @@ class RecursoSearch extends Recurso
         $query = $this->createQuery($params);
         
         $query->select([
-                'monto_general'=>'sum(monto)'
+                'monto_general'=>'sum(recurso.monto)'
             ]);
         
         $command = $query->createCommand();
         $rows = $command->queryAll();
         
-        $resultado = ($rows[0]['monto_general']=='')?0:$rows[0]['monto_general'];
+        ##Chequeamos el estado
+        switch ($params['estado']) {
+            case 'baja':
+                $monto_general = 0;
+                break;
+            case 'acreditado':                
+                $monto_general = 0;
+                break;
+            case 'sin-acreditar':
+                break;
+            default :     
+        }
+        
+        // print_r($command->sql);die();
+        $resultado = doubleval(($rows[0]['monto_general']=='')?0:$rows[0]['monto_general']) - $this->sumarMontoAcreditado($params);
+        
+        return (isset($monto_general))?0:$resultado;       
 
-        return doubleval($resultado) - $this->sumarMontoAcreditado($params);       
     }
     
     /**
@@ -244,7 +289,7 @@ class RecursoSearch extends Recurso
             'id' => $this->id,
             'fecha_inicial' => $this->fecha_inicial,
             'fecha_alta' => $this->fecha_alta,
-            'monto' => $this->monto,
+            'recurso.monto' => $this->monto,
             'programaid' => $this->programaid,
             'tipo_recursoid' => $this->tipo_recursoid,
             'personaid' => $this->personaid,
@@ -261,6 +306,15 @@ class RecursoSearch extends Recurso
             $query->andWhere(['between', 'fecha_alta', $params['fecha_alta_desde'], date('Y-m-d')]);
         }else if(isset($params['fecha_alta_hasta'])){
             $query->andWhere(['between', 'fecha_alta', '1970-01-01', $params['fecha_alta_hasta']]);
+        }else if(!isset($params['fecha_alta_desde']) && !isset($params['fecha_alta_hasta'])){
+            if(isset($params['mes']) && !empty($params['mes'])){
+                $params['fecha_alta_hasta'] = date('Y').'-'.$params['mes'].'-01';
+            }else{
+                $params['fecha_alta_hasta'] = date('Y').'-06-01';
+            }
+            $params['fecha_alta_desde'] = date('Y-m-d',strtotime($params['fecha_alta_hasta'].' -1 year'));
+
+            $query->andWhere(['between', 'fecha_alta', $params['fecha_alta_desde'], $params['fecha_alta_hasta']]);
         }
 
         
@@ -276,8 +330,22 @@ class RecursoSearch extends Recurso
             case 'sin-acreditar':
                 $query->andWhere(['fecha_acreditacion' => null]);
                 $query->andWhere(['fecha_baja' => null]);
+                
+                #Filtramos por pagos de cuotas #Cuota #Mes
+                if(isset($params['mes']) && !empty($params['mes'])){
+                    $param_fecha = date('Y',strtotime($params['fecha_alta_hasta'])).'-'.$params['mes'].'-01';
+
+                    $condicion = "(
+                        ((SELECT count(c.fecha_pago) FROM cuota c WHERE c.recursoid = recurso.id LIMIT 1) = 0 and not (EXTRACT(YEAR_MONTH FROM recurso.fecha_alta ) > EXTRACT(YEAR_MONTH FROM '$param_fecha'))) -- Condicion busca prestaciones sin ningun pago
+                         or
+                        (EXTRACT( YEAR_MONTH FROM(SELECT c.fecha_pago FROM cuota c WHERE c.recursoid = recurso.id ORDER BY fecha_pago desc LIMIT 1)) <=  EXTRACT( YEAR_MONTH FROM DATE_SUB('$param_fecha', INTERVAL 1 MONTH) ) -- Condicion busca prestaciones con ultimo pago
+                            and
+                            EXTRACT( YEAR_MONTH FROM recurso.fecha_alta ) < EXTRACT( YEAR_MONTH FROM  '$param_fecha')) 
+                   )";
+                    $query->andWhere($condicion);
+                }
                 break;
-            default :                
+            default :      
                 break;
         }
         
@@ -286,7 +354,6 @@ class RecursoSearch extends Recurso
             $query->orderBy(['fecha_alta' => SORT_DESC]);
         }
         
-//        print_r($query->createCommand()->sql);die();
         return $query;
     }
 
