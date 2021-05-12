@@ -95,15 +95,16 @@ class RecursoSearch extends Recurso
             $query->andWhere(['between', 'c.fecha_pago', $params['fecha_alta_desde'], date('Y-m-d')]);
         }else if(isset($params['fecha_alta_hasta'])){
             $query->andWhere(['between', 'c.fecha_pago', '1970-01-01', $params['fecha_alta_hasta']]);
-        }else if(!isset($params['fecha_alta_desde']) && !isset($params['fecha_alta_hasta'])){
+        }
+        else if(!isset($params['fecha_alta_desde']) && !isset($params['fecha_alta_hasta'])){
             if(isset($params['mes']) && !empty($params['mes'])){
                 $params['fecha_alta_hasta'] = date('Y').'-'.$params['mes'].'-01';
+                $condicion = "EXTRACT( YEAR_MONTH FROM  `c`.`fecha_pago`) = EXTRACT( YEAR_MONTH FROM  '".$params['fecha_alta_hasta']."')";
             }else{
                 $params['fecha_alta_hasta'] = date('Y').'-06-01';
+                $condicion = "EXTRACT( YEAR_MONTH FROM  `c`.`fecha_pago`) < EXTRACT( YEAR_MONTH FROM  '".$params['fecha_alta_hasta']."')";
             }
-            $params['fecha_alta_desde'] = date('Y-m-d',strtotime($params['fecha_alta_hasta'].' -1 year'));
-
-            $query->andWhere(['between', 'c.fecha_pago', $params['fecha_alta_desde'], $params['fecha_alta_hasta']]);
+            $query->andWhere($condicion);
         }
 
         ##Chequeamos el estado
@@ -112,8 +113,12 @@ class RecursoSearch extends Recurso
                 $query->andWhere(['not', ['r.fecha_baja' => null]]);
                 break;
             case 'acreditado':                
+                $query->andWhere(['not', ['fecha_acreditacion' => null]]);
+                $query->andWhere(['fecha_baja' => null]);
                 break;
             case 'sin-acreditar':
+                $query->andWhere(['fecha_acreditacion' => null]);
+                $query->andWhere(['fecha_baja' => null]);
                 break;
             default :     
         }
@@ -156,14 +161,39 @@ class RecursoSearch extends Recurso
      * @return double
      */
     public function sumarMontoSinAcreditar($params = array()){
-        $query = $this->createQuery($params);
+        $query = Recurso::find();
         
         $query->select([
                 'monto_general'=>'sum(recurso.monto)'
             ]);
+
+
+        ############ Buscamos por datos de persona ############
+        #global search #global param
+        $personaForm = new PersonaForm();
+        if(isset($params['global_param']) && !empty($params['global_param'])){
+            $persona_params["global_param"] = $params['global_param'];
+        }
         
-        $command = $query->createCommand();
-        $rows = $command->queryAll();
+        if(isset($params['persona']['localidadid']) && !empty($params['persona']['localidadid'])){
+            $persona_params['localidadid'] = $params['persona']['localidadid'];    
+        }
+        
+        if(isset($params['persona']['direccion']) && !empty($params['persona']['direccion'])){
+            $persona_params['direccion'] = $params['persona']['direccion'];    
+        }
+        
+        $coleccion_persona = array();
+        $lista_personaid = array();
+        if (isset($persona_params)) {
+            
+            $coleccion_persona = $personaForm->buscarPersonaEnRegistral($persona_params);
+            $lista_personaid = $this->obtenerListaIds($coleccion_persona);
+
+            if (count($lista_personaid) < 1) {
+                $query->where('0=1');
+            }
+        }
         
         ##Chequeamos el estado
         switch ($params['estado']) {
@@ -174,13 +204,61 @@ class RecursoSearch extends Recurso
                 $monto_general = 0;
                 break;
             case 'sin-acreditar':
+                $query->andWhere(['fecha_acreditacion' => null]);
+                $query->andWhere(['fecha_baja' => null]);
                 break;
             default :     
         }
+
+        #Seteamos la condicion adecuada segun los permisos del usuario (Rbac + Rule)
+        $query->andWhere(PermisoPrograma::setCondicionPermisoProgramaVer());
+
+        #Criterio de recurso social por lista de persona.... lista de personaid
+        if(count($lista_personaid)>0){
+            $query->andWhere(array('in', 'personaid', $lista_personaid));
+        }
+
+        #Filtro por Tipo responsable
+        if(isset($this->tipo_responsableid)){
+            $query->leftJoin("responsable as r", "responsable_entregaid=r.id");
+            
+            $query->andFilterWhere(['r.tipo_responsableid' => $this->tipo_responsableid]);
+        }
+
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'fecha_inicial' => $this->fecha_inicial,
+            'fecha_alta' => $this->fecha_alta,
+            'recurso.monto' => $this->monto,
+            'programaid' => $this->programaid,
+            'tipo_recursoid' => $this->tipo_recursoid,
+            'personaid' => $this->personaid,
+            'localidadid' => $this->localidadid,
+        ]);
+
+        $query->andFilterWhere(['like', 'observacion', $this->observacion])
+              ->andFilterWhere(['like', 'proposito', $this->proposito]);
+        
+        #### Filtro por rango de fecha ####
+        if(isset($params['fecha_alta_desde']) && isset($params['fecha_alta_hasta'])){
+            $query->andWhere(['between', 'fecha_alta', $params['fecha_alta_desde'], $params['fecha_alta_hasta']]);
+        }else if(isset($params['fecha_alta_desde'])){
+            $query->andWhere(['between', 'fecha_alta', $params['fecha_alta_desde'], date('Y-m-d')]);
+        }else if(isset($params['fecha_alta_hasta'])){
+            $query->andWhere(['between', 'fecha_alta', '1970-01-01', $params['fecha_alta_hasta']]);
+        }else if(!isset($params['fecha_alta_desde']) && !isset($params['fecha_alta_hasta'])){
+            $params['fecha_alta_hasta'] = date('Y').'-06-01';
+            $params['fecha_alta_desde'] = date('Y-m-d',strtotime($params['fecha_alta_hasta'].' -1 year'));
+
+            $query->andWhere(['between', 'fecha_alta', $params['fecha_alta_desde'], $params['fecha_alta_hasta']]);
+        }
+
+        $command = $query->createCommand();
+        $rows = $command->queryAll();
+        
         
         // print_r($command->sql);die();
         $resultado = doubleval(($rows[0]['monto_general']=='')?0:$rows[0]['monto_general']) - $this->sumarMontoAcreditado($params);
-        
         return (isset($monto_general))?0:$resultado;       
 
     }
@@ -307,12 +385,9 @@ class RecursoSearch extends Recurso
         }else if(isset($params['fecha_alta_hasta'])){
             $query->andWhere(['between', 'fecha_alta', '1970-01-01', $params['fecha_alta_hasta']]);
         }else if(!isset($params['fecha_alta_desde']) && !isset($params['fecha_alta_hasta'])){
-            if(isset($params['mes']) && !empty($params['mes'])){
-                $params['fecha_alta_hasta'] = date('Y').'-'.$params['mes'].'-01';
-            }else{
-                $params['fecha_alta_hasta'] = date('Y').'-06-01';
-            }
-            $params['fecha_alta_desde'] = date('Y-m-d',strtotime($params['fecha_alta_hasta'].' -1 year'));
+            $params['fecha_alta_hasta'] = date('Y').'-06-30';
+            $fecha_desde = date('Y').'-06-01';
+            $params['fecha_alta_desde'] = date('Y-m-d',strtotime($fecha_desde.' -1 year'));
 
             $query->andWhere(['between', 'fecha_alta', $params['fecha_alta_desde'], $params['fecha_alta_hasta']]);
         }
@@ -322,10 +397,34 @@ class RecursoSearch extends Recurso
         switch ($params['estado']) {
             case 'baja':
                 $query->andWhere(['not', ['fecha_baja' => null]]);
+
+                #Filtramos por pagos de cuotas #Cuota #Mes
+                if(isset($params['mes']) && !empty($params['mes'])){
+                    $param_fecha = date('Y',strtotime($params['fecha_alta_hasta'])).'-'.$params['mes'].'-01';
+
+                    #Buscamos que prestacion dado de baja se pagó en el mes X
+                    $condicion = "(
+                        (EXTRACT( YEAR_MONTH FROM(SELECT c.fecha_pago FROM cuota c WHERE c.recursoid = recurso.id ORDER BY fecha_pago desc LIMIT 1)) =  EXTRACT( YEAR_MONTH FROM '$param_fecha' )) -- Condicion busca prestaciones con ultimo pago
+                   )";
+                    $query->andWhere($condicion);
+                }
                 break;
             case 'acreditado':                
                 $query->andWhere(['not', ['fecha_acreditacion' => null]]);
                 $query->andWhere(['fecha_baja' => null]);
+                #Filtramos por pagos de cuotas #Cuota #Mes
+                if(isset($params['mes']) && !empty($params['mes'])){
+                    $param_fecha = date('Y',strtotime($params['fecha_alta_hasta'])).'-'.$params['mes'].'-01';
+
+                    #Buscamos si se pago una prestacion (acreditada) tiene un pago en el mes X
+                    $condicion = "(SELECT c.fecha_pago 
+                    FROM cuota c
+                    WHERE c.recursoid = recurso.id and EXTRACT( YEAR_MONTH FROM  c.fecha_pago) = EXTRACT( YEAR_MONTH FROM  '$param_fecha')
+                    LIMIT 1
+                    )";
+                    $query->andWhere(['not', [$condicion => null]]);
+                }
+
                 break;
             case 'sin-acreditar':
                 $query->andWhere(['fecha_acreditacion' => null]);
@@ -335,6 +434,7 @@ class RecursoSearch extends Recurso
                 if(isset($params['mes']) && !empty($params['mes'])){
                     $param_fecha = date('Y',strtotime($params['fecha_alta_hasta'])).'-'.$params['mes'].'-01';
 
+                    #Buscamos la prestaciones que se puedan pagar en el mes X
                     $condicion = "(
                         ((SELECT count(c.fecha_pago) FROM cuota c WHERE c.recursoid = recurso.id LIMIT 1) = 0 and not (EXTRACT(YEAR_MONTH FROM recurso.fecha_alta ) > EXTRACT(YEAR_MONTH FROM '$param_fecha'))) -- Condicion busca prestaciones sin ningun pago
                          or
