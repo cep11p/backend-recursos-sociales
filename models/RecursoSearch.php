@@ -416,7 +416,7 @@ class RecursoSearch extends Recurso
                 if(isset($params['mes']) && !empty($params['mes'])){
                     $param_fecha = date('Y',strtotime($params['fecha_alta_hasta'])).'-'.$params['mes'].'-01';
 
-                    #Buscamos si se pago una prestacion (acreditada) tiene un pago en el mes X
+                    #Buscamos que prestacion (acreditada) se pagó en el mes X
                     $condicion = "(SELECT c.fecha_pago 
                     FROM cuota c
                     WHERE c.recursoid = recurso.id and EXTRACT( YEAR_MONTH FROM  c.fecha_pago) = EXTRACT( YEAR_MONTH FROM  '$param_fecha')
@@ -445,7 +445,19 @@ class RecursoSearch extends Recurso
                     $query->andWhere($condicion);
                 }
                 break;
-            default :      
+            default :  
+                #Filtramos por pagos de cuotas #Cuota #Mes
+                if(isset($params['mes']) && !empty($params['mes'])){
+                    $param_fecha = date('Y',strtotime($params['fecha_alta_hasta'])).'-'.$params['mes'].'-01';
+
+                    #Buscamos la prestacion que se pagó en el mes X
+                    $condicion = "(SELECT c.fecha_pago 
+                    FROM cuota c
+                    WHERE c.recursoid = recurso.id and EXTRACT( YEAR_MONTH FROM  c.fecha_pago) = EXTRACT( YEAR_MONTH FROM  '$param_fecha')
+                    LIMIT 1
+                    )";
+                    $query->andWhere(['not', [$condicion => null]]);
+                }
                 break;
         }
         
