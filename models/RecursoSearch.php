@@ -75,7 +75,7 @@ class RecursoSearch extends Recurso
     }
     
     /**
-     * Sumamos el monto acreditado general
+     * Sumamos el monto total acreditado general
      * @param array $params criterio de filtrado
      * @return double
      */
@@ -126,6 +126,58 @@ class RecursoSearch extends Recurso
         $rows = $command->queryAll();
 
         $resultado = ($rows[0]['monto_acreditado']=='')?0:$rows[0]['monto_acreditado'];
+                
+        return doubleval($resultado);       
+    }
+
+     /**
+     * Sumamos el monto mensual acreditado general
+     * @param array $params criterio de filtrado
+     * @return double
+     */
+    public function sumarMontoMensualAcreditado($params){
+        $query = new Query();
+
+        //si hay un rango de fecha_alta debemos devolver 0
+        if((isset($params['fecha_alta_desde']) && !empty($params['fecha_alta_desde'])) || (isset($params['fecha_alta_hasta']) && !empty($params['fecha_alta_hasta']))){
+            return 0;
+        }
+        
+        $query->select([
+                'monto_mensual_acreditado'=>'sum(c.monto)'
+            ]);
+        $query->from('cuota c');
+        $query->leftJoin('recurso r','r.id=c.recursoid');
+
+        #### Filtro por rango de fecha ####
+        if(isset($params['fecha_pago']) && !empty($params['fecha_pago'])){
+            $condicion = "EXTRACT( YEAR_MONTH FROM  `c`.`fecha_pago`) = EXTRACT( YEAR_MONTH FROM  '".$params['fecha_pago']."')";
+        }else{
+            $fecha = date('Y-m-d');
+            $condicion = "EXTRACT( YEAR_MONTH FROM  `c`.`fecha_pago`) = EXTRACT( YEAR_MONTH FROM  '".$fecha."')";
+        }
+        $query->andWhere($condicion);
+        
+
+        ##Chequeamos el estado
+        switch ($params['estado']) {
+            case 'baja':
+                $query->andWhere(['not', ['r.fecha_baja' => null]]);
+                break;
+            case 'acreditado':                
+                $query->andWhere(['not', ['fecha_acreditacion' => null]]);
+                $query->andWhere(['fecha_baja' => null]);
+                break;
+            case 'sin-acreditar':
+                $query->andWhere(['fecha_acreditacion' => null]);
+                $query->andWhere(['fecha_baja' => null]);
+                break;
+            default :     
+        }
+        $command = $query->createCommand();
+        $rows = $command->queryAll();
+
+        $resultado = ($rows[0]['monto_mensual_acreditado']=='')?0:$rows[0]['monto_mensual_acreditado'];
                 
         return doubleval($resultado);       
     }
@@ -493,7 +545,8 @@ class RecursoSearch extends Recurso
             $coleccion_recurso[] = $value->toArray();
         }
 
-        $monto_acreditado = $this->sumarMontoAcreditado($params);
+        $monto_mensual_acreditado = $this->sumarMontoMensualAcreditado($params);
+        $monto_total_acreditado = $this->sumarMontoAcreditado($params);
         $monto_sin_acreditar = $this->sumarMontoSinAcreditar($params);
         
         /*** Se obtiene datos de otros sistemas ***/
@@ -512,7 +565,9 @@ class RecursoSearch extends Recurso
         $data['pagesize']=$pagesize;            
         $data['pages']=$paginas;            
         $data['total_filtrado']=$dataProvider->totalCount;
-        $data['monto_acreditado']=(isset($monto_acreditado))?$monto_acreditado:0;
+        $data['monto_acreditado']=(isset($monto_total_acreditado))?$monto_total_acreditado:0; //este atributo aporta en las estadisticas
+        $data['monto_total_acreditado']=(isset($monto_total_acreditado))?$monto_total_acreditado:0;
+        $data['monto_mensual_acreditado']=(isset($monto_mensual_acreditado))?$monto_mensual_acreditado:0;
         $data['monto_sin_acreditar']=(isset($monto_sin_acreditar))?$monto_sin_acreditar:0;
         $data['resultado']=$coleccion_recurso;
         

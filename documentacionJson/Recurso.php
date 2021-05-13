@@ -21,8 +21,9 @@
     "pagesize": 20,
     "pages": 1,
     "total_filtrado": 6,
-    "monto_acreditado": 21000,
+    "monto_total_acreditado": 21000,
     "monto_sin_acreditar": 97000,
+    "monto_mensual_acreditado": 5000,
     "resultado": [
         {
             "id": 14,
