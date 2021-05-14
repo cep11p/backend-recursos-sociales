@@ -53,6 +53,7 @@
             "acreditacion": false,
             "monto_resto": 15000,
             "cant_cuota": 0,
+            "monto_mensual_acreditado": 3000,
             "persona": {
                 "id": 9,
                 "nombre": "Mariana Josefína",
@@ -109,6 +110,7 @@
             "acreditacion": false,
             "monto_resto": 80000,
             "cant_cuota": 0,
+            "monto_mensual_acreditado": 3000,
             "persona": {
                 "id": 3,
                 "nombre": "Dulce María",
@@ -157,59 +159,7 @@
         },
         {2...}
         {3...}
-        {4...},
-        {
-            "id": 20,
-            "fecha_inicial": "2016-01-11",
-            "fecha_alta": "2016-05-19",
-            "monto": 16456.9,
-            "observacion": "Observacion Fixture 20",
-            "proposito": "Un proposito hecho con fixtures 20",
-            "programaid": 1,
-            "tipo_recursoid": 2,
-            "personaid": 10,
-            "programa": "Subsidio",
-            "tipo_recurso": "Empleo/Formación Laboral",
-            "persona": {
-                "id": 10,
-                "nombre": "Luisa Fernanda",
-                "apellido": "Sánchez",
-                "apodo": "",
-                "nro_documento": "7897018",
-                "fecha_nacimiento": "0000-00-00",
-                "estado_civilid": null,
-                "telefono": "",
-                "celular": "2920412236",
-                "sexoid": 2,
-                "tipo_documentoid": null,
-                "nucleoid": 10,
-                "situacion_laboralid": null,
-                "generoid": null,
-                "email": "",
-                "cuil": "1578970189",
-                "red_social": "",
-                "estudios": [],
-                "sexo": "Mujer",
-                "genero": "",
-                "estado_civil": "",
-                "lugar": {
-                    "id": 10,
-                    "nombre": "",
-                    "calle": "calle10",
-                    "altura": "",
-                    "localidadid": 1,
-                    "latitud": "-1234114",
-                    "longitud": "21314133",
-                    "barrio": "barrio1",
-                    "piso": "9º",
-                    "depto": "5",
-                    "escalera": "",
-                    "entre_calle_1": "",
-                    "entre_calle_2": "",
-                    "localidad": "Capital Federal"
-                }
-            }
-        }
+        {4...}
     ]
 }
 **/

@@ -184,12 +184,12 @@ class Recurso extends BaseRecurso
         }
 
         #Chequeamos que el monto de cuota no sea mayor al monto de prestacion
-        if(($this->getMontoAcreaditado() + $values['monto'])>$this->monto){
+        if(($this->getMontoTotalAcreaditado() + $values['monto'])>$this->monto){
             throw new \yii\web\HttpException(400,'El monto de la cuota supera al monto de la prestacion ($'.$this->monto.') monto restante:($'.$this->getMontoResto().')');
         }
 
         #Chequeamos que la prestacion no esté paga
-        if($this->monto_acreditado == $this->monto){
+        if($this->monto_total_acreditado == $this->monto){
             throw new \yii\web\HttpException(400,'La prestacion ya esta totalmente acreditada');
         }
 
@@ -356,18 +356,38 @@ class Recurso extends BaseRecurso
     }
 
     /**
-     * Se calcula el el monto acreditado
+     * Se calcula el el monto total acreditado
      *
      * @return array
      */
-    public function getMontoAcreaditado(){
+    public function getMontoTotalAcreaditado(){
         $query = new Query();
-        $query->select('sum(monto) as monto_acreditado');
+        $query->select('sum(monto) as monto_total_acreditado');
         $query->from('cuota');
         $query->where(['recursoid'=>$this->id]);
 
         $row = $query->createCommand()->queryAll();
-        $resultado = ($row[0]['monto_acreditado']=='')?0:$row[0]['monto_acreditado'];
+        $resultado = ($row[0]['monto_total_acreditado']=='')?0:$row[0]['monto_total_acreditado'];
+
+        return $resultado;
+    }
+
+    /**
+     * Se calcula el el monto mensual acreditado
+     *
+     * @return array
+     */
+    public function getMontoMensualAcreaditado($fecha){
+        $query = new Query();
+        $query->select('sum(monto) as monto_mensual_acreditado');
+        $query->from('cuota');
+        $query->where(['recursoid'=>$this->id]);
+
+        $criterio1 = "EXTRACT( YEAR_MONTH FROM '$fecha'";
+        $query->andWhere(['fecha_pago'=>$criterio1]);
+
+        $row = $query->createCommand()->queryAll();
+        $resultado = ($row[0]['monto_mensual_acreditado']=='')?0:$row[0]['monto_mensual_acreditado'];
 
         return $resultado;
     }
@@ -378,7 +398,7 @@ class Recurso extends BaseRecurso
      * @return int
      */
     public function getMontoResto(){
-        $resultado = $this->monto - $this->getMontoAcreaditado();
+        $resultado = $this->monto - $this->getMontoTotalAcreaditado();
 
         return $resultado;
     }
@@ -429,9 +449,9 @@ class Recurso extends BaseRecurso
                 return $resultado;
             },
 
-            #Monto acreditado
-            'monto_acreditado'=> function($model){
-                return $model->getMontoAcreaditado();
+            #Monto total acreditado
+            'monto_total_acreditado'=> function($model){
+                return $model->getMontoTotalAcreaditado();
             },
 
             #Monto restante

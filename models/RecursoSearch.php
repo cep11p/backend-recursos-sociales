@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\VinculoInteroperableHelp;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -537,7 +538,12 @@ class RecursoSearch extends Recurso
                 'page' => (isset($params['page']) && is_numeric($params['page']))?$params['page']:0
             ],
         ]);
+
+        #Cargamos atributos
         $this->load($params,'');
+
+        #fecha_pago
+        $fecha_pago = (isset($params['fecha_pago']) || !empty($params['fecha_pago']))?$params['fecha_pago']:date('Y-m-d');
         
         
         $coleccion_recurso = array();
@@ -545,9 +551,17 @@ class RecursoSearch extends Recurso
             $coleccion_recurso[] = $value->toArray();
         }
 
+        ####### Calculamos datos de la lista (general) #######
         $monto_mensual_acreditado = $this->sumarMontoMensualAcreditado($params);
         $monto_total_acreditado = $this->sumarMontoAcreditado($params);
         $monto_sin_acreditar = $this->sumarMontoSinAcreditar($params);
+
+        ######## Calculamos datos de cada prestacion #######
+        /*** Se obtiene el monto_mensual_acreditado por prestacion ***/
+        if(count($coleccion_recurso)>0){
+            $datos_a_vincular = $this->getMontoMensualPorPrestacion($coleccion_recurso, $fecha_pago);
+            $coleccion_recurso = \app\components\VinculoInteroperableHelp::vincularDatos($coleccion_recurso, $datos_a_vincular, 'recursoid');
+        } 
         
         /*** Se obtiene datos de otros sistemas ***/
         if(count($coleccion_recurso)>0){
@@ -570,8 +584,36 @@ class RecursoSearch extends Recurso
         $data['monto_mensual_acreditado']=(isset($monto_mensual_acreditado))?$monto_mensual_acreditado:0;
         $data['monto_sin_acreditar']=(isset($monto_sin_acreditar))?$monto_sin_acreditar:0;
         $data['resultado']=$coleccion_recurso;
-        
+
         return $data;
+    }
+
+    /**
+     * Se calcula el monto mensual de cada prestacion de una fecha_pago X
+     *
+     * @param [array] $lista_prestacion
+     * @param string $fecha_pago
+     * @return array prestaciones con su monto mensual
+     */
+    public function getMontoMensualPorPrestacion($lista_prestacion, $fecha_pago = '')
+    {
+        $fecha_pago = ($fecha_pago == '')?date('Y-m-d'):$fecha_pago;
+        $lista_ids = [];
+        foreach ($lista_prestacion as $value) {
+            $lista_ids[] = $value['id'];
+        }
+
+        $query = new Query();
+        $query->select('recursoid, sum(monto) as monto_mensual_acreditado');
+        $query->from('cuota');
+        $query->where(['recursoid'=>$lista_ids]);
+        $condicion = "EXTRACT( YEAR_MONTH FROM  `fecha_pago`) = EXTRACT( YEAR_MONTH FROM  '".$fecha_pago."')";
+        $query->andWhere($condicion);
+        $query->groupBy('id');
+
+        $row = $query->createCommand()->queryAll();
+
+        return $row;
     }
     
     /**
