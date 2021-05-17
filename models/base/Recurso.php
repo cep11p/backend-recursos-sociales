@@ -26,8 +26,6 @@ use Yii;
  * @property integer $cant_modulo
  * @property string $fecha_entrega
  * @property integer $cuota
- * @property double $monto_acreditado
- * @property double $monto_mensual
  * @property string $fecha_final
  *
  * @property \app\models\Aula[] $aulas
@@ -58,7 +56,7 @@ abstract class Recurso extends \yii\db\ActiveRecord
         return [
             [['fecha_inicial', 'fecha_alta', 'monto', 'programaid', 'tipo_recursoid', 'personaid'], 'required'],
             [['fecha_inicial', 'fecha_alta', 'fecha_baja', 'fecha_acreditacion', 'fecha_entrega', 'fecha_final'], 'safe'],
-            [['monto', 'monto_acreditado', 'monto_mensual'], 'number'],
+            [['monto'], 'number'],
             [['observacion', 'proposito', 'descripcion_baja'], 'string'],
             [['programaid', 'tipo_recursoid', 'personaid', 'localidadid', 'responsable_entregaid', 'cant_modulo', 'cuota'], 'integer'],
             [['programaid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Programa::className(), 'targetAttribute' => ['programaid' => 'id']],
@@ -89,8 +87,6 @@ abstract class Recurso extends \yii\db\ActiveRecord
             'cant_modulo' => 'Cant Modulo',
             'fecha_entrega' => 'Fecha Entrega',
             'cuota' => 'Cuota',
-            'monto_acreditado' => 'Monto Acreditado',
-            'monto_mensual' => 'Monto Mensual',
             'fecha_final' => 'Fecha Final',
         ];
     }
