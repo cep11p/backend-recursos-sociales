@@ -36,21 +36,20 @@ class VinculoInteroperableHelp extends \yii\base\Component{
      * @param String $campoNombre nombre del campo donde se vincularan todos o algunos atributos
      * @return void
      */
-    static function vincularDatos($lista = [], $datosAVincular, $atributo_fk) {
+    static function vincularDatos($lista = [], $datosAVincular, $atributo_fk, $campoNombre) {
         #Obtenemos los datos a vincular
         $ids='';
         foreach ($lista as $ent) {
             $ids .= (empty($ids))?$ent['id']:','.$ent['id'];
         }
-        // print_r($lista);die();
 
         #Vinculamos los datos
         $i=0;
         foreach ($lista as $ent) {
-            $lista[$i]['monto_mensual_acreditado'] = 0;
+            $lista[$i][$campoNombre] = '';
             foreach ($datosAVincular as $dato) {
                 if(isset($ent['id']) && isset($dato[$atributo_fk]) && $ent['id']==$dato[$atributo_fk]){        
-                    $lista[$i]['monto_mensual_acreditado'] = intval($dato['monto_mensual_acreditado']);
+                    $lista[$i][$campoNombre] = intval($dato[$campoNombre]);
                 }
             }
             $i++;

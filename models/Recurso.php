@@ -449,21 +449,6 @@ class Recurso extends BaseRecurso
                 return $resultado;
             },
 
-            #Monto total acreditado
-            'monto_total_acreditado'=> function($model){
-                return $model->getMontoTotalAcreaditado();
-            },
-
-            #Monto restante
-            'monto_resto'=> function($model){
-                return $model->getMontoResto();
-            },
-
-            #Cuotas pagas
-            'cant_cuota'=> function($model){
-                return $model->getCantCuota();
-            },
-
             #Cuotas pagas
             'cuota'=> function($model){
                 return ($model->cuota)?true:false;

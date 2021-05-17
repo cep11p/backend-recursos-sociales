@@ -97,16 +97,15 @@ class RecursoSearch extends Recurso
         }else if(isset($params['fecha_alta_hasta'])){
             $query->andWhere(['between', 'c.fecha_pago', '1970-01-01', $params['fecha_alta_hasta']]);
         }
-        else if(!isset($params['fecha_alta_desde']) && !isset($params['fecha_alta_hasta'])){
-            if(isset($params['mes']) && !empty($params['mes'])){
-                $params['fecha_alta_hasta'] = date('Y').'-'.$params['mes'].'-01';
-                $condicion = "EXTRACT( YEAR_MONTH FROM  `c`.`fecha_pago`) = EXTRACT( YEAR_MONTH FROM  '".$params['fecha_alta_hasta']."')";
-            }else{
-                $params['fecha_alta_hasta'] = date('Y').'-06-01';
-                $condicion = "EXTRACT( YEAR_MONTH FROM  `c`.`fecha_pago`) < EXTRACT( YEAR_MONTH FROM  '".$params['fecha_alta_hasta']."')";
-            }
-            $query->andWhere($condicion);
+
+        if(isset($params['fecha_pago']) && !empty($params['fecha_pago'])){
+            $fecha_pago = $params['fecha_pago'];
+            $condicion = "EXTRACT( YEAR_MONTH FROM  `c`.`fecha_pago`) = EXTRACT( YEAR_MONTH FROM  '".$fecha_pago."')";
+        }else{
+            $fecha_pago = date('Y').'-06-01';
+            $condicion = "EXTRACT( YEAR_MONTH FROM  `c`.`fecha_pago`) < EXTRACT( YEAR_MONTH FROM  '".$fecha_pago."')";
         }
+        $query->andWhere($condicion);
 
         ##Chequeamos el estado
         switch ($params['estado']) {
@@ -452,10 +451,10 @@ class RecursoSearch extends Recurso
                 $query->andWhere(['not', ['fecha_baja' => null]]);
 
                 #Filtramos por pagos de cuotas #Cuota #Mes
-                if(isset($params['mes']) && !empty($params['mes'])){
-                    $param_fecha = date('Y',strtotime($params['fecha_alta_hasta'])).'-'.$params['mes'].'-01';
+                if(isset($params['fecha_pago']) && !empty($params['fecha_pago'])){
+                    $param_fecha = $params['fecha_pago'];
 
-                    #Buscamos que prestacion dado de baja se pagó en el mes X
+                    #Buscamos que prestacion dado de baja se pagó en la fecha X
                     $condicion = "(
                         (EXTRACT( YEAR_MONTH FROM(SELECT c.fecha_pago FROM cuota c WHERE c.recursoid = recurso.id ORDER BY fecha_pago desc LIMIT 1)) =  EXTRACT( YEAR_MONTH FROM '$param_fecha' )) -- Condicion busca prestaciones con ultimo pago
                    )";
@@ -465,9 +464,9 @@ class RecursoSearch extends Recurso
             case 'acreditado':                
                 $query->andWhere(['not', ['fecha_acreditacion' => null]]);
                 $query->andWhere(['fecha_baja' => null]);
-                #Filtramos por pagos de cuotas #Cuota #Mes
-                if(isset($params['mes']) && !empty($params['mes'])){
-                    $param_fecha = date('Y',strtotime($params['fecha_alta_hasta'])).'-'.$params['mes'].'-01';
+                #Filtramos por pagos de cuotas #Cuota #Fecha Pago #Mes
+                if(isset($params['fecha_pago']) && !empty($params['fecha_pago'])){
+                    $param_fecha = $params['fecha_pago'];
 
                     #Buscamos que prestacion (acreditada) se pagó en el mes X
                     $condicion = "(SELECT c.fecha_pago 
@@ -484,8 +483,8 @@ class RecursoSearch extends Recurso
                 $query->andWhere(['fecha_baja' => null]);
                 
                 #Filtramos por pagos de cuotas #Cuota #Mes
-                if(isset($params['mes']) && !empty($params['mes'])){
-                    $param_fecha = date('Y',strtotime($params['fecha_alta_hasta'])).'-'.$params['mes'].'-01';
+                if(isset($params['fecha_pago']) && !empty($params['fecha_pago'])){
+                    $param_fecha = $params['fecha_pago'];
 
                     #Buscamos la prestaciones que se puedan pagar en el mes X
                     $condicion = "(
@@ -500,8 +499,8 @@ class RecursoSearch extends Recurso
                 break;
             default :  
                 #Filtramos por pagos de cuotas #Cuota #Mes
-                if(isset($params['mes']) && !empty($params['mes'])){
-                    $param_fecha = date('Y',strtotime($params['fecha_alta_hasta'])).'-'.$params['mes'].'-01';
+                if(isset($params['fecha_pago']) && !empty($params['fecha_pago'])){
+                    $param_fecha = $params['fecha_pago'];
 
                     #Buscamos la prestacion que se pagó en el mes X
                     $condicion = "(SELECT c.fecha_pago 
@@ -557,10 +556,22 @@ class RecursoSearch extends Recurso
         $monto_sin_acreditar = $this->sumarMontoSinAcreditar($params);
 
         ######## Calculamos datos de cada prestacion #######
-        /*** Se obtiene el monto_mensual_acreditado por prestacion ***/
         if(count($coleccion_recurso)>0){
-            $datos_a_vincular = $this->getMontoMensualPorPrestacion($coleccion_recurso, $fecha_pago);
-            $coleccion_recurso = \app\components\VinculoInteroperableHelp::vincularDatos($coleccion_recurso, $datos_a_vincular, 'recursoid');
+
+            #monto_total_acreditado
+            $datos_a_vincular = $this->getCantCuotaPorPrestacion($coleccion_recurso);
+            $coleccion_recurso = \app\components\VinculoInteroperableHelp::vincularDatos($coleccion_recurso, $datos_a_vincular, 'recursoid','cant_cuota');
+
+            #monto_total_acreditado
+            $datos_a_vincular = $this->getMontoTotalAcreditadoPorPrestacion($coleccion_recurso,$fecha_pago);
+            $coleccion_recurso = \app\components\VinculoInteroperableHelp::vincularDatos($coleccion_recurso, $datos_a_vincular, 'recursoid','monto_total_acreditado');
+
+            #monto_resto
+            $coleccion_recurso = $this->getMontoRestoPorPrestacion($coleccion_recurso);
+
+            #monto_mensual_acreditado
+            $datos_a_vincular = $this->getMontoMensualAcreditadoPorPrestacion($coleccion_recurso,$fecha_pago);
+            $coleccion_recurso = \app\components\VinculoInteroperableHelp::vincularDatos($coleccion_recurso, $datos_a_vincular, 'recursoid','monto_mensual_acreditado');
         } 
         
         /*** Se obtiene datos de otros sistemas ***/
@@ -589,13 +600,57 @@ class RecursoSearch extends Recurso
     }
 
     /**
-     * Se calcula el monto mensual de cada prestacion de una fecha_pago X
+     * Se recibe una lista de prestaciones ids y se calcula el monto de resto de esas mismas
+     *
+     * @param [array] $coleccion_recurso
+     * @return array
+     */
+    public function getMontoRestoPorPrestacion($coleccion_recurso){
+        $i=0;
+        foreach ($coleccion_recurso as $value) {
+            if(!empty($value)){
+                $coleccion_recurso[$i]['monto_resto'] = $value['monto'] - $value['monto_total_acreditado'];
+            }else{
+                $coleccion_recurso[$i]['monto_resto'] = 0;
+            }
+            $i++;
+        }
+
+        return $coleccion_recurso;
+    }
+
+    /**
+     * Se recibe una lista de prestaciones ids y se calcula la cantidad de cueotas de esas mismas
+     *
+     * @param [array] $lista_prestacion
+     * @return array
+     */
+    public function getCantCuotaPorPrestacion($lista_prestacion)
+    {
+        $lista_ids = [];
+        foreach ($lista_prestacion as $value) {
+            $lista_ids[] = $value['id'];
+        }
+
+        $query = new Query();
+        $query->select('recursoid, count(id) as cant_cuota');
+        $query->from('cuota');
+        $query->where(['recursoid'=>$lista_ids]);
+        $query->groupBy('recursoid');
+
+        $row = $query->createCommand()->queryAll();
+
+        return $row;
+    }
+
+    /**
+     * Se calcula el monto mensual acreditado de cada prestacion de una fecha_pago X
      *
      * @param [array] $lista_prestacion
      * @param string $fecha_pago
-     * @return array prestaciones con su monto mensual
+     * @return array prestaciones con su monto mensual acreditado
      */
-    public function getMontoMensualPorPrestacion($lista_prestacion, $fecha_pago = '')
+    public function getMontoMensualAcreditadoPorPrestacion($lista_prestacion, $fecha_pago = '')
     {
         $fecha_pago = ($fecha_pago == '')?date('Y-m-d'):$fecha_pago;
         $lista_ids = [];
@@ -610,6 +665,30 @@ class RecursoSearch extends Recurso
         $condicion = "EXTRACT( YEAR_MONTH FROM  `fecha_pago`) = EXTRACT( YEAR_MONTH FROM  '".$fecha_pago."')";
         $query->andWhere($condicion);
         $query->groupBy('id');
+
+        $row = $query->createCommand()->queryAll();
+
+        return $row;
+    }
+
+    /**
+     * Se calcula el monto total acreditado de cada prestacion
+     *
+     * @param [type] $lista_prestacion
+     * @return array prestaciones con su monto total acreditado
+     */
+    public function getMontoTotalAcreditadoPorPrestacion($lista_prestacion)
+    {
+        $lista_ids = [];
+        foreach ($lista_prestacion as $value) {
+            $lista_ids[] = $value['id'];
+        }
+
+        $query = new Query();
+        $query->select('recursoid, sum(monto) as monto_total_acreditado');
+        $query->from('cuota');
+        $query->where(['recursoid'=>$lista_ids]);
+        $query->groupBy('recursoid');
 
         $row = $query->createCommand()->queryAll();
 
