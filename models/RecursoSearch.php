@@ -558,20 +558,7 @@ class RecursoSearch extends Recurso
         ######## Calculamos datos de cada prestacion #######
         if(count($coleccion_recurso)>0){
 
-            #monto_total_acreditado
-            $datos_a_vincular = $this->getCantCuotaPorPrestacion($coleccion_recurso);
-            $coleccion_recurso = \app\components\VinculoInteroperableHelp::vincularDatos($coleccion_recurso, $datos_a_vincular, 'recursoid','cant_cuota');
-
-            #monto_total_acreditado
-            $datos_a_vincular = $this->getMontoTotalAcreditadoPorPrestacion($coleccion_recurso,$fecha_pago);
-            $coleccion_recurso = \app\components\VinculoInteroperableHelp::vincularDatos($coleccion_recurso, $datos_a_vincular, 'recursoid','monto_total_acreditado');
-
-            #monto_resto
-            $coleccion_recurso = $this->getMontoRestoPorPrestacion($coleccion_recurso);
-
-            #monto_mensual_acreditado
-            $datos_a_vincular = $this->getMontoMensualAcreditadoPorPrestacion($coleccion_recurso,$fecha_pago);
-            $coleccion_recurso = \app\components\VinculoInteroperableHelp::vincularDatos($coleccion_recurso, $datos_a_vincular, 'recursoid','monto_mensual_acreditado');
+            $coleccion_recurso = $this->setValoresMontosAListaPresciones($coleccion_recurso, $fecha_pago);
         } 
         
         /*** Se obtiene datos de otros sistemas ***/
@@ -597,6 +584,36 @@ class RecursoSearch extends Recurso
         $data['resultado']=$coleccion_recurso;
 
         return $data;
+    }
+
+    public function setValoresMontosAListaPresciones($coleccion_recurso, $fecha_pago){
+
+        $lista_cant_cuota = $this->getCantCuotaPorPrestacion($coleccion_recurso);
+        $lista_monto_total_acreditado = $this->getMontoTotalAcreditadoPorPrestacion($coleccion_recurso,$fecha_pago);
+        $lista_monto_mensual = $this->getMontoMensualAcreditadoPorPrestacion($coleccion_recurso,$fecha_pago);
+        
+        $i=0;
+        for ($i=0; $i < count($coleccion_recurso); $i++) { 
+        
+            $coleccion_recurso[$i] = $this->vincularValor($coleccion_recurso[$i], $lista_cant_cuota, 'cant_cuota');
+            $coleccion_recurso[$i] = $this->vincularValor($coleccion_recurso[$i], $lista_monto_total_acreditado, 'monto_total_acreditado');
+            $coleccion_recurso[$i] = $this->vincularValor($coleccion_recurso[$i], $lista_monto_mensual, 'monto_mensual_acreditado');
+            $coleccion_recurso[$i]['monto_resto'] = $coleccion_recurso[$i]['monto'] - $coleccion_recurso[$i]['monto_total_acreditado'];
+        }
+
+        return $coleccion_recurso;
+    }
+    
+    public function vincularValor($prestacion, $lista_valores, $key){
+
+        $prestacion[$key] = 0;
+        foreach ($lista_valores as $value) {
+            if($prestacion['id'] == $value['recursoid']){
+                $prestacion[$key] = $value[$key];
+            }
+        }
+
+        return $prestacion;
     }
 
     /**

@@ -27,36 +27,6 @@ class VinculoInteroperableHelp extends \yii\base\Component{
         
         return $lista_ids;    
     }
-
-    /**
-     * Interopera con el sistema registral para obtener datos de persona y vincularlas
-     *
-     * @param array $lista Lista de entidades que tiene como atributo personaid
-     * @param array $atributo_fk atributo de instancia
-     * @param String $campoNombre nombre del campo donde se vincularan todos o algunos atributos
-     * @return void
-     */
-    static function vincularDatos($lista = [], $datosAVincular, $atributo_fk, $campoNombre) {
-        #Obtenemos los datos a vincular
-        $ids='';
-        foreach ($lista as $ent) {
-            $ids .= (empty($ids))?$ent['id']:','.$ent['id'];
-        }
-
-        #Vinculamos los datos
-        $i=0;
-        foreach ($lista as $ent) {
-            $lista[$i][$campoNombre] = '';
-            foreach ($datosAVincular as $dato) {
-                if(isset($ent['id']) && isset($dato[$atributo_fk]) && $ent['id']==$dato[$atributo_fk]){        
-                    $lista[$i][$campoNombre] = intval($dato[$campoNombre]);
-                }
-            }
-            $i++;
-        }
-
-        return $lista;
-    }
     
     /**
      * Interopera con el sistema registral para obtener datos de persona y vincularlas
