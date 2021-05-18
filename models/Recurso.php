@@ -100,10 +100,16 @@ class Recurso extends BaseRecurso
     public function setAttributesCustom($values, $safeOnly = true) {
         parent::setAttributes($values, $safeOnly);
         $this->fecha_inicial = date('Y-m-d');
-        
+        $this->lugar_capacitacion = "";
+
         if(isset($this->programaid) && $this->programa->id == $this::PRESTACION_MODULO_ALIMENTAR_ID){
             $this->fecha_alta = (!empty($this->fecha_alta))?\DateTime::createFromFormat('Y-m-d', $this->fecha_alta)->format('Y-m-d'): date('Y-m-d');
             $this->fecha_acreditacion = $this->fecha_alta;
+        }
+
+        #Lugar de capacitacion para el programa Emprender y/o Recrear
+        if(isset($this->programaid) && ($this->programa->id == Programa::EMPRENDER || $this->programa->id == Programa::RECREAR)){
+            $this->lugar_capacitacion = (isset($values['lugar_capacitacion']) && !empty($values['lugar_capacitacion']))?$values['lugar_capacitacion']:""; 
         }
 
         #si cuota = False

@@ -124,11 +124,17 @@ class RecursoController extends ActiveController{
             
             $model->setResponsableEntrega($param);
             
-            #### Guardamos coleccion de alumnos si el pregroma es "Emprender" ####
+            /*****  Guardamos coleccion de alumnos si el pregroma es "Emprender" o "Recrear" *****/
+
+            #Validamos que el programa emprender deba tener una lista de alumnos
+            if((!isset($param['alumno_lista']) || (count($param['alumno_lista'])==0)) &&  $model->programa->nombre == 'Emprender'){
+                throw new \yii\web\HttpException(400, 'Falta la lista de alumnos para el programa Emprender');
+            }
+
             if(isset($param['alumno_lista']) && (count($param['alumno_lista'])>0) &&  $model->programa->nombre == 'Emprender'){
                 $model->vincularAlumnosAEmprender($param);
             }
-            
+
             $transaction->commit();
             
             $resultado['success']=true;

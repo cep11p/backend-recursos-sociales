@@ -181,7 +181,8 @@
     	{"alumnoid":1},
     	{"alumnoid":2},
     	{"alumnoid":4}
-    ]
+    ],
+    "lugar_capacitacion":"milugar"
 }
  * 
  */

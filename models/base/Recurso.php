@@ -28,6 +28,7 @@ use Yii;
  * @property integer $cuota
  * @property string $fecha_final
  * @property double $monto_mensual
+ * @property string $lugar_capacitacion
  *
  * @property \app\models\Aula[] $aulas
  * @property \app\models\Cuota[] $cuotas
@@ -60,6 +61,7 @@ abstract class Recurso extends \yii\db\ActiveRecord
             [['monto', 'monto_mensual'], 'number'],
             [['observacion', 'proposito', 'descripcion_baja'], 'string'],
             [['programaid', 'tipo_recursoid', 'personaid', 'localidadid', 'responsable_entregaid', 'cant_modulo', 'cuota'], 'integer'],
+            [['lugar_capacitacion'], 'string', 'max' => 255],
             [['programaid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Programa::className(), 'targetAttribute' => ['programaid' => 'id']],
             [['tipo_recursoid'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\TipoRecurso::className(), 'targetAttribute' => ['tipo_recursoid' => 'id']]
         ];
@@ -90,6 +92,7 @@ abstract class Recurso extends \yii\db\ActiveRecord
             'cuota' => 'Cuota',
             'fecha_final' => 'Fecha Final',
             'monto_mensual' => 'Monto Mensual',
+            'lugar_capacitacion' => 'Lugar Capacitacion',
         ];
     }
 
