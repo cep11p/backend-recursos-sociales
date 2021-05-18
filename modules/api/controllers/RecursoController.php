@@ -1,6 +1,7 @@
 <?php
 namespace app\modules\api\controllers;
 
+use app\models\Programa;
 use yii\rest\ActiveController;
 use yii\web\Response;
 
@@ -131,7 +132,7 @@ class RecursoController extends ActiveController{
                 throw new \yii\web\HttpException(400, 'Falta la lista de alumnos para el programa Emprender');
             }
 
-            if(isset($param['alumno_lista']) && (count($param['alumno_lista'])>0) &&  $model->programa->nombre == 'Emprender'){
+            if(isset($param['alumno_lista']) && (count($param['alumno_lista'])>0) &&  ($model->programaid == Programa::EMPRENDER || $model->programaid == Programa::RECREAR)){
                 $model->vincularAlumnosAEmprender($param);
             }
 

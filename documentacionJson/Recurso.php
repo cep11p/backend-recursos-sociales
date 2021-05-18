@@ -164,7 +164,7 @@
 }
 **/
 
-/***** Para crear una prestacion de Emprender con sus alumnos****
+/***** Para crear una prestacion de Emprender o Recrear con sus alumnos****
 @url http://recurso-social.local/api/recursos
 @method POST
 @return array {"message":"Se guarda una prestacion","success":true,"data":{"id":39}}
