@@ -239,8 +239,8 @@ class Recurso extends BaseRecurso
         }
     }
 
-        /**
-     * Se vinculan los alumnos(Persona) a la capacitación que brinda el programa Emprender, En otras palabras
+    /**
+     * Se vinculan los alumnos(Persona) a la capacitación que brinda el programa Emprender y/o Recrear, En otras palabras
      * se vinculan alumnos con el recurso_social
      * @throws HttpException
      */
