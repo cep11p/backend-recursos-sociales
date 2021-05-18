@@ -383,7 +383,8 @@ class Recurso extends BaseRecurso
      *
      * @return array
      */
-    public function getMontoMensualAcreaditado($fecha){
+    public function getMontoMensualAcreaditado($fecha = ''){
+        $fecha = empty($fecha) ? date('Y-m-d') : $fecha;
         $query = new Query();
         $query->select('sum(monto) as monto_mensual_acreditado');
         $query->from('cuota');
