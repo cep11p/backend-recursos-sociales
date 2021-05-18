@@ -12,6 +12,7 @@ use yii\helpers\ArrayHelper;
 class Programa extends BasePrograma
 {
     const EMPRENDER = 3;
+    const RECREAR = 7;
     const HABITAT = 5;
     const MICRO_EMPRENDIMIENTO = 4;
     const MODULO_ALIMENTICIO = 6;
