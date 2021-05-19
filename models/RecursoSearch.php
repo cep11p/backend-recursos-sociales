@@ -89,6 +89,55 @@ class RecursoSearch extends Recurso
         $query->from('cuota c');
         $query->leftJoin('recurso r','r.id=c.recursoid');
 
+        ############ Buscamos por datos de persona ############
+        #global search #global param
+        $personaForm = new PersonaForm();
+        if(isset($params['global_param']) && !empty($params['global_param'])){
+            $persona_params["global_param"] = $params['global_param'];
+        }
+        
+        if(isset($params['persona']['localidadid']) && !empty($params['persona']['localidadid'])){
+            $persona_params['localidadid'] = $params['persona']['localidadid'];    
+        }
+        
+        if(isset($params['persona']['direccion']) && !empty($params['persona']['direccion'])){
+            $persona_params['direccion'] = $params['persona']['direccion'];    
+        }
+        
+        $coleccion_persona = array();
+        $lista_personaid = array();
+        if (isset($persona_params)) {
+            
+            $coleccion_persona = $personaForm->buscarPersonaEnRegistral($persona_params);
+            $lista_personaid = $this->obtenerListaIds($coleccion_persona);
+
+            if (count($lista_personaid) < 1) {
+                $query->where('0=1');
+            }
+        }
+
+        #Criterio de recurso social por lista de persona.... lista de personaid
+        if(count($lista_personaid)>0){
+            $query->andWhere(array('in', 'personaid', $lista_personaid));
+        }
+
+        /***Filtrado por atributos de recursos */
+        #Filtrado por Localidad
+        if(isset($params['localidadid']) && !empty($params['localidadid'])){
+            $query->andWhere(['localidadid' => $params['localidadid']]);
+        }
+
+        #Filtrado por Programa
+        if(isset($params['programaid']) && !empty($params['programaid'])){
+            $query->andWhere(['programaid' => $params['programaid']]);
+        }
+
+        #Filtrado por Tipo Recurso(tipo prestacion)
+        if(isset($params['tipo_recursoid']) && !empty($params['tipo_recursoid'])){
+            $query->andWhere(['tipo_recursoid' => $params['tipo_recursoid']]);
+        }
+        
+
         #### Filtro por rango de fecha ####
         if(isset($params['fecha_alta_desde']) && isset($params['fecha_alta_hasta'])){
             $query->andWhere(['between', 'c.fecha_pago', $params['fecha_alta_desde'], $params['fecha_alta_hasta']]);
@@ -126,6 +175,8 @@ class RecursoSearch extends Recurso
         $rows = $command->queryAll();
 
         $resultado = ($rows[0]['monto_acreditado']=='')?0:$rows[0]['monto_acreditado'];
+
+        // print_r($command->sql);die();
                 
         return doubleval($resultado);       
     }
@@ -148,6 +199,54 @@ class RecursoSearch extends Recurso
             ]);
         $query->from('cuota c');
         $query->leftJoin('recurso r','r.id=c.recursoid');
+
+        ############ Buscamos por datos de persona ############
+        #global search #global param
+        $personaForm = new PersonaForm();
+        if(isset($params['global_param']) && !empty($params['global_param'])){
+            $persona_params["global_param"] = $params['global_param'];
+        }
+        
+        if(isset($params['persona']['localidadid']) && !empty($params['persona']['localidadid'])){
+            $persona_params['localidadid'] = $params['persona']['localidadid'];    
+        }
+        
+        if(isset($params['persona']['direccion']) && !empty($params['persona']['direccion'])){
+            $persona_params['direccion'] = $params['persona']['direccion'];    
+        }
+        
+        $coleccion_persona = array();
+        $lista_personaid = array();
+        if (isset($persona_params)) {
+            
+            $coleccion_persona = $personaForm->buscarPersonaEnRegistral($persona_params);
+            $lista_personaid = $this->obtenerListaIds($coleccion_persona);
+
+            if (count($lista_personaid) < 1) {
+                $query->where('0=1');
+            }
+        }
+
+        #Criterio de recurso social por lista de persona.... lista de personaid
+        if(count($lista_personaid)>0){
+            $query->andWhere(array('in', 'personaid', $lista_personaid));
+        }
+
+        /***Filtrado por atributos de recursos */
+        #Filtrado por Localidad
+        if(isset($params['localidadid']) && !empty($params['localidadid'])){
+            $query->andWhere(['localidadid' => $params['localidadid']]);
+        }
+
+        #Filtrado por Programa
+        if(isset($params['programaid']) && !empty($params['programaid'])){
+            $query->andWhere(['programaid' => $params['programaid']]);
+        }
+
+        #Filtrado por Tipo Recurso(tipo prestacion)
+        if(isset($params['tipo_recursoid']) && !empty($params['tipo_recursoid'])){
+            $query->andWhere(['tipo_recursoid' => $params['tipo_recursoid']]);
+        }
 
         #### Filtro por rango de fecha ####
         if(isset($params['fecha_pago']) && !empty($params['fecha_pago'])){
@@ -245,6 +344,22 @@ class RecursoSearch extends Recurso
             if (count($lista_personaid) < 1) {
                 $query->where('0=1');
             }
+        }
+
+        /***Filtrado por atributos de recursos */
+        #Filtrado por Localidad
+        if(isset($params['localidadid']) && !empty($params['localidadid'])){
+            $query->andWhere(['localidadid' => $params['localidadid']]);
+        }
+
+        #Filtrado por Programa
+        if(isset($params['programaid']) && !empty($params['programaid'])){
+            $query->andWhere(['programaid' => $params['programaid']]);
+        }
+
+        #Filtrado por Tipo Recurso(tipo prestacion)
+        if(isset($params['tipo_recursoid']) && !empty($params['tipo_recursoid'])){
+            $query->andWhere(['tipo_recursoid' => $params['tipo_recursoid']]);
         }
         
         ##Chequeamos el estado
