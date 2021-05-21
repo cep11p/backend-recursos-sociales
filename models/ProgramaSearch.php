@@ -157,7 +157,7 @@ class ProgramaSearch extends Programa
             'sum(r.monto) as monto',
             'count(distinct(r.personaid)) as persona_cantidad',
             '(SELECT sum(c1.monto) FROM `cuota` as c1 LEFT JOIN recurso r1 on c1.recursoid = r1.id WHERE r1.programaid = p.id) as monto_acreditado',
-            '(SELECT sum(monto) FROM `recurso` WHERE (NOT (`fecha_baja` IS NULL)) and programaid=r.programaid) as monto_baja',
+            '((SELECT sum(monto) FROM `recurso` WHERE (NOT (`fecha_baja` IS NULL)) and programaid=r.programaid) - (SELECT sum(c1.monto) FROM `cuota` c1 LEFT JOIN recurso r1 on c1.recursoid = r1.id WHERE (NOT (r1.`fecha_baja` IS NULL)) and programaid=r.programaid )) as monto_baja',
             '(SELECT count(id)  FROM `recurso` WHERE NOT (`fecha_baja` IS NULL) and programaid=r.programaid) as recurso_baja_cantidad',
             '(SELECT count(id)  FROM `recurso` WHERE (NOT (`fecha_acreditacion` IS NULL)) AND (`fecha_baja` IS NULL) and programaid=r.programaid) as recurso_acreditado_cantidad',
         ]);
@@ -170,7 +170,7 @@ class ProgramaSearch extends Programa
         foreach ($dataProvider->models as $value) {
             $programa = $value->toArray();
             $programa['monto_acreditado'] = ($value['monto_acreditado']!=null)? doubleval($value['monto_acreditado']):0;
-            $programa['monto_sin_acreditar'] = $value['monto']-$programa['monto_acreditado']-$programa['monto_baja']; 
+            $programa['monto_sin_acreditar'] = $value['monto']-$value['monto_acreditado']-$value['monto_baja']; 
             $programa['recurso_cantidad'] = intval($value['recurso_cantidad']);
             $programa['recurso_baja_cantidad'] = intval($value['recurso_baja_cantidad']);
             $programa['recurso_acreditado_cantidad'] = intval($value['recurso_acreditado_cantidad']);

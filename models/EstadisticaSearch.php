@@ -114,8 +114,8 @@ class EstadisticaSearch
             'count(r.id) as recurso_cantidad', 
             'sum(r.monto) as monto', 
             'count(distinct(r.personaid)) as beneficiario_cantidad', 
-                '(SELECT sum(c1.monto) FROM `cuota` as c1 LEFT JOIN recurso r1 on c1.recursoid = r1.id WHERE r1.localidadid=r.localidadid and programaid in ('.$programa_ids.')) as monto_acreditado', 
-                '(SELECT sum(monto) FROM `recurso` WHERE (NOT (`fecha_baja` IS NULL)) and localidadid=r.localidadid and programaid in ('.$programa_ids.')) as monto_baja', 
+                '(SELECT sum(c1.monto) FROM `cuota` as c1 LEFT JOIN recurso r1 on c1.recursoid = r1.id WHERE r1.localidadid=r.localidadid and r1.programaid in ('.$programa_ids.')) as monto_acreditado', 
+                '((SELECT sum(monto) FROM `recurso` WHERE (NOT (`fecha_baja` IS NULL)) and localidadid=r.localidadid and programaid in ('.$programa_ids.')) - (SELECT sum(c1.monto) FROM `cuota` c1 LEFT JOIN recurso r1 on c1.recursoid = r1.id WHERE (NOT (r1.`fecha_baja` IS NULL)) and localidadid=r.localidadid and r1.programaid in ('.$programa_ids.'))) as monto_baja', 
                 '(SELECT count(id) FROM `recurso` WHERE NOT (`fecha_baja` IS NULL) and localidadid=r.localidadid and programaid in ('.$programa_ids.')) as recurso_baja_cantidad', 
                 '(SELECT count(id) FROM `recurso` WHERE (NOT (`fecha_acreditacion` IS NULL)) AND (`fecha_baja` IS NULL) and localidadid=r.localidadid and programaid in ('.$programa_ids.')) as recurso_acreditado_cantidad'
         ]);
