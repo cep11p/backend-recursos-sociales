@@ -88,191 +88,42 @@ class RecursoSearch extends Recurso
             ]);
         $query->from('cuota c');
         $query->leftJoin('recurso r','r.id=c.recursoid');
-
-        ############ Buscamos por datos de persona ############
-        #global search #global param
-        $personaForm = new PersonaForm();
-        if(isset($params['global_param']) && !empty($params['global_param'])){
-            $persona_params["global_param"] = $params['global_param'];
-        }
-        
-        if(isset($params['persona']['localidadid']) && !empty($params['persona']['localidadid'])){
-            $persona_params['localidadid'] = $params['persona']['localidadid'];    
-        }
-        
-        if(isset($params['persona']['direccion']) && !empty($params['persona']['direccion'])){
-            $persona_params['direccion'] = $params['persona']['direccion'];    
-        }
-        
-        $coleccion_persona = array();
-        $lista_personaid = array();
-        if (isset($persona_params)) {
-            
-            $coleccion_persona = $personaForm->buscarPersonaEnRegistral($persona_params);
-            $lista_personaid = $this->obtenerListaIds($coleccion_persona);
-
-            if (count($lista_personaid) < 1) {
-                $query->where('0=1');
-            }
-        }
-
-        #Criterio de recurso social por lista de persona.... lista de personaid
-        if(count($lista_personaid)>0){
-            $query->andWhere(array('in', 'personaid', $lista_personaid));
-        }
-
-        /***Filtrado por atributos de recursos */
-        #Filtrado por Localidad
-        if(isset($params['localidadid']) && !empty($params['localidadid'])){
-            $query->andWhere(['localidadid' => $params['localidadid']]);
-        }
-
-        #Filtrado por Programa
-        if(isset($params['programaid']) && !empty($params['programaid'])){
-            $query->andWhere(['programaid' => $params['programaid']]);
-        }
-
-        #Filtrado por Tipo Recurso(tipo prestacion)
-        if(isset($params['tipo_recursoid']) && !empty($params['tipo_recursoid'])){
-            $query->andWhere(['tipo_recursoid' => $params['tipo_recursoid']]);
-        }
-        
-
-        #### Filtro por rango de fecha ####
-        if(isset($params['fecha_alta_desde']) && isset($params['fecha_alta_hasta'])){
-            $query->andWhere(['between', 'c.fecha_pago', $params['fecha_alta_desde'], $params['fecha_alta_hasta']]);
-        }else if(isset($params['fecha_alta_desde'])){
-            $query->andWhere(['between', 'c.fecha_pago', $params['fecha_alta_desde'], date('Y-m-d')]);
-        }else if(isset($params['fecha_alta_hasta'])){
-            $query->andWhere(['between', 'c.fecha_pago', '1970-01-01', $params['fecha_alta_hasta']]);
-        }
+        $query->where(['c.recursoid' => $params['lista_ids']]);
 
         if(isset($params['fecha_pago']) && !empty($params['fecha_pago'])){
             $fecha_pago = $params['fecha_pago'];
             $condicion = "EXTRACT( YEAR_MONTH FROM  `c`.`fecha_pago`) = EXTRACT( YEAR_MONTH FROM  '".$fecha_pago."')";
         }else{
             $fecha_pago = date('Y').'-06-01';
-            $condicion = "EXTRACT( YEAR_MONTH FROM  `c`.`fecha_pago`) < EXTRACT( YEAR_MONTH FROM  '".$fecha_pago."')";
+            $condicion = "EXTRACT( YEAR_MONTH FROM  `c`.`fecha_pago`) <= EXTRACT( YEAR_MONTH FROM  '".$fecha_pago."')";
         }
         $query->andWhere($condicion);
-
-        ##Chequeamos el estado
-        switch ($params['estado']) {
-            case 'baja':
-                $query->andWhere(['not', ['r.fecha_baja' => null]]);
-                break;
-            case 'acreditado':                
-                $query->andWhere(['not', ['fecha_acreditacion' => null]]);
-                $query->andWhere(['fecha_baja' => null]);
-                break;
-            case 'sin-acreditar':
-                $query->andWhere(['fecha_acreditacion' => null]);
-                $query->andWhere(['fecha_baja' => null]);
-                break;
-            default :     
-        }
         $command = $query->createCommand();
         $rows = $command->queryAll();
 
+
         $resultado = ($rows[0]['monto_acreditado']=='')?0:$rows[0]['monto_acreditado'];
 
-        // print_r($command->sql);die();
-                
         return doubleval($resultado);       
     }
 
      /**
      * Sumamos el monto mensual acreditado general
-     * @param array $params criterio de filtrado
+     * @param array $lista_prestacion 
      * @return double
      */
     public function sumarMontoMensualAcreditado($params){
-        $query = new Query();
 
-        //si hay un rango de fecha_alta debemos devolver 0
-        if((isset($params['fecha_alta_desde']) && !empty($params['fecha_alta_desde'])) || (isset($params['fecha_alta_hasta']) && !empty($params['fecha_alta_hasta']))){
-            return 0;
-        }
-        
+        $query = new Query();        
         $query->select([
                 'monto_mensual_acreditado'=>'sum(c.monto)'
             ]);
         $query->from('cuota c');
         $query->leftJoin('recurso r','r.id=c.recursoid');
-
-        ############ Buscamos por datos de persona ############
-        #global search #global param
-        $personaForm = new PersonaForm();
-        if(isset($params['global_param']) && !empty($params['global_param'])){
-            $persona_params["global_param"] = $params['global_param'];
-        }
-        
-        if(isset($params['persona']['localidadid']) && !empty($params['persona']['localidadid'])){
-            $persona_params['localidadid'] = $params['persona']['localidadid'];    
-        }
-        
-        if(isset($params['persona']['direccion']) && !empty($params['persona']['direccion'])){
-            $persona_params['direccion'] = $params['persona']['direccion'];    
-        }
-        
-        $coleccion_persona = array();
-        $lista_personaid = array();
-        if (isset($persona_params)) {
-            
-            $coleccion_persona = $personaForm->buscarPersonaEnRegistral($persona_params);
-            $lista_personaid = $this->obtenerListaIds($coleccion_persona);
-
-            if (count($lista_personaid) < 1) {
-                $query->where('0=1');
-            }
-        }
-
-        #Criterio de recurso social por lista de persona.... lista de personaid
-        if(count($lista_personaid)>0){
-            $query->andWhere(array('in', 'personaid', $lista_personaid));
-        }
-
-        /***Filtrado por atributos de recursos */
-        #Filtrado por Localidad
-        if(isset($params['localidadid']) && !empty($params['localidadid'])){
-            $query->andWhere(['localidadid' => $params['localidadid']]);
-        }
-
-        #Filtrado por Programa
-        if(isset($params['programaid']) && !empty($params['programaid'])){
-            $query->andWhere(['programaid' => $params['programaid']]);
-        }
-
-        #Filtrado por Tipo Recurso(tipo prestacion)
-        if(isset($params['tipo_recursoid']) && !empty($params['tipo_recursoid'])){
-            $query->andWhere(['tipo_recursoid' => $params['tipo_recursoid']]);
-        }
-
-        #### Filtro por rango de fecha ####
-        if(isset($params['fecha_pago']) && !empty($params['fecha_pago'])){
-            $condicion = "EXTRACT( YEAR_MONTH FROM  `c`.`fecha_pago`) = EXTRACT( YEAR_MONTH FROM  '".$params['fecha_pago']."')";
-        }else{
-            $fecha = date('Y-m-d');
-            $condicion = "EXTRACT( YEAR_MONTH FROM  `c`.`fecha_pago`) = EXTRACT( YEAR_MONTH FROM  '".$fecha."')";
-        }
-        $query->andWhere($condicion);
-        
-
-        ##Chequeamos el estado
-        switch ($params['estado']) {
-            case 'baja':
-                $query->andWhere(['not', ['r.fecha_baja' => null]]);
-                break;
-            case 'acreditado':                
-                $query->andWhere(['not', ['fecha_acreditacion' => null]]);
-                $query->andWhere(['fecha_baja' => null]);
-                break;
-            case 'sin-acreditar':
-                $query->andWhere(['fecha_acreditacion' => null]);
-                $query->andWhere(['fecha_baja' => null]);
-                break;
-            default :     
-        }
+        $query->where([
+            'c.recursoid' => $params['lista_ids']
+            ]);
+        $query->andWhere("EXTRACT( YEAR_MONTH FROM  `c`.`fecha_pago`) = EXTRACT( YEAR_MONTH FROM  '".$params['fecha_pago']."')");
         $command = $query->createCommand();
         $rows = $command->queryAll();
 
@@ -305,127 +156,54 @@ class RecursoSearch extends Recurso
                 
         return doubleval($resultado);        
     }
+
+    /**
+     * Se suman todos los montos de las cuotas de prestaciones dada de baja
+     *
+     * @param [array] $params
+     * @return void
+     */
+    public function sumarCuotasDePrestacionBaja($params){
+        $query = new Query();
+        
+        $query->select([
+                'monto_acreditado_baja'=>'sum(c.monto)'
+            ]);
+        $query->from('cuota c');
+        $query->leftJoin('recurso r1','r1.id=c.recursoid');
+        $query->where(['c.recursoid' => $params['lista_ids']]);
+        $query->andwhere([
+                'not', ['r1.fecha_baja' => null]
+            ]);
+        
+        $command = $query->createCommand();
+        $rows = $command->queryAll();
+        
+        $resultado = ($rows[0]['monto_acreditado_baja']=='')?0:$rows[0]['monto_acreditado_baja'];
+
+        return doubleval($resultado);        
+    }
     
     /**
      * Sumamos el monto general (suma de recursos que no estan acreditados ni dados de baja)
      * @param array $params criterio de filtrado
      * @return double
      */
-    public function sumarMontoSinAcreditar($params = array()){
+    public function sumarMontoSinAcreditar($params){
         $query = Recurso::find();
         
         $query->select([
                 'monto_general'=>'sum(recurso.monto)'
             ]);
 
-
-        ############ Buscamos por datos de persona ############
-        #global search #global param
-        $personaForm = new PersonaForm();
-        if(isset($params['global_param']) && !empty($params['global_param'])){
-            $persona_params["global_param"] = $params['global_param'];
-        }
-        
-        if(isset($params['persona']['localidadid']) && !empty($params['persona']['localidadid'])){
-            $persona_params['localidadid'] = $params['persona']['localidadid'];    
-        }
-        
-        if(isset($params['persona']['direccion']) && !empty($params['persona']['direccion'])){
-            $persona_params['direccion'] = $params['persona']['direccion'];    
-        }
-        
-        $coleccion_persona = array();
-        $lista_personaid = array();
-        if (isset($persona_params)) {
-            
-            $coleccion_persona = $personaForm->buscarPersonaEnRegistral($persona_params);
-            $lista_personaid = $this->obtenerListaIds($coleccion_persona);
-
-            if (count($lista_personaid) < 1) {
-                $query->where('0=1');
-            }
-        }
-
-        /***Filtrado por atributos de recursos */
-        #Filtrado por Localidad
-        if(isset($params['localidadid']) && !empty($params['localidadid'])){
-            $query->andWhere(['localidadid' => $params['localidadid']]);
-        }
-
-        #Filtrado por Programa
-        if(isset($params['programaid']) && !empty($params['programaid'])){
-            $query->andWhere(['programaid' => $params['programaid']]);
-        }
-
-        #Filtrado por Tipo Recurso(tipo prestacion)
-        if(isset($params['tipo_recursoid']) && !empty($params['tipo_recursoid'])){
-            $query->andWhere(['tipo_recursoid' => $params['tipo_recursoid']]);
-        }
-        
-        ##Chequeamos el estado
-        switch ($params['estado']) {
-            case 'baja':
-                $monto_general = 0;
-                break;
-            case 'acreditado':                
-                $monto_general = 0;
-                break;
-            case 'sin-acreditar':
-                $query->andWhere(['fecha_acreditacion' => null]);
-                $query->andWhere(['fecha_baja' => null]);
-                break;
-            default :     
-        }
-
-        #Seteamos la condicion adecuada segun los permisos del usuario (Rbac + Rule)
-        $query->andWhere(PermisoPrograma::setCondicionPermisoProgramaVer());
-
-        #Criterio de recurso social por lista de persona.... lista de personaid
-        if(count($lista_personaid)>0){
-            $query->andWhere(array('in', 'personaid', $lista_personaid));
-        }
-
-        #Filtro por Tipo responsable
-        if(isset($this->tipo_responsableid)){
-            $query->leftJoin("responsable as r", "responsable_entregaid=r.id");
-            
-            $query->andFilterWhere(['r.tipo_responsableid' => $this->tipo_responsableid]);
-        }
-
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'fecha_inicial' => $this->fecha_inicial,
-            'fecha_alta' => $this->fecha_alta,
-            'recurso.monto' => $this->monto,
-            'programaid' => $this->programaid,
-            'tipo_recursoid' => $this->tipo_recursoid,
-            'personaid' => $this->personaid,
-            'localidadid' => $this->localidadid,
-        ]);
-
-        $query->andFilterWhere(['like', 'observacion', $this->observacion])
-              ->andFilterWhere(['like', 'proposito', $this->proposito]);
-        
-        #### Filtro por rango de fecha ####
-        if(isset($params['fecha_alta_desde']) && isset($params['fecha_alta_hasta'])){
-            $query->andWhere(['between', 'fecha_alta', $params['fecha_alta_desde'], $params['fecha_alta_hasta']]);
-        }else if(isset($params['fecha_alta_desde'])){
-            $query->andWhere(['between', 'fecha_alta', $params['fecha_alta_desde'], date('Y-m-d')]);
-        }else if(isset($params['fecha_alta_hasta'])){
-            $query->andWhere(['between', 'fecha_alta', '1970-01-01', $params['fecha_alta_hasta']]);
-        }else if(!isset($params['fecha_alta_desde']) && !isset($params['fecha_alta_hasta'])){
-            $params['fecha_alta_hasta'] = date('Y').'-06-01';
-            $params['fecha_alta_desde'] = date('Y-m-d',strtotime($params['fecha_alta_hasta'].' -1 year'));
-
-            $query->andWhere(['between', 'fecha_alta', $params['fecha_alta_desde'], $params['fecha_alta_hasta']]);
-        }
+        $query->where(['recurso.id'=>$params['lista_ids']]);
 
         $command = $query->createCommand();
         $rows = $command->queryAll();
         
         
-        // print_r($command->sql);die();
-        $resultado = doubleval(($rows[0]['monto_general']=='')?0:$rows[0]['monto_general']) - $this->sumarMontoAcreditado($params);
+        $resultado = doubleval(($rows[0]['monto_general']=='')?0:$rows[0]['monto_general']) - $params['monto_total_acreditado'] - $this->sumarCuotasDePrestacionBaja($params);
+        
         return (isset($monto_general))?0:$resultado;       
 
     }
@@ -661,14 +439,20 @@ class RecursoSearch extends Recurso
         
         
         $coleccion_recurso = array();
+        $lista_ids = [];
         foreach ($dataProvider->getModels() as $value) {
             $coleccion_recurso[] = $value->toArray();
+            $lista_ids[] = $value['id'];
         }
 
-        ####### Calculamos datos de la lista (general) #######
-        $monto_mensual_acreditado = $this->sumarMontoMensualAcreditado($params);
-        $monto_total_acreditado = $this->sumarMontoAcreditado($params);
-        $monto_sin_acreditar = $this->sumarMontoSinAcreditar($params);
+        /*******  Calculamos datos de la lista (general) *******/
+        
+        #Monto mensual Acreditado
+        $monto_mensual_acreditado = $this->sumarMontoMensualAcreditado(['lista_ids'=>$lista_ids, 'fecha_pago' => $fecha_pago]);
+        #Monto total Acreditado
+        $monto_total_acreditado = $this->sumarMontoAcreditado(['lista_ids'=>$lista_ids, 'fecha_pago' => (isset($params['fecha_pago']) || !empty($params['fecha_pago']))?$params['fecha_pago']:null]);
+        #Monto sin acreditar
+        $monto_sin_acreditar = $this->sumarMontoSinAcreditar(['lista_ids'=>$lista_ids, 'monto_total_acreditado' => $monto_total_acreditado]);
 
         ######## Calculamos datos de cada prestacion #######
         if(count($coleccion_recurso)>0){
