@@ -170,6 +170,7 @@ class RecursoController extends ActiveController{
         $resultado['cant_cuota'] = $model->getCantCuota();
         $resultado['monto_mensual_acreditado'] = $model->getMontoMensualAcreaditado();
         $resultado['monto_total_acreditado'] = $model->getMontoTotalAcreaditado();
+        $resultado['monto_resto'] = $model->monto - $model->getMontoTotalAcreaditado();
         $resultado['localidad'] = $model->getLocalidad();
         $resultado['persona'] = $model->getPersona();
         $resultado['responsable_entrega'] = $model->getResponsableEntregaNombre().' ('.ucfirst($model->responsableEntrega->tipoResponsable->nombre).')';
