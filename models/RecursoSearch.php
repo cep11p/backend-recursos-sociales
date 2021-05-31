@@ -716,14 +716,13 @@ class RecursoSearch extends Recurso
         ]);
 
         
-        $monto_acreditado = $this->sumarMontoAcreditado([]);
-        $monto_baja = $this->sumarMontoBaja([]);
-        $monto_sin_acreditar = $this->sumarMontoSinAcreditar()-$monto_baja;
-        $recurso_acreditado_cantidad = $this->contarRecursoAcreditado([]);
-        $recurso_baja_cantidad = $this->contarRecursoBaja([]);
+        
         
         $rows = $query->createCommand()->queryAll();
         $coleccion_recurso = array();
+        $monto_acreditado = 0;
+        $monto_baja = 0;
+        $monto_sin_acreditar = 0;
         foreach ($rows as $value) {
             $value['monto_acreditado'] = ($value['monto_acreditado']!=null)? doubleval($value['monto_acreditado']):0;
             $value['monto_baja'] = ($value['monto_baja']!=null)? doubleval($value['monto_baja']):0;            
@@ -733,6 +732,11 @@ class RecursoSearch extends Recurso
             $value['recurso_acreditado_cantidad'] = intval($value['recurso_acreditado_cantidad']);
             $value['recurso_sin_acreditar_cantidad'] = $value['recurso_cantidad']-$value['recurso_baja_cantidad']-$value['recurso_acreditado_cantidad'];
             $coleccion_recurso[] = $value;
+
+            #sumamos los montos
+            $monto_acreditado = $monto_acreditado + $value['monto_acreditado'];
+            $monto_baja = $monto_baja + $value['monto_baja'];
+            $monto_sin_acreditar = $monto_sin_acreditar + $value['monto_sin_acreditar'];
         }
 
         if(count($coleccion_recurso)>0){
@@ -742,7 +746,12 @@ class RecursoSearch extends Recurso
         
         $paginas = ceil($dataProvider->totalCount/$pagesize);
                          
-        
+        // $monto_acreditado = $this->sumarMontoAcreditado($lista_ids);
+        // $monto_baja = $this->sumarMontoBaja($lista_ids);
+        // $monto_sin_acreditar = $this->sumarMontoSinAcreditar($lista_ids)-$monto_baja;
+        $recurso_acreditado_cantidad = $this->contarRecursoAcreditado($params);
+        $recurso_baja_cantidad = $this->contarRecursoBaja($params);
+
         $data['pagesize']=$pagesize;            
         $data['pages']=$paginas;            
         $data['total_filtrado']=$dataProvider->totalCount;
