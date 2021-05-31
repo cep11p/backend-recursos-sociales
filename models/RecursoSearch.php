@@ -796,6 +796,14 @@ class RecursoSearch extends Recurso
             $resultado['recurso_lista'] = array();
             foreach ($dataProvider->getModels() as $value) {
                 $pretacion = $value->toArray();
+                $pretacion['lista_cuota'] = $value->cuotas;
+                $pretacion['cant_cuota'] = $value->getCantCuota();
+                $pretacion['monto_mensual_acreditado'] = $value->getMontoMensualAcreaditado();
+                $pretacion['monto_total_acreditado'] = $value->getMontoTotalAcreaditado();
+                $pretacion['monto_resto'] = $value->monto - $value->getMontoTotalAcreaditado();
+                $pretacion['localidad'] = $value->getLocalidad();
+                $pretacion['persona'] = $value->getPersona();
+                $pretacion['responsable_entrega'] = $value->getResponsableEntregaNombre().' ('.ucfirst($value->responsableEntrega->tipoResponsable->nombre).')';
                 
                 #### Si la prestacion tiene alumnos, agregramos una lista de alumnos ####
                 if(count($value->alumnos)>0){
