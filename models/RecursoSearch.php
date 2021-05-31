@@ -189,7 +189,7 @@ class RecursoSearch extends Recurso
      * @param array $params criterio de filtrado
      * @return double
      */
-    public function sumarMontoSinAcreditar($params){
+    public function sumarMontoSinAcreditar($params = array()){
         $query = Recurso::find();
         
         $query->select([
