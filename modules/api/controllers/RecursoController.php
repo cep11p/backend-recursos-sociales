@@ -167,6 +167,7 @@ class RecursoController extends ActiveController{
         
         $resultado = $model->toArray();
         $resultado['lista_cuota'] = $model->cuotas;
+        $resultado['cant_cuota'] = $model->getCantCuota();
         $resultado['monto_mensual_acreditado'] = $model->getMontoMensualAcreaditado();
         $resultado['monto_total_acreditado'] = $model->getMontoTotalAcreaditado();
         $resultado['localidad'] = $model->getLocalidad();
