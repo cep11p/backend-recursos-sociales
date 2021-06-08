@@ -675,6 +675,7 @@ class RecursoSearch extends Recurso
             'sum(monto) as monto',
             '(SELECT sum(c2.monto) FROM `cuota` as c2 LEFT JOIN recurso r2 on c2.recursoid = r2.id WHERE r1.personaid=r2.personaid and r2.programaid in ('.$programa_ids.')) as monto_acreditado',
             '(SELECT sum(monto) FROM `recurso` WHERE (NOT (`fecha_baja` IS NULL)) and personaid=r1.personaid and programaid in ('.$programa_ids.')) as monto_baja',
+            '(SELECT sum(c2.monto) FROM `cuota` as c2 LEFT JOIN recurso r2 on c2.recursoid = r2.id WHERE (NOT (`fecha_baja` IS NULL)) and r1.personaid=r2.personaid and programaid in ('.$programa_ids.')) as monto_baja_acreditado',
             '(SELECT count(id) AS `recurso_baja_cantidad` FROM `recurso` WHERE NOT (`fecha_baja` IS NULL) and personaid=r1.personaid and programaid in ('.$programa_ids.')) as recurso_baja_cantidad',
             '(SELECT count(id) AS `recurso_acreditado_cantidad` FROM `recurso` WHERE (NOT (`fecha_acreditacion` IS NULL)) AND (`fecha_baja` IS NULL) and personaid=r1.personaid and programaid in ('.$programa_ids.')) as recurso_acreditado_cantidad',
             ]);
@@ -725,7 +726,8 @@ class RecursoSearch extends Recurso
         $monto_sin_acreditar = 0;
         foreach ($rows as $value) {
             $value['monto_acreditado'] = ($value['monto_acreditado']!=null)? doubleval($value['monto_acreditado']):0;
-            $value['monto_baja'] = ($value['monto_baja']!=null)? doubleval($value['monto_baja']):0;            
+            $value['monto_baja_acreditado'] = ($value['monto_baja_acreditado']!=null)? doubleval($value['monto_baja_acreditado']):0;            
+            $value['monto_baja'] = ($value['monto_baja']!=null)? doubleval($value['monto_baja']) - $value['monto_baja_acreditado']:0;            
             $value['monto_sin_acreditar'] = $value['monto']-$value['monto_acreditado']-$value['monto_baja'];   
             $value['recurso_cantidad'] = intval($value['recurso_cantidad']);
             $value['recurso_baja_cantidad'] = intval($value['recurso_baja_cantidad']);
